@@ -1,0 +1,91 @@
+{
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["./src"]
+      }
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true
+  },
+
+  "extends": "./src/custom_modules/@filterswap-libs/eslint-config-filter",
+  "rules": {
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "no-plusplus": 0,
+    "prefer-destructuring": ["warn", { "object": true, "array": false }],
+    "max-classes-per-file": 0,
+    "camelcase": 0,
+    "no-alert": 0,
+    "no-underscore-dangle": 0,
+    // Start temporary rules
+    // These rules are here just to keep the lint error to 0 during the migration to the new rule set
+    // They need to be removed and fixed as soon as possible
+    "@typescript-eslint/ban-ts-comment": [1, { "ts-ignore": false, "ts-nocheck": false }],
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "radix": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-case-declarations": 0,
+    "no-await-in-loop": 0,
+    "no-param-reassign": 0,
+    "no-nested-ternary": 0,
+    "default-case": 0,
+    "react/require-default-props": 0,
+    "class-methods-use-this": 0,
+
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-extra-semi": "off",
+    "no-promise-executor-return": "off",
+    "prefer-object-spread": "off",
+    "prefer-arrow-callback": "off",
+    "no-void": "off",
+    "vars-on-top": "off",
+    "no-var": "off",
+    "one-var": "off",
+    "object-shorthand": "off",
+    "prefer-template": "off",
+    "no-return-assign": "off",
+    "block-scoped-var": "off",
+    "no-cond-assign": "off",
+    "dot-notation": "off",
+    "spaced-comment": "off",
+    "prefer-rest-params": "off",
+    "no-restricted-syntax": "off",
+    "no-extra-boolean-cast": "off",
+    "no-continue": "off",
+    "no-unused-expressions": "off",
+    "consistent-return": "off",
+    "no-else-return": "off",
+    "no-bitwise": "off",
+    "no-func-assign": "off",
+    "no-lonely-if": "off",
+    "no-proto": "off",
+    "prefer-regex-literals": "off",
+    "prefer-spread": "off",
+    "no-redeclare": "off",
+    "arrow-body-style": "off",
+    "default-param-last": "off",
+    "import/first": "off",
+    "import/extensions": "off",
+    "import/no-duplicates": "off",
+    "import/no-unresolved": "off",
+    "import/order": "off",
+    "import/named": "off",
+    "import/no-mutable-exports": "off",
+    "import/newline-after-import": "off",
+    "react/no-array-index-key": "off",
+    "react/destructuring-assignment": "off",
+    "react/no-unstable-nested-components": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "react/jsx-no-bind": "off",
+    "react-hooks/exhaustive-deps": "off"
+    // End temporary rules
+  }
+}
