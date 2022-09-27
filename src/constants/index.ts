@@ -1,5 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '../custom_modules/@filterswap-libs/sdk'
 
+// export const ROUTER_ADDRESS = '0x93ee56b5337826fd795632b12B76bBd770FbA59d'
 export const ROUTER_ADDRESS = '0x93ee56b5337826fd795632b12B76bBd770FbA59d'
 
 // a list of tokens by chain
@@ -7,7 +8,7 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const CAKE = new Token(ChainId.BSCTESTNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'FilterSwap Token')
+export const CAKE = new Token(ChainId.BSCTESTNET, '0x0000000000000000000000000000000000000000', 18, 'FLTPL', 'FilterSwap Token PlaceHolder')
 export const WBNB = new Token(ChainId.BSCTESTNET, '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18, 'WBNB', 'Wrapped BNB')
 export const DAI = new Token(ChainId.BSCTESTNET, '0x8a9424745056Eb399FD19a0EC26A14316684e274', 18, 'DAI', 'Dai Stablecoin')
 export const BUSD = new Token(ChainId.BSCTESTNET, '0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7', 18, 'BUSD', 'Binance USD')
