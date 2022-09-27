@@ -260,7 +260,7 @@ export default function Pool() {
                 <br />
                 <RowBetween>
                   <Text color="textSubtle" fontSize="16px">
-                    Owner Token Share:
+                    Owner Token Share (%):
                   </Text>
                   <Input
                     type="number"
@@ -276,7 +276,7 @@ export default function Pool() {
                 <br />
                 <RowBetween>
                   <Text color="textSubtle" fontSize="16px">
-                    Liquidity Pool Share:
+                    Liquidity Pool Share (%):
                   </Text>
                   <Input
                     type="number"
