@@ -115,7 +115,6 @@ export default function Pool() {
         ...e,
         value: e.type == 'number' ? '0' : '',
       }))
-      // @ts-ignore
       .reduce((ac, a) => ({ ...ac, [a.id]: a.value }), {})
   )
   // console.log(createParams)
@@ -135,15 +134,24 @@ export default function Pool() {
     // console.log(createParams)
   }
 
+  const maxOwnerShare = 15
   const [ownerShare, setOwnerShare] = useState(0)
   const [liquiditiyShare, setLiquidityShare] = useState(100)
   const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const value = toInteger(evt.target.value)
+    let value = toInteger(evt.target.value)
+
+    if (value > maxOwnerShare) {
+      value = maxOwnerShare
+    }
     setOwnerShare(value)
     setLiquidityShare(100 - value)
   }
   const handleLiquidityShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const value = toInteger(evt.target.value)
+    let value = toInteger(evt.target.value)
+
+    if (value > 100 - maxOwnerShare) {
+      value = 100 - maxOwnerShare
+    }
     setLiquidityShare(value)
     setOwnerShare(100 - value)
   }
@@ -315,7 +323,7 @@ export default function Pool() {
                     scale="lg"
                     step={1}
                     min={0}
-                    max={100}
+                    max={15}
                     value={ownerShare}
                     onChange={handleOwnerShareChange}
                     style={{ width: '30%' }}
@@ -330,7 +338,7 @@ export default function Pool() {
                     type="number"
                     scale="lg"
                     step={1}
-                    min={0}
+                    min={85}
                     max={100}
                     value={liquiditiyShare}
                     onChange={handleLiquidityShareChange}
