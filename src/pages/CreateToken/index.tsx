@@ -313,11 +313,8 @@ export default function Pool() {
                   {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
                 </Text>
                 <RowBetween>
-                  <Text fontSize="18px">Liquidity lock time:</Text>
-                </RowBetween>
-                <RowBetween>
                   <Text color="textSubtle" fontSize="16px">
-                    Specify Lock Period (days):
+                    Liquidity Lock Time (days):
                   </Text>
                   <Input
                     type="number"
