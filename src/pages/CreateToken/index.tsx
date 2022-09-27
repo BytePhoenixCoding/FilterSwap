@@ -1,5 +1,9 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useEffect, useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
+import { toInteger } from 'lodash'
+import { isFunctionDeclaration } from 'typescript'
+
+import AppBody from '../AppBody'
 import {
   Box,
   Button,
@@ -12,17 +16,20 @@ import {
   Input,
 } from '../../custom_modules/@filterswap-libs/uikit'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '../../custom_modules/@filterswap-libs/sdk'
+
 import CardNav from 'components/CardNav'
 import Row, { RowBetween, RowFlat } from 'components/Row'
 import { AutoColumn, ColumnCenter } from 'components/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
+
 import useI18n from 'hooks/useI18n'
-import AppBody from '../AppBody'
-import { isFunctionDeclaration } from 'typescript'
-import { Field } from 'state/mint/actions'
-import { toInteger } from 'lodash'
+import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
 import { useCurrency } from 'hooks/Tokens'
-import { useDerivedMintInfo, useMintActionHandlers } from 'state/mint/hooks'
+
+import { Field } from 'state/swap/actions'
+import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
+import { useIsExpertMode, useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
 
 import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -141,34 +148,75 @@ export default function Pool() {
     setOwnerShare(100 - value)
   }
 
-  const currencyA = useCurrency(undefined)
-  const {
-    dependentField,
-    currencies,
-    pair,
-    pairState,
-    currencyBalances,
-    parsedAmounts,
-    price,
-    noLiquidity,
-    liquidityMinted,
-    poolTokenPercentage,
-    error,
-  } = useDerivedMintInfo(currencyA ?? undefined, undefined)
+  // Currency Selector
+  const loadedUrlParams = useDefaultsFromURLSearch()
+  const [loadedInputCurrency, loadedOutputCurrency] = [
+    useCurrency(loadedUrlParams?.inputCurrencyId),
+    useCurrency(loadedUrlParams?.outputCurrencyId),
+  ]
 
-  const { onFieldAInput } = useMintActionHandlers(noLiquidity)
+  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
 
-  const handleCurrencyASelect = useCallback((currA: Currency) => {
-    const newCurrencyIdA = currencyId(currA)
-  }, [])
+  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
+  const { independentField, typedValue, recipient } = useSwapState()
+  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
-  // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A].reduce((accumulator, field) => {
-    return {
-      ...accumulator,
-      [field]: maxAmountSpend(currencyBalances[field]),
+  const handleTypeInput = useCallback(
+    (value: string) => {
+      onUserInput(Field.INPUT, value)
+    },
+    [onUserInput]
+  )
+
+  const [isExpertMode] = useExpertModeManager()
+
+  // get custom setting values for user
+  const [deadline] = useUserDeadline()
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
+    currencies[Field.INPUT],
+    currencies[Field.OUTPUT],
+    typedValue
+  )
+  const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
+  const trade = showWrap ? undefined : v2Trade
+
+  // check whether the user has approved the router on the input token
+  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+
+  // mark when a user has submitted an approval, reset onTokenSelection for input field
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+  useEffect(() => {
+    if (approval === ApprovalState.PENDING) {
+      setApprovalSubmitted(true)
     }
-  }, {})
+  }, [approval, approvalSubmitted])
+
+  const parsedAmounts = showWrap
+    ? {
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
+    : {
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+      }
+
+  const formattedAmounts = {
+    [independentField]: typedValue,
+    [dependentField]: showWrap
+      ? parsedAmounts[independentField]?.toExact() ?? ''
+      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+  }
+
+  const handleInputSelect = useCallback(
+    (inputCurrency) => {
+      setApprovalSubmitted(false) // reset 2 step UI for approvals
+      onCurrencySelection(Field.INPUT, inputCurrency)
+    },
+    [onCurrencySelection, setApprovalSubmitted, () => {}]
+  )
 
   return (
     <>
@@ -296,16 +344,22 @@ export default function Pool() {
                 </Text>
                 <br />
                 <CurrencyInputPanel
-                  value="0"
-                  onUserInput={doNull}
-                  onMax={() => {
-                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                  }}
-                  onCurrencySelect={handleCurrencyASelect}
-                  showMaxButton={!true}
-                  currency={currencies[Field.CURRENCY_A]}
-                  id="add-liquidity-input-tokena"
-                  showCommonBases={false}
+                  value={formattedAmounts[Field.INPUT]}
+                  onUserInput={handleTypeInput}
+                  // onMax={() => {
+                  //   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                  // }}
+                  // label={
+                  //   independentField === Field.INPUT && !showWrap && trade
+                  //     ? TranslateString(196, 'To (estimated)')
+                  //     : TranslateString(80, 'To')
+                  // }
+                  showMaxButton={false}
+                  currency={currencies[Field.INPUT]}
+                  onCurrencySelect={handleInputSelect}
+                  otherCurrency={currencies[Field.OUTPUT]}
+                  id="create-token-food"
+                  // showCommonBases={false}
                 />
                 <br />
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>
