@@ -70,7 +70,6 @@ const Swap = () => {
   }
 
   const { account } = useActiveWeb3React()
-  // @ts-ignore: Geffukt plz
   const theme = useContext(ThemeContext)
 
   const [isExpertMode] = useExpertModeManager()
