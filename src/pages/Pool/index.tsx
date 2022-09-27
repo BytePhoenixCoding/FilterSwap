@@ -114,7 +114,7 @@ export default function Pool() {
                 </Text>
                  
                 <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0' }}>
-                    {TranslateString(1172, 'When you add liquidity in FilterSwap, you will be unable to withdraw it for a certain period. This is to protect investors and prevent rug-pulls.')}                           
+                    {TranslateString(1172, 'When you add liquidity in FilterSwap, you will be unable to withdraw it for a certain time period. This is to protect investors and prevent rug-pulls.')}                           
                  </Text>
                
               </div>
