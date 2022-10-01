@@ -63,17 +63,13 @@ function useDeployCallArguments(
     }
     console.log("Found manager contract")
 
-    // const deployMethods: object[] = []
     const deployMethods = []
 
     deployMethods.push(
-      {
-        methodName: "deployerAddress",
-        args: [],
-        value: ""
-      }
+      Router.deployCallParameters(params, {
+      })
     )
-
+    
     // if (trade.tradeType === TradeType.EXACT_INPUT) {
     //   deployMethods.push(
     //     // @ts-ignore
@@ -101,7 +97,6 @@ export function useDeployCallback(
   const { account, chainId, library } = useActiveWeb3React()
 	
   const deployCalls = useDeployCallArguments(params, allowedSlippage, deadline, recipientAddressOrName)
-
   // const managerContract = getManagerContract(chainId, library, account)
   // const deployerContract = getDeployerContract(chainId, library, account)
   // const tokenContract = getTokenContract(chainId, library, account)

@@ -22,14 +22,14 @@ export default function DeployModalFooter({
   allowedSlippage,
   deployErrorMessage,
   disabledConfirm,
-}: // calculatedMintFee,
-{
+  calculatedMintFee,
+}: {
   params: object
   allowedSlippage: number
   onConfirm: () => void
   deployErrorMessage: string | undefined
   disabledConfirm: boolean
-  // calculatedMintFee: number
+  calculatedMintFee: number | undefined
 }) {
   const [showInverted, setShowInverted] = useState<boolean>(false)
   // const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(params), [params])
@@ -52,7 +52,7 @@ export default function DeployModalFooter({
             <Text fontSize="14px">Token Mint Fee</Text>
             {/* <QuestionHelper text={'Todo'} /> TODO */}
           </RowFixed>
-          {/* <Text fontSize="14px">{calculatedMintFee}</Text> */}
+          <Text fontSize="14px">{calculatedMintFee}</Text>
           {/* <RowFixed>
             <Text fontSize="14px">
               {trade.tradeType === TradeType.EXACT_INPUT

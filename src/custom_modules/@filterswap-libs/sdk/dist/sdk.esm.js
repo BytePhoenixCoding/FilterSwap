@@ -1452,6 +1452,31 @@ var Router = /*#__PURE__*/function () {
       value: value
     };
   };
+  Router.deployCallParameters = function deployCallParameters(params, options) {
+
+    return [
+      {
+        methodName: "deployerAddress",
+        args: [],
+        value: ""
+      },
+      {
+        methodName: "methodName",
+        args: ["args"],
+        value: "value"
+      },
+      {
+        methodName: "methodName",
+        args: ["args"],
+        value: "value"
+      },
+      {
+        methodName: "methodName",
+        args: ["args"],
+        value: "value"
+      }
+    ];
+  };
 
   return Router;
 }();

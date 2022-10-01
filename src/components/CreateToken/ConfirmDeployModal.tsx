@@ -25,7 +25,7 @@ function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
 
 export default function ConfirmDeployModal({
   params,
-  // calculatedMintFee,
+  calculatedMintFee,
   originalTrade,
   onAcceptChanges,
   allowedSlippage,
@@ -39,7 +39,7 @@ export default function ConfirmDeployModal({
 }: {
   isOpen: boolean
   params: object | undefined
-  // calculatedMintFee: number
+  calculatedMintFee: number | undefined
   originalTrade: object | undefined
   attemptingTxn: boolean
   txHash: string | undefined
@@ -77,16 +77,16 @@ export default function ConfirmDeployModal({
         disabledConfirm={false}
         deployErrorMessage={deployErrorMessage}
         allowedSlippage={allowedSlippage}
-        // calculatedMintFee={calculatedMintFee}
+        calculatedMintFee={calculatedMintFee}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, deployErrorMessage, params])
+  }, [allowedSlippage, onConfirm, showAcceptChanges, deployErrorMessage, params, calculatedMintFee])
 
   // text to show while loading
   // const pendingText = `Swapping ${trade?.inputAmount?.toSignificant(6)} ${
   //   trade?.inputAmount?.currency?.symbol
   // } for ${trade?.outputAmount?.toSignificant(6)} ${trade?.outputAmount?.currency?.symbol}`
-  const pendingText = 'Hi'
+  const pendingText = 'Creating Token...'
 
   const falsey = () => <></>
 

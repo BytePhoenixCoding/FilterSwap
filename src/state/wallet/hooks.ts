@@ -3,9 +3,9 @@ import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveWeb3React } from '../../hooks'
-import { useMulticallContract } from '../../hooks/useContract'
+import { useMulticallContract, useManagerContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
-import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
+import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -116,6 +116,18 @@ export function useCurrencyBalances(
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances]
   )
+}
+export function useMintFee(
+  inputLq: number
+): number {
+  
+  const managerContract = useManagerContract()
+  const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
+  
+  const calculatedMintFee: number = (inputLq * (tokenMintFee / 10000))
+
+  return calculatedMintFee
+  
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {

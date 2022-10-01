@@ -26,11 +26,13 @@ import ConfirmDeployModal from 'components/CreateToken/ConfirmDeployModal'
 import useI18n from 'hooks/useI18n'
 import { useDeployCallback } from 'hooks/useDeployCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useCurrency } from 'hooks/Tokens'
 
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
+import { useDerivedDeployInfo, useDeployActionHandlers, useDeployState } from 'state/deploy/hooks'
+
 import { useIsExpertMode, useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
 
 import { currencyId } from 'utils/currencyId'
@@ -71,9 +73,6 @@ export default function Pool() {
   const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
     setDaysToLock(parseFloat(inputValue))
-  }
-  function doNull() {
-    return false
   }
 
   const selectOptions = [
@@ -162,16 +161,18 @@ export default function Pool() {
 
   // Currency Selector
   const loadedUrlParams = useDefaultsFromURLSearch()
-  const [loadedInputCurrency, loadedOutputCurrency] = [
-    useCurrency(loadedUrlParams?.inputCurrencyId),
-    useCurrency(loadedUrlParams?.outputCurrencyId),
-  ]
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useDeployActionHandlers()
 
-  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-  const { independentField, typedValue, recipient } = useSwapState()
-  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
+  const {
+    params,
+    currencyBalances,
+    parsedAmount,
+    currencies,
+    calculatedMintFee,
+    inputError: deployInputError,
+  } = useDerivedDeployInfo()
+  const { independentField, typedValue, recipient } = useDeployState()
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -186,16 +187,10 @@ export default function Pool() {
   const [deadline] = useUserDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    typedValue
-  )
-  const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : v2Trade
+  // const trade = v2Trade
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [approval, approveCallback] = useApproveCallback()
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -205,15 +200,9 @@ export default function Pool() {
     }
   }, [approval, approvalSubmitted])
 
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+  const parsedAmounts = {
+    [Field.INPUT]: parsedAmount,
+  }
 
   // modal and loading
   const [{ showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash }, setDeployState] = useState<{
@@ -274,9 +263,6 @@ export default function Pool() {
 
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: showWrap
-      ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
   const handleInputSelect = useCallback(
@@ -297,8 +283,8 @@ export default function Pool() {
   }, [onUserInput, txHash, setDeployState])
 
   const handleAcceptChanges = useCallback(() => {
-    setDeployState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
-  }, [trade])
+    setDeployState((prevState) => ({ ...prevState, paramsToConfirm: params }))
+  }, [params])
 
   return (
     <>
@@ -307,7 +293,7 @@ export default function Pool() {
         <AutoColumn gap="lg" justify="center">
           <ConfirmDeployModal
             isOpen={showConfirm}
-            // calculatedMintFee={calculatedMintFee}
+            calculatedMintFee={calculatedMintFee}
             params={createParams}
             originalTrade={paramsToConfirm}
             onAcceptChanges={handleAcceptChanges}
@@ -457,7 +443,7 @@ export default function Pool() {
                   showMaxButton={false}
                   currency={currencies[Field.INPUT]}
                   onCurrencySelect={handleInputSelect}
-                  otherCurrency={currencies[Field.OUTPUT]}
+                  // otherCurrency=currencies[Field.OUTPUT]}
                   id="create-token-food"
                   // showCommonBases={false}
                 />
