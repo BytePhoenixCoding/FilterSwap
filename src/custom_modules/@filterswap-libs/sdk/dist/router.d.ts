@@ -40,6 +40,25 @@ export interface SwapParameters {
     value: string;
 }
 /**
+ * The parameters to use in the call to the Uniswap V2 Router to execute a trade.
+ */
+export interface DeployParameters {
+    /**
+     * The method to call on the Uniswap V2 Router.
+     */
+    methodName: string;
+    /**
+     * The arguments to pass to the method, all hex encoded.
+     */
+    args: (string | string[])[];
+    /**
+     * The amount of wei to send in hex.
+     */
+    value: string;
+
+    // !TODO
+}
+/**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
  */
 export declare abstract class Router {
@@ -53,4 +72,5 @@ export declare abstract class Router {
      * @param options options for the call parameters
      */
     static swapCallParameters(trade: Trade, options: TradeOptions): SwapParameters;
+    static deployCallParameters(params: object, options: object): DeployParameters;
 }

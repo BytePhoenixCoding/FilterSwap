@@ -15,14 +15,16 @@ import {
   AddIcon,
   Input,
 } from '../../custom_modules/@filterswap-libs/uikit'
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '../../custom_modules/@filterswap-libs/sdk'
+import { Currency, currencyEquals, ETHER, TokenAmount, WETH, Trade } from '../../custom_modules/@filterswap-libs/sdk'
 
 import CardNav from 'components/CardNav'
 import Row, { RowBetween, RowFlat } from 'components/Row'
 import { AutoColumn, ColumnCenter } from 'components/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import ConfirmDeployModal from 'components/CreateToken/ConfirmDeployModal'
 
 import useI18n from 'hooks/useI18n'
+import { useDeployCallback } from 'hooks/useDeployCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
 import { useCurrency } from 'hooks/Tokens'
@@ -149,8 +151,10 @@ export default function Pool() {
   const handleLiquidityShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     let value = toInteger(evt.target.value)
 
-    if (value > 100 - maxOwnerShare) {
+    if (value < 100 - maxOwnerShare) {
       value = 100 - maxOwnerShare
+    } else if (value > 100) {
+      value = 100
     }
     setLiquidityShare(value)
     setOwnerShare(100 - value)
@@ -211,6 +215,63 @@ export default function Pool() {
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
       }
 
+  // modal and loading
+  const [{ showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash }, setDeployState] = useState<{
+    showConfirm: boolean
+    paramsToConfirm: object | undefined
+    attemptingTxn: boolean
+    deployErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    showConfirm: false,
+    paramsToConfirm: undefined,
+    attemptingTxn: false,
+    deployErrorMessage: undefined,
+    txHash: undefined,
+  })
+
+  // the callback to execute the create
+  const { callback: deployCallback, error: deployCallbackError } = useDeployCallback(
+    createParams,
+    allowedSlippage,
+    deadline,
+    recipient
+  )
+  const handleDeploy = useCallback(() => {
+    // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+    //   return
+    // }
+    if (!deployCallback) {
+      return
+    }
+    console.log('we do?')
+    setDeployState((prevState) => ({
+      ...prevState,
+      attemptingTxn: true,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+    }))
+    deployCallback()
+      .then((hash) => {
+        console.log('first')
+        setDeployState((prevState) => ({
+          ...prevState,
+          attemptingTxn: false,
+          swapErrorMessage: undefined,
+          txHash: hash,
+        }))
+      })
+      .catch((error) => {
+        console.log('error')
+        setDeployState((prevState) => ({
+          ...prevState,
+          attemptingTxn: false,
+          swapErrorMessage: error.message,
+          txHash: undefined,
+        }))
+      })
+  }, [setDeployState, deployCallback])
+
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -226,11 +287,38 @@ export default function Pool() {
     [onCurrencySelection, setApprovalSubmitted, () => {}]
   )
 
+  const handleConfirmDismiss = useCallback(() => {
+    setDeployState((prevState) => ({ ...prevState, showConfirm: false }))
+
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [onUserInput, txHash, setDeployState])
+
+  const handleAcceptChanges = useCallback(() => {
+    setDeployState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
+  }, [trade])
+
   return (
     <>
       <CardNav activeIndex={2} />
       <AppBody>
         <AutoColumn gap="lg" justify="center">
+          <ConfirmDeployModal
+            isOpen={showConfirm}
+            // calculatedMintFee={calculatedMintFee}
+            params={createParams}
+            originalTrade={paramsToConfirm}
+            onAcceptChanges={handleAcceptChanges}
+            attemptingTxn={attemptingTxn}
+            txHash={txHash}
+            recipient={recipient}
+            allowedSlippage={allowedSlippage}
+            onConfirm={handleDeploy}
+            deployErrorMessage={deployErrorMessage}
+            onDismiss={handleConfirmDismiss}
+          />
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <Heading mb="8px">{TranslateString(107, 'Create Token')}</Heading>
@@ -271,6 +359,10 @@ export default function Pool() {
                                     {TranslateString(168, 'Upload Contract')}
                                 </Button> */}
                 </div>
+                <br />
+                <Text color="textSubtle" fontSize="14px">
+                  {createOptions.description}
+                </Text>
                 <br />
                 <fieldset>
                   <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
@@ -404,8 +496,20 @@ export default function Pool() {
                 <Button id="upload-contract-button" style={{ width: '45%', float: 'left' }}>
                   {TranslateString(168, 'Approve')}
                 </Button>
-                <Button id="upload-contract-button" style={{ width: '45%', float: 'right' }}>
-                  {TranslateString(168, 'Create Token')}
+                <Button
+                  id="upload-contract-button"
+                  style={{ width: '45%', float: 'right' }}
+                  onClick={() => {
+                    setDeployState({
+                      paramsToConfirm: createParams,
+                      attemptingTxn: false,
+                      deployErrorMessage: undefined,
+                      showConfirm: true,
+                      txHash: undefined,
+                    })
+                  }}
+                >
+                  {TranslateString(168, 'Deploy Token')}
                 </Button>
               </CardBody>
             </AutoColumn>
