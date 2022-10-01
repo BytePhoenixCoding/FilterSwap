@@ -113,7 +113,7 @@ export default function Pool() {
                   </StyledInternalLink>
                 </Text>
                  
-                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0' }}>
+                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0', color: 'red' }}>
                     {TranslateString(1172, 'When you add liquidity in FilterSwap, you will be unable to withdraw it for a certain time period. This is to protect investors and prevent rug-pulls.')}                           
                  </Text>
                
