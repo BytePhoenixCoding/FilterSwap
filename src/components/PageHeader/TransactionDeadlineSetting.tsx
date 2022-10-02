@@ -19,7 +19,7 @@ type TransactionDeadlineSettingModalProps = {
 
 const TransactionDeadlineSetting = ({ translateString }: TransactionDeadlineSettingModalProps) => {
   const [deadline, setDeadline] = useUserDeadline()
-  const [value, setValue] = useState(deadline / 60) // deadline in minutes
+  const [value, setValue] = useState(deadline) // deadline in minutes
   const [error, setError] = useState<string | null>(null)
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ const TransactionDeadlineSetting = ({ translateString }: TransactionDeadlineSett
   // Updates local storage if value is valid
   useEffect(() => {
     try {
-      const rawValue = value * 60
+      const rawValue = value
       if (!Number.isNaN(rawValue) && rawValue > 0) {
         setDeadline(rawValue)
         setError(null)
@@ -53,7 +53,7 @@ const TransactionDeadlineSetting = ({ translateString }: TransactionDeadlineSett
       <Field>
         <Input type="number" step="1" min="1" value={value} onChange={handleChange} />
         <Text fontSize="14px" ml="8px">
-          Minutes
+          seconds
         </Text>
       </Field>
       {error && (
