@@ -312,7 +312,7 @@ export default function Pool() {
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <Heading mb="8px">{TranslateString(107, 'Create Token')}</Heading>
-              <Text color="textSubtle" fontSize="14px">
+              <Text color="textSubtle" fontSize="16px">
                 {TranslateString(
                   107,
                   'To create a token on FilterSwap, deploy a token contract then add liquidity to make it tradeable.'
@@ -323,7 +323,7 @@ export default function Pool() {
             <AutoColumn gap="0%" style={{ width: '100%' }}>
               <CardBody>
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 1')}</Text>
-                <Text color="textSubtle" fontSize="14px">
+                <Text color="textSubtle" fontSize="16px">
                   {TranslateString(
                     107,
                     'Create a token contract: either choose from a template below or upload your own contract.'
@@ -429,7 +429,7 @@ export default function Pool() {
                 </RowBetween>
                 <br />
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 2')}</Text>
-                <Text color="textSubtle" fontSize="14px">
+                <Text color="textSubtle" fontSize="16px">
                   {TranslateString(107, 'Choose token pair and token input amount.')}
                 </Text>
                 <br />
@@ -453,9 +453,10 @@ export default function Pool() {
                 />
                 <br />
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>
-                <Text color="textSubtle" fontSize="14px">
+                <Text color="textSubtle" fontSize="16px">
                   {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
                 </Text>
+		    <br />
                 <RowBetween>
                   <Text color="textSubtle" fontSize="16px">
                     Liquidity Lock Time (days):
