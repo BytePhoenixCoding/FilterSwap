@@ -71,7 +71,17 @@ export default function Pool() {
     setDaysToLock(parseFloat(inputValue))
   }
 
-  const selectOptions = [
+  const selectOptions: {
+    name: string,
+    description: string,
+    options: {
+      fieldName: string,
+      id: string,
+      type?: string,
+      min?: number,
+      max?: number
+    }[]
+  }[] = [
     {
       name: 'Basic',
       description: 'The most basic token template. No fees, nothing.',
@@ -100,7 +110,6 @@ export default function Pool() {
         { fieldName: 'Total Supply', id: 'totalSupply', type: 'number', min: 0 },
         { fieldName: 'Buy Fee (0-25%)', id: 'buyFee', type: 'number', min: 0, max: 25 },
         { fieldName: 'Sell Fee (0-25%)', id: 'sellFee', type: 'number', min: 0, max: 25 },
-        { fieldName: 'I want rid of this field, but yarn aint letting me', id: 'fundingAddress', type: 'address' },
       ],
     },
   ]
