@@ -323,10 +323,10 @@ export default function Pool() {
             <AutoColumn gap="0%" style={{ width: '100%' }}>
               <CardBody>
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 1')}</Text>
-                <Text color="textSubtle" fontSize="16px">
+                <Text color="textSubtle" fontSize="17px">
                   {TranslateString(
                     107,
-                    'Create a token contract: either choose from a template below or upload your own contract.'
+                    'Choose a token template below.'
                   )}
                 </Text>
                 <br />
@@ -429,8 +429,8 @@ export default function Pool() {
                 </RowBetween>
                 <br />
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 2')}</Text>
-                <Text color="textSubtle" fontSize="16px">
-                  {TranslateString(107, 'Choose token pair and token input amount.')}
+                <Text color="textSubtle" fontSize="17px">
+                  {TranslateString(107, 'Choose token pair and initial liquidity amount.')}
                 </Text>
                 <br />
                 <CurrencyInputPanel
@@ -453,12 +453,12 @@ export default function Pool() {
                 />
                 <br />
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>
-                <Text color="textSubtle" fontSize="16px">
+                <Text color="textSubtle" fontSize="17px">
                   {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
                 </Text>
 		    <br />
                 <RowBetween>
-                  <Text color="textSubtle" fontSize="16px">
+                  <Text color="textSubtle" fontSize="14px">
                     Liquidity Lock Time (days):
                   </Text>
                   <Input
@@ -474,7 +474,7 @@ export default function Pool() {
                 </RowBetween>
                 or
                 <RowBetween>
-                  <Text color="textSubtle" fontSize="16px">
+                  <Text color="textSubtle" fontSize="14px">
                     Lock forever
                   </Text>
                   <Box>
