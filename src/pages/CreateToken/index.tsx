@@ -64,8 +64,8 @@ export default function Pool() {
   const theme = useContext(ThemeContext)
   const TranslateString = useI18n()
 
-  const [lockForever, setLockForever] = useState(false)
-  const [daysToLock, setDaysToLock] = useState(7)
+  const [lockForever, setLockForever] = useState(false) 
+  const [daysToLock, setDaysToLock] = useState(parseInt(process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME!))
   const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
     setDaysToLock(parseFloat(inputValue))
@@ -465,7 +465,7 @@ export default function Pool() {
                     type="number"
                     scale="lg"
                     step={1}
-                    min={1}
+                    min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
                     value={daysToLock}
                     onChange={handleDaysToLockChange}
                     style={{ width: '30%' }}
