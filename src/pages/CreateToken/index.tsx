@@ -141,7 +141,7 @@ export default function Pool() {
 
   const maxOwnerShare = 15
   const [ownerShare, setOwnerShare] = useState(0)
-  const [liquiditiyShare, setLiquidityShare] = useState(100)
+  const [liquidityShare, setLiquidityShare] = useState(100)
   const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     let value = toInteger(evt.target.value)
 
@@ -422,7 +422,7 @@ export default function Pool() {
                     step={1}
                     min={85}
                     max={100}
-                    value={liquiditiyShare}
+                    value={liquidityShare}
                     onChange={handleLiquidityShareChange}
                     style={{ width: '30%' }}
                   />
