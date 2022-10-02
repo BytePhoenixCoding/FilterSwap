@@ -6,6 +6,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract, useManagerContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
+import { DEPLOYER_MINT_FEE } from '../../constants'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -121,8 +122,9 @@ export function useMintFee(
   inputLq: number
 ): number {
   
-  const managerContract = useManagerContract()
-  const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
+  // const managerContract = useManagerContract()
+  // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
+  const tokenMintFee = DEPLOYER_MINT_FEE
   
   const calculatedMintFee: number = (inputLq * (tokenMintFee / 10000))
 
