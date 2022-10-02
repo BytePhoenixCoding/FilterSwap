@@ -23,14 +23,19 @@ const config: MenuEntry[] = [
   {
     label: 'More',
     icon: 'MoreIcon',
+    initialOpenState: true,
     items: [
       {
-        label: 'Other stuff 1',
-        href: 'https://docs.Filterswap.finance/contact-us',
+        label: 'Token Verification',
+        href: 'about:blank',
       },
       {
-        label: 'Other stuff 2',
-        href: 'https://voting.Filterswap.finance',
+        label: 'Presales (coming soon!)',
+        href: 'about:blank',
+      },
+      {
+        label: 'Governance (coming soon!)',
+        href: 'about:blank',
       },
     ],
   },
