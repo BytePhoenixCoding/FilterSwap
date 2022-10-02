@@ -45,19 +45,15 @@ export const FixedHeightRow = styled(RowBetween)`
 export const Select = styled('select')`
   width: 100%;
   height: 24px;
-
   // -webkit-appearance: none;
   // -moz-appearance: none;
   // appearance: none;
   background-image: ;
-
   color: #eae2fc;
   background-color: #483f5a;
   border: 0;
   border-radius: 16px;
-
   box-shadow: inset 0px 2px 2px -1px rgb(74 74 104 / 10%);
-
   display: block;
   font-size: 16px;
   padding: 0 16px;
@@ -86,26 +82,25 @@ export default function Pool() {
       ],
     },
     {
-      name: 'Deflationary (Buy/Sell Tax)',
-      description: 'Deflationary token template, with a buy / sell tax.',
+      name: 'Deflationary (simple transfer fee)',
+      description: 'Like the basic token template, but a fee of up to 25% is taken for each transfer. All collected fees are burnt.',
       options: [
-        { fieldName: 'Token Name', id: 'tokenNameTxt' },
+        { fieldName: 'Token Name', id: 'tokenName' },
         { fieldName: 'Token Symbol', id: 'tokenSymbol' },
         { fieldName: 'Total Supply', id: 'totalSupply', type: 'number', min: 0 },
-        { fieldName: 'Buy Fee (0-20%)', id: 'buyFee', type: 'number', min: 0, max: 20 },
-        { fieldName: 'Sell Fee (0-20%)', id: 'sellFee', type: 'number', min: 0, max: 20 },
+        { fieldName: 'Transfer Fee (0-25%)', id: 'transferFee', type: 'number', min: 0, max: 25 },
       ],
     },
     {
-      name: 'Deflationary with marketing wallet',
-      description: 'Like the previous template, but a marketing address can be specified.',
+      name: 'Deflationary (buy/sell fee)',
+      description: 'Like the basic token template, but a buy and sell fee of up to 25% each can be implemented and changed at any time by the owner. All collected fees are burnt.',
       options: [
-        { fieldName: 'Token Name', id: 'tokenNameTxt' },
+        { fieldName: 'Token Name', id: 'tokenName' },
         { fieldName: 'Token Symbol', id: 'tokenSymbol' },
         { fieldName: 'Total Supply', id: 'totalSupply', type: 'number', min: 0 },
-        { fieldName: 'Buy Fee (0-20%)', id: 'totalSupply', type: 'number', min: 0, max: 20 },
-        { fieldName: 'Sell Fee (0-20%)', id: 'sellFee', type: 'number', min: 0, max: 20 },
-        { fieldName: 'Funding Address', id: 'fundingAddress', type: 'address' },
+        { fieldName: 'Buy Fee (0-25%)', id: 'buyFee', type: 'number', min: 0, max: 25 },
+        { fieldName: 'Sell Fee (0-25%)', id: 'sellFee', type: 'number', min: 0, max: 25 },
+        { fieldName: 'I want rid of this field, but yarn aint letting me', id: 'fundingAddress', type: 'address' },
       ],
     },
   ]
