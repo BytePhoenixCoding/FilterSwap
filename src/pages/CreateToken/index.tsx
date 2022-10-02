@@ -139,7 +139,7 @@ export default function Pool() {
     // console.log(createParams)
   }
 
-  const maxOwnerShare = 15
+  const maxOwnerShare = parseInt(process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE!)
   const [ownerShare, setOwnerShare] = useState(0)
   const [liquidityShare, setLiquidityShare] = useState(100)
   const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,6 +159,7 @@ export default function Pool() {
     } else if (value > 100) {
       value = 100
     }
+
     setLiquidityShare(value)
     setOwnerShare(100 - value)
   }
@@ -405,7 +406,7 @@ export default function Pool() {
                     scale="lg"
                     step={1}
                     min={0}
-                    max={15}
+                    max={process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE}
                     value={ownerShare}
                     onChange={handleOwnerShareChange}
                     style={{ width: '30%' }}
