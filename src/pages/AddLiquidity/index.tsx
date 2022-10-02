@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '../../custom_modules/@filterswap-libs/sdk'
@@ -376,27 +376,28 @@ export default function AddLiquidity({
                 <FixedHeightRow>
                   <UIKitText fontSize="18px">Liquidity lock time:</UIKitText>
                 </FixedHeightRow>
-                <FixedHeightRow>
-                  <UIKitText fontSize="16px">Burn forever</UIKitText>
-                  <Box>
-                    {/* <Toggle scale={isSm || isXs ? 'sm' : 'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} /> */}
-                    <Toggle scale={'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} />
-                  </Box>
-                  <UIKitText fontSize="16px">or time (days):</UIKitText>
-                  <Input
-                      type="number"
-                      scale="lg"
-                      step={1}
-                      min={1}
-                      value={daysToBurn}
-                      onChange={handleDaysToBurnChange}
-                      style={{width: "30%"}}
-                      disabled={burnForever}
-                    />
-                </FixedHeightRow>
 
-                
-
+			<RowBetween>
+                  	<UIKitText fontSize="16px">Liquidity Lock Time (days):</UIKitText>
+                  	<Input
+                      		type="number"
+                      		scale="lg"
+                      		step={1}
+                      		min={1}
+                      		value={daysToBurn}
+                      		onChange={handleDaysToBurnChange}
+                      		style={{width: "30%"}}
+                      		disabled={burnForever}
+                    	/>
+			</RowBetween>
+			or
+                	<RowBetween>
+                  	<UIKitText fontSize="16px">Lock forever</UIKitText>
+                  	<Box>
+                    		{/* <Toggle scale={isSm || isXs ? 'sm' : 'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} /> */}
+                    		<Toggle scale={'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} />
+                  	</Box>
+			</RowBetween>
 
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
                 <div>
