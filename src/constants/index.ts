@@ -1,7 +1,8 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '../custom_modules/@filterswap-libs/sdk'
 
-// export const ROUTER_ADDRESS = '0x93ee56b5337826fd795632b12B76bBd770FbA59d'
-export const ROUTER_ADDRESS = '0x93ee56b5337826fd795632b12B76bBd770FbA59d'
+export const FACTORY_ADDRESS: string = <string>process.env.REACT_APP_FACTORY_ADDRESS
+export const ROUTER_ADDRESS: string = <string>process.env.REACT_APP_ROUTER_ADDRESS
+export const INIT_CODE_HASH: string = <string>process.env.REACT_APP_INIT_CODE_HASH
 
 // a list of tokens by chain
 type ChainTokenList = {

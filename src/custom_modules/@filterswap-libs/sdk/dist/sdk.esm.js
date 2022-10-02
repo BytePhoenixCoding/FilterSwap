@@ -35,8 +35,11 @@ var Rounding;
   Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
 })(Rounding || (Rounding = {}));
 
-var FACTORY_ADDRESS = '0x7A24317C1b83169Fc3a646D190D1e9Ade088102a';
-var INIT_CODE_HASH = '0x2f4ffbaf8ca4a7cd446769699594affc9562a0f48e7179939f2ad21a17dc3099';
+// var FACTORY_ADDRESS = '0x7A24317C1b83169Fc3a646D190D1e9Ade088102a';
+// var INIT_CODE_HASH = '0x2f4ffbaf8ca4a7cd446769699594affc9562a0f48e7179939f2ad21a17dc3099';
+var FACTORY_ADDRESS = process.env.REACT_APP_FACTORY_ADDRESS;
+var INIT_CODE_HASH = process.env.REACT_APP_INIT_CODE_HASH;
+
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
 
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
