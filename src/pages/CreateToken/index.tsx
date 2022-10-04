@@ -37,6 +37,7 @@ import { useIsExpertMode, useExpertModeManager, useUserDeadline, useUserSlippage
 
 import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { DEPLOYER_MAX_OWNER_SHARE } from 'constants/index'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -64,7 +65,7 @@ export default function Pool() {
   const theme = useContext(ThemeContext)
   const TranslateString = useI18n()
 
-  const [lockForever, setLockForever] = useState(false) 
+  const [lockForever, setLockForever] = useState(false)
   const [daysToLock, setDaysToLock] = useState(parseInt(process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME!))
   const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
@@ -72,13 +73,13 @@ export default function Pool() {
   }
 
   const selectOptions: {
-    name: string,
-    description: string,
+    name: string
+    description: string
     options: {
-      fieldName: string,
-      id: string,
-      type?: string,
-      min?: number,
+      fieldName: string
+      id: string
+      type?: string
+      min?: number
       max?: number
     }[]
   }[] = [
@@ -93,7 +94,8 @@ export default function Pool() {
     },
     {
       name: 'Deflationary (simple transfer fee)',
-      description: 'Like the basic token template, but a fee of up to 25% is taken for each transfer. All collected fees are burnt.',
+      description:
+        'Like the basic token template, but a fee of up to 25% is taken for each transfer. All collected fees are burnt.',
       options: [
         { fieldName: 'Token Name', id: 'tokenName' },
         { fieldName: 'Token Symbol', id: 'tokenSymbol' },
@@ -103,7 +105,8 @@ export default function Pool() {
     },
     {
       name: 'Deflationary (buy/sell fee)',
-      description: 'Like the basic token template, but a buy and sell fee of up to 25% each can be implemented and changed at any time by the owner. All collected fees are burnt.',
+      description:
+        'Like the basic token template, but a buy and sell fee of up to 25% each can be implemented and changed at any time by the owner. All collected fees are burnt.',
       options: [
         { fieldName: 'Token Name', id: 'tokenName' },
         { fieldName: 'Token Symbol', id: 'tokenSymbol' },
@@ -139,7 +142,7 @@ export default function Pool() {
     // console.log(createParams)
   }
 
-  const maxOwnerShare = parseInt(process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE!)
+  const maxOwnerShare = DEPLOYER_MAX_OWNER_SHARE
   const [ownerShare, setOwnerShare] = useState(0)
   const [liquidityShare, setLiquidityShare] = useState(100)
   const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -325,10 +328,7 @@ export default function Pool() {
               <CardBody>
                 <Text color={theme.colors.text}>{TranslateString(107, 'Step 1')}</Text>
                 <Text color="textSubtle" fontSize="17px">
-                  {TranslateString(
-                    107,
-                    'Choose a token template below.'
-                  )}
+                  {TranslateString(107, 'Choose a token template below.')}
                 </Text>
                 <br />
                 <div style={{ display: 'flex', gap: '5%', justifyContent: 'center' }}>
@@ -457,7 +457,7 @@ export default function Pool() {
                 <Text color="textSubtle" fontSize="17px">
                   {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
                 </Text>
-		    <br />
+                <br />
                 <RowBetween>
                   <Text color="textSubtle" fontSize="14px">
                     Liquidity Lock Time (days):

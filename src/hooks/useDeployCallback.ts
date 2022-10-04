@@ -61,8 +61,6 @@ function useDeployCallArguments(
       console.log("Found no contract")
       return []
     }
-    console.log("Found manager contract")
-
     const deployMethods = []
 
     deployMethods.push(

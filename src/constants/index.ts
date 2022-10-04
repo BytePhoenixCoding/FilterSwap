@@ -9,6 +9,11 @@ export const DEPLOYER_ADDRESS = <string>process.env.REACT_APP_DEPLOYER_ADDRESS;
 
 console.log(process.env)
 export const DEPLOYER_MINT_FEE = Number(process.env.REACT_APP_DEPLOYER_MINT_FEE)
+export const DEPLOYER_MAX_OWNER_SHARE = Number(process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE)
+export const LIQUIDITIY_MIN_LOCK_TIME = Number(process.env.REACT_APP_LIQUIDITIY_MIN_LOCK_TIME)
+export const VERIFICATION_REQUEST_FEE = Number(process.env.REACT_APP_VERIFICATION_REQUEST_FEE)
+export const VERIFICATION_REQUEST_DEADLINE = Number(process.env.REACT_APP_VERIFICATION_REQUEST_DEADLINE)
+export const GOVERNANCE_TOKEN = <string>process.env.REACT_APP_GOVERNANCE_TOKEN
 
 // a list of tokens by chain
 type ChainTokenList = {
