@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useContext, useState } from 'react'
+import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { toInteger } from 'lodash'
 import { isFunctionDeclaration } from 'typescript'
@@ -72,7 +72,7 @@ export default function Pool() {
     setDaysToLock(parseFloat(inputValue))
   }
 
-  const selectOptions: {
+  const selectTemplates: {
     name: string
     description: string
     options: {
@@ -117,27 +117,40 @@ export default function Pool() {
     },
   ]
 
-  const [createParams, setCreateParams] = useState<any>(
-    selectOptions[2].options
+  // Create the default parameters using all unique fieldName options
+  const allFieldNames = useMemo(() => {
+    const allFields = [
+      ...new Map(
+        selectTemplates
+          .map((template) => template.options)
+          .flat()
+          .map((item) => [item['fieldName'], item])
+      ).values(),
+    ]
+
+    const allFieldsWithValues = allFields
       .map((e) => ({
         ...e,
         value: e.type == 'number' ? '0' : '',
       }))
       .reduce((ac, a) => ({ ...ac, [a.id]: a.value }), {})
-  )
-  // console.log(createParams)
+
+    return allFieldsWithValues
+  }, [selectTemplates])
+
+  const [createParams, setCreateParams] = useState<any>(allFieldNames)
+
   const handleParamChange = (e) => {
-    // console.log(e)
     setCreateParams({
       ...createParams,
       [e.target.id]: e.target.value,
     })
   }
 
-  const [createOptions, setCreateOptions] = useState<any>([selectOptions[0]])
+  const [createOptions, setCreateOptions] = useState<any>([selectTemplates[0]])
   const handleSelectChange = (e) => {
     const index = e.target.selectedIndex
-    setCreateOptions(selectOptions[index])
+    setCreateOptions(selectTemplates[index])
     // console.log(index)
     // console.log(createParams)
   }
@@ -338,7 +351,7 @@ export default function Pool() {
                                 </select> */}
 
                   <Select onChange={handleSelectChange}>
-                    {selectOptions.map((e, i) => (
+                    {selectTemplates.map((e, i) => (
                       <option key={i} value={i}>
                         {e.name}
                       </option>
@@ -360,7 +373,7 @@ export default function Pool() {
                   {/* <input type="text" id="tokenNameTxt" placeholder="Token Name" />
                   <input type="text" id="tokenSymbolTxt" placeholder="Token Symbol" />
                   <input type="number" id="tokenTotalSupplyNum" placeholder="Token Total Supply" /> */}
-                  {(createOptions.options || selectOptions[0].options).map((e, i) => {
+                  {(createOptions.options || selectTemplates[0].options).map((e, i) => {
                     var inside
                     if (e.type == 'number') {
                       inside = (
