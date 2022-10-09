@@ -23,7 +23,7 @@ const useAuth = () => {
       activate(connector, async (error: Error) => {
         window.localStorage.removeItem(connectorLocalStorageKey)
         if (error instanceof UnsupportedChainIdError) {
-          toastError('Wrong network!', 'Please make sure you are connected to BSC mainnet.')
+          toastError('Wrong network!', 'Please make sure you are connected to BSC testnet.')
         } else if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
           toastError('Provider Error', 'No provider was found')
         } else if (
