@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Menu as UikitMenu} from '../../custom_modules/@filterswap-libs/uikit'
+import { Menu as UikitMenu } from '../../custom_modules/@filterswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { allLanguages } from 'constants/localisation/languageCodes'
 import { LanguageContext } from 'hooks/LanguageContext'
@@ -8,15 +8,15 @@ import useGetPriceData from 'hooks/useGetPriceData'
 import useGetLocalProfile from 'hooks/useGetLocalProfile'
 import useAuth from 'hooks/useAuth'
 import links from './config'
-import { CAKE } from '../../constants'
+// import { FSWAP } from '../../constants'
 
 const Menu: React.FC = (props) => {
   const { account } = useWeb3React()
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
-  const priceData = useGetPriceData()
-  const cakePriceUsd = priceData ? Number(priceData.data[CAKE.address]?.price ?? 0) : undefined
+  // const priceData = useGetPriceData()
+  // const fswapPriceUsd = priceData ? Number(priceData.data[FSWAP.address]?.price ?? 0) : undefined
   const profile = useGetLocalProfile()
 
   return (
@@ -30,7 +30,7 @@ const Menu: React.FC = (props) => {
       currentLang={selectedLanguage?.code || ''}
       langs={allLanguages}
       setLang={setSelectedLanguage}
-      cakePriceUsd={cakePriceUsd}
+      // fswapPriceUsd={fswapPriceUsd}
       profile={profile}
       {...props}
     />
