@@ -64,13 +64,13 @@ const RecentTransactionsModal = ({ onDismiss = defaultOnDismiss, translateString
       )}
       {account &&
         chainId &&
-        sortedRecentTransactions.map((sortedRecentTransaction) => {
+        sortedRecentTransactions.map((sortedRecentTransaction, i) => {
           const { hash, summary } = sortedRecentTransaction
           const { icon, color } = getRowStatus(sortedRecentTransaction)
 
           return (
             <>
-              <Flex key={hash} alignItems="center" justifyContent="space-between" mb="4px">
+              <Flex key={i.toString() + '-' + hash} alignItems="center" justifyContent="space-between" mb="4px">
                 <LinkExternal href={getBscScanLink(chainId, hash, 'transaction')} color={color}>
                   {summary ?? hash}
                 </LinkExternal>
