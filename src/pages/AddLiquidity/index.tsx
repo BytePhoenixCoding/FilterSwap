@@ -122,10 +122,10 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder()
   // const { isSm, isXs } = useMatchBreakpoints()
   const [lockForever, setBurnForever] = useState(false)
-  const [daysToBurn, setDaysToBurn] = useState(365)
+  const [daysToLock, setDaysToLock] = useState(365)
   const handleDaysToBurnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
-    setDaysToBurn(parseFloat(inputValue))
+    setDaysToLock(parseFloat(inputValue))
   }
 
   async function onAdd() {
@@ -143,7 +143,7 @@ export default function AddLiquidity({
     }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
-    const liquidityLockTime = 450
+    const liquidityLockTime = daysToLock * 24 * 60 // Convert Days to Hours to Minutes
 
     let estimate
     let method: (...args: any) => Promise<TransactionResponse>
@@ -385,7 +385,7 @@ export default function AddLiquidity({
                     scale="lg"
                     step={1}
                     min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
-                    value={daysToBurn}
+                    value={daysToLock}
                     onChange={handleDaysToBurnChange}
                     style={{ width: '30%' }}
                     disabled={lockForever}
