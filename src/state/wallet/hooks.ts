@@ -144,3 +144,15 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   const balances = useTokenBalances(account ?? undefined, allTokensArray)
   return balances ?? {}
 }
+
+export function useIsLiquidityLocked(pairToken: Token): any {
+  const { account } = useActiveWeb3React()
+  const managerContract = useManagerContract()
+  if(!managerContract) return true
+  const isLocked = useMemo(async () => {
+    const isLockedP: any = managerContract.isLiquidityLocked(account, pairToken.address)
+    return isLockedP
+  }, [pairToken])
+  console.log(isLocked)
+  return isLocked
+}
