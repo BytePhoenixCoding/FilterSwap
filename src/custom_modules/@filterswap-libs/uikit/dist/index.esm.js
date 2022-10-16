@@ -23,7 +23,7 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
-var __assign = function() {
+var __assign = function () {
     __assign = Object.assign || function __assign(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -57,9 +57,11 @@ function __makeTemplateObject(cooked, raw) {
     return cooked;
 }
 
-var getThemeValue = function (path, fallback) { return function (theme) {
-    return get(theme, path, fallback);
-}; };
+var getThemeValue = function (path, fallback) {
+    return function (theme) {
+        return get(theme, path, fallback);
+    };
+};
 
 var rotate$1 = keyframes(templateObject_1$V || (templateObject_1$V = __makeTemplateObject(["\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n"], ["\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n"])));
 var spinStyle = css(templateObject_2$m || (templateObject_2$m = __makeTemplateObject(["\n  animation: ", " 2s linear infinite;\n"], ["\n  animation: ", " 2s linear infinite;\n"])), rotate$1);
@@ -119,10 +121,12 @@ Text.defaultProps = {
 };
 var templateObject_1$U;
 
-var getExternalLinkProps = function () { return ({
-    target: "_blank",
-    rel: "noreferrer noopener",
-}); };
+var getExternalLinkProps = function () {
+    return ({
+        target: "_blank",
+        rel: "noreferrer noopener",
+    });
+};
 
 var scales$6 = {
     MD: "md",
@@ -213,11 +217,11 @@ var getOpacity = function (_a) {
 var StyledButton = styled.button(templateObject_1$T || (templateObject_1$T = __makeTemplateObject(["\n  align-items: center;\n  border: 0;\n  border-radius: 16px;\n  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;\n  cursor: pointer;\n  display: inline-flex;\n  font-family: inherit;\n  font-size: 16px;\n  font-weight: 600;\n  justify-content: center;\n  letter-spacing: 0.03em;\n  line-height: 1;\n  opacity: ", ";\n  outline: 0;\n  transition: background-color 0.2s, opacity 0.2s;\n\n  &:hover:not(:disabled):not(.Filter-button--disabled):not(.Filter-button--disabled):not(:active) {\n    opacity: 0.65;\n  }\n\n  &:active:not(:disabled):not(.Filter-button--disabled):not(.Filter-button--disabled) {\n    opacity: 0.85;\n  }\n\n  ", "\n  ", "\n  ", "\n  ", "\n  ", "\n"], ["\n  align-items: center;\n  border: 0;\n  border-radius: 16px;\n  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;\n  cursor: pointer;\n  display: inline-flex;\n  font-family: inherit;\n  font-size: 16px;\n  font-weight: 600;\n  justify-content: center;\n  letter-spacing: 0.03em;\n  line-height: 1;\n  opacity: ", ";\n  outline: 0;\n  transition: background-color 0.2s, opacity 0.2s;\n\n  &:hover:not(:disabled):not(.Filter-button--disabled):not(.Filter-button--disabled):not(:active) {\n    opacity: 0.65;\n  }\n\n  &:active:not(:disabled):not(.Filter-button--disabled):not(.Filter-button--disabled) {\n    opacity: 0.85;\n  }\n\n  ", "\n  ",
     "\n  ",
     "\n  ", "\n  ", "\n"])), getOpacity, getDisabledStyles, variant$1({
-    prop: "scale",
-    variants: scaleVariants$1,
-}), variant$1({
-    variants: styleVariants$2,
-}), layout, space);
+        prop: "scale",
+        variants: scaleVariants$1,
+    }), variant$1({
+        variants: styleVariants$2,
+    }), layout, space);
 var templateObject_1$T;
 
 var Button = function (props) {
@@ -234,14 +238,14 @@ var Button = function (props) {
     return (React.createElement(StyledButton, __assign({ "$isLoading": isLoading, className: classNames.join(" "), disabled: isDisabled }, internalProps, rest),
         React.createElement(React.Fragment, null,
             isValidElement(startIcon) &&
-                cloneElement(startIcon, {
-                    mr: "0.5rem",
-                }),
+            cloneElement(startIcon, {
+                mr: "0.5rem",
+            }),
             children,
             isValidElement(endIcon) &&
-                cloneElement(endIcon, {
-                    ml: "0.5rem",
-                }))));
+            cloneElement(endIcon, {
+                ml: "0.5rem",
+            }))));
 };
 Button.defaultProps = {
     isLoading: false,
@@ -1240,20 +1244,20 @@ var templateObject_1$G;
 
 var StyledCardRibbon = styled.div(templateObject_1$F || (templateObject_1$F = __makeTemplateObject(["\n  background-color: ", ";\n  color: white;\n  margin: 0;\n  padding: 0;\n  padding: 8px 0;\n  position: absolute;\n  right: ", ";\n  top: 0;\n  text-align: center;\n  transform: translateX(30%) translateY(0%) rotate(45deg);\n  transform: ", ";\n  transform-origin: top left;\n  width: 96px;\n\n  &:before,\n  &:after {\n    background-color: ", ";\n    content: \"\";\n    height: 100%;\n    margin: 0 -1px; /* Removes tiny gap */\n    position: absolute;\n    top: 0;\n    width: 100%;\n  }\n\n  &:before {\n    right: 100%;\n  }\n\n  &:after {\n    left: 100%;\n  }\n\n  & > div {\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: 96px;\n  }\n"], ["\n  background-color: ", ";\n  color: white;\n  margin: 0;\n  padding: 0;\n  padding: 8px 0;\n  position: absolute;\n  right: ", ";\n  top: 0;\n  text-align: center;\n  transform: translateX(30%) translateY(0%) rotate(45deg);\n  transform: ",
     ";\n  transform-origin: top left;\n  width: 96px;\n\n  &:before,\n  &:after {\n    background-color: ", ";\n    content: \"\";\n    height: 100%;\n    margin: 0 -1px; /* Removes tiny gap */\n    position: absolute;\n    top: 0;\n    width: 100%;\n  }\n\n  &:before {\n    right: 100%;\n  }\n\n  &:after {\n    left: 100%;\n  }\n\n  & > div {\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: 96px;\n  }\n"])), function (_a) {
-    var _b = _a.variantColor, variantColor = _b === void 0 ? "secondary" : _b, theme = _a.theme;
-    return theme.colors[variantColor];
-}, function (_a) {
-    var ribbonPosition = _a.ribbonPosition;
-    return (ribbonPosition === "right" ? 0 : "auto");
-}, function (_a) {
-    var ribbonPosition = _a.ribbonPosition;
-    return ribbonPosition === "right"
-        ? "translateX(30%) translateY(0%) rotate(45deg)"
-        : "translateX(0%) translateY(200%) rotate(-45deg)";
-}, function (_a) {
-    var _b = _a.variantColor, variantColor = _b === void 0 ? "secondary" : _b, theme = _a.theme;
-    return theme.colors[variantColor];
-});
+        var _b = _a.variantColor, variantColor = _b === void 0 ? "secondary" : _b, theme = _a.theme;
+        return theme.colors[variantColor];
+    }, function (_a) {
+        var ribbonPosition = _a.ribbonPosition;
+        return (ribbonPosition === "right" ? 0 : "auto");
+    }, function (_a) {
+        var ribbonPosition = _a.ribbonPosition;
+        return ribbonPosition === "right"
+            ? "translateX(30%) translateY(0%) rotate(45deg)"
+            : "translateX(0%) translateY(200%) rotate(-45deg)";
+    }, function (_a) {
+        var _b = _a.variantColor, variantColor = _b === void 0 ? "secondary" : _b, theme = _a.theme;
+        return theme.colors[variantColor];
+    });
 var CardRibbon = function (_a) {
     var variantColor = _a.variantColor, text = _a.text, ribbonPosition = _a.ribbonPosition;
     return (React.createElement(StyledCardRibbon, { variantColor: variantColor, ribbonPosition: ribbonPosition },
@@ -1373,8 +1377,10 @@ var Bunny = styled.div(templateObject_2$h || (templateObject_2$h = __makeTemplat
 });
 var FallingBunnies = function (_a) {
     var _b = _a.count, count = _b === void 0 ? 30 : _b, _c = _a.size, size = _c === void 0 ? 32 : _c, _d = _a.iterations, iterations = _d === void 0 ? Infinity : _d, _e = _a.duration, duration = _e === void 0 ? 10 : _e;
-    var bunnies = __spreadArray([], Array(count)).map(function (_, index) { return (React.createElement(Bunny, { key: String(index), position: Math.random() * 100, iterations: iterations, duration: duration },
-        React.createElement(Icon$_, { width: size, height: size }))); });
+    var bunnies = __spreadArray([], Array(count)).map(function (_, index) {
+        return (React.createElement(Bunny, { key: String(index), position: Math.random() * 100, iterations: iterations, duration: duration },
+            React.createElement(Icon$_, { width: size, height: size })));
+    });
     return React.createElement("div", null, bunnies);
 };
 var templateObject_1$C, templateObject_2$h;
@@ -1597,10 +1603,12 @@ var scaleKeyValues$1 = {
         butterSmearTwoRight: "5px",
     },
 };
-var getScale$2 = function (property) { return function (_a) {
-    var _b = _a.scale, scale = _b === void 0 ? scales$3.MD : _b;
-    return scaleKeyValues$1[scale][property];
-}; };
+var getScale$2 = function (property) {
+    return function (_a) {
+        var _b = _a.scale, scale = _b === void 0 ? scales$3.MD : _b;
+        return scaleKeyValues$1[scale][property];
+    };
+};
 var FilterStack = styled.div(templateObject_1$u || (templateObject_1$u = __makeTemplateObject(["\n  position: relative;\n  display: inline-block;\n\n  &:label:before {\n    content: none;\n  }\n\n  .Filters {\n    transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n  }\n\n  .Filter {\n    background: #e27c31;\n    border-radius: 50%;\n    width: ", ";\n    height: ", ";\n    position: absolute;\n    transition: 0.4s ease;\n    top: 2px;\n    left: 4px;\n    box-shadow: 0 ", " 0 ", " #fbbe7c;\n  }\n\n  .Filter:nth-child(1) {\n    background: ", ";\n    box-shadow: 0 ", " 0 ", "\n      ", ";\n  }\n\n  .Filter:nth-child(2) {\n    left: 0;\n    top: ", ";\n    transform: scale(0);\n    transition: 0.2s ease 0.2s;\n  }\n\n  .Filter:nth-child(3) {\n    top: ", ";\n    transform: scale(0);\n    transition: 0.2s ease 0.2s;\n  }\n\n  .Filter:nth-child(3):before,\n  .Filter:nth-child(3):after {\n    content: \"\";\n    position: absolute;\n    background: #ef8927;\n    border-radius: 20px;\n    width: 50%;\n    height: 20%;\n  }\n\n  .Filter:nth-child(3):before {\n    top: ", ";\n    left: ", ";\n  }\n\n  .Filter:nth-child(3):after {\n    top: ", ";\n    right: ", ";\n  }\n\n  .butter {\n    width: ", ";\n    height: ", ";\n    background: #fbdb60;\n    top: ", ";\n    left: ", ";\n    position: absolute;\n    border-radius: ", ";\n    box-shadow: 0 ", " 0 ", " #d67823;\n    transform: scale(0);\n    transition: 0.2s ease;\n  }\n"], ["\n  position: relative;\n  display: inline-block;\n\n  &:label:before {\n    content: none;\n  }\n\n  .Filters {\n    transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);\n  }\n\n  .Filter {\n    background: #e27c31;\n    border-radius: 50%;\n    width: ", ";\n    height: ", ";\n    position: absolute;\n    transition: 0.4s ease;\n    top: 2px;\n    left: 4px;\n    box-shadow: 0 ", " 0 ", " #fbbe7c;\n  }\n\n  .Filter:nth-child(1) {\n    background: ", ";\n    box-shadow: 0 ", " 0 ", "\n      ", ";\n  }\n\n  .Filter:nth-child(2) {\n    left: 0;\n    top: ", ";\n    transform: scale(0);\n    transition: 0.2s ease 0.2s;\n  }\n\n  .Filter:nth-child(3) {\n    top: ", ";\n    transform: scale(0);\n    transition: 0.2s ease 0.2s;\n  }\n\n  .Filter:nth-child(3):before,\n  .Filter:nth-child(3):after {\n    content: \"\";\n    position: absolute;\n    background: #ef8927;\n    border-radius: 20px;\n    width: 50%;\n    height: 20%;\n  }\n\n  .Filter:nth-child(3):before {\n    top: ", ";\n    left: ", ";\n  }\n\n  .Filter:nth-child(3):after {\n    top: ", ";\n    right: ", ";\n  }\n\n  .butter {\n    width: ", ";\n    height: ", ";\n    background: #fbdb60;\n    top: ", ";\n    left: ", ";\n    position: absolute;\n    border-radius: ", ";\n    box-shadow: 0 ", " 0 ", " #d67823;\n    transform: scale(0);\n    transition: 0.2s ease;\n  }\n"])), getScale$2("FilterSize"), getScale$2("FilterSize"), getScale$2("FilterThickness"), getScale$2("FilterThickness"), function (_a) {
     var theme = _a.theme;
     return theme.FilterToggle.handleBackground;
@@ -1657,20 +1665,20 @@ Bar.defaultProps = {
 };
 var StyledProgress = styled.div(templateObject_2$d || (templateObject_2$d = __makeTemplateObject(["\n  position: relative;\n  background-color: ", ";\n  box-shadow: ", ";\n  height: 16px;\n  overflow: hidden;\n\n  ", " {\n    border-top-left-radius: ", ";\n    border-bottom-left-radius: ", ";\n  }\n\n  ", "\n  ", "\n"], ["\n  position: relative;\n  background-color: ", ";\n  box-shadow: ", ";\n  height: 16px;\n  overflow: hidden;\n\n  ", " {\n    border-top-left-radius: ", ";\n    border-bottom-left-radius: ", ";\n  }\n\n  ",
     "\n  ", "\n"])), function (_a) {
-    var theme = _a.theme;
-    return theme.colors.input;
-}, function (_a) {
-    var theme = _a.theme;
-    return theme.shadows.inset;
-}, Bar, function (_a) {
-    var variant = _a.variant;
-    return (variant === variants$1.FLAT ? "0" : "32px");
-}, function (_a) {
-    var variant = _a.variant;
-    return (variant === variants$1.FLAT ? "0" : "32px");
-}, variant$1({
-    variants: styleVariants$1,
-}), space);
+        var theme = _a.theme;
+        return theme.colors.input;
+    }, function (_a) {
+        var theme = _a.theme;
+        return theme.shadows.inset;
+    }, Bar, function (_a) {
+        var variant = _a.variant;
+        return (variant === variants$1.FLAT ? "0" : "32px");
+    }, function (_a) {
+        var variant = _a.variant;
+        return (variant === variants$1.FLAT ? "0" : "32px");
+    }, variant$1({
+        variants: styleVariants$1,
+    }), space);
 var templateObject_1$t, templateObject_2$d;
 
 var ProgressBunnyWrapper = styled.div(templateObject_1$s || (templateObject_1$s = __makeTemplateObject(["\n  display: flex;\n  z-index: 2;\n  top: -65%;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  transition: left 200ms ease-out;\n"], ["\n  display: flex;\n  z-index: 2;\n  top: -65%;\n  position: absolute;\n  transform: translate(-50%, -50%);\n  transition: left 200ms ease-out;\n"])));
@@ -1940,28 +1948,32 @@ var Step = function (_a) {
 };
 var templateObject_1$m, templateObject_2$9, templateObject_3$5, templateObject_4$3, templateObject_5$1, templateObject_6;
 
-var byTextAscending = function (getTextProperty) { return function (objectA, objectB) {
-    var upperA = getTextProperty(objectA).toUpperCase();
-    var upperB = getTextProperty(objectB).toUpperCase();
-    if (upperA < upperB) {
-        return -1;
-    }
-    if (upperA > upperB) {
-        return 1;
-    }
-    return 0;
-}; };
-var byTextDescending = function (getTextProperty) { return function (objectA, objectB) {
-    var upperA = getTextProperty(objectA).toUpperCase();
-    var upperB = getTextProperty(objectB).toUpperCase();
-    if (upperA > upperB) {
-        return -1;
-    }
-    if (upperA < upperB) {
-        return 1;
-    }
-    return 0;
-}; };
+var byTextAscending = function (getTextProperty) {
+    return function (objectA, objectB) {
+        var upperA = getTextProperty(objectA).toUpperCase();
+        var upperB = getTextProperty(objectB).toUpperCase();
+        if (upperA < upperB) {
+            return -1;
+        }
+        if (upperA > upperB) {
+            return 1;
+        }
+        return 0;
+    };
+};
+var byTextDescending = function (getTextProperty) {
+    return function (objectA, objectB) {
+        var upperA = getTextProperty(objectA).toUpperCase();
+        var upperB = getTextProperty(objectB).toUpperCase();
+        if (upperA > upperB) {
+            return -1;
+        }
+        if (upperA < upperB) {
+            return 1;
+        }
+        return 0;
+    };
+};
 
 var sortByColumn = function (data, sortColumn, columns) {
     var isAscending = null;
@@ -2003,151 +2015,161 @@ var getColumnsByName = function (columns) {
     });
     return columnsByName;
 };
-var createReducer = function () { return function (state, action) {
-    var rows = [];
-    var nextPage = 0;
-    var prevPage = 0;
-    var isAscending = null;
-    var sortedRows = [];
-    var columnCopy = [];
-    var filteredRows = [];
-    var selectedRowsById = {};
-    var stateCopy = __assign({}, state);
-    var rowIds = {};
-    switch (action.type) {
-        case "SET_ROWS":
-            rows = __spreadArray([], action.data);
-            // preserve sorting if a sort is already enabled when data changes
-            if (state.sortColumn) {
-                rows = sortByColumn(action.data, state.sortColumn, state.columns);
-            }
-            if (state.paginationEnabled === true) {
-                rows = getPaginatedData(rows, state.pagination.perPage, state.pagination.page);
-            }
-            if (state.paginationEnabled === true) {
-                rows = getPaginatedData(rows, state.pagination.perPage, state.pagination.page);
-            }
-            columnCopy = state.columns.map(function (column) {
-                if (state.sortColumn === column.name) {
-                    return __assign(__assign({}, column), { sorted: {
-                            on: true,
-                            asc: column.sorted.asc,
-                        } });
+var createReducer = function () {
+    return function (state, action) {
+        var rows = [];
+        var nextPage = 0;
+        var prevPage = 0;
+        var isAscending = null;
+        var sortedRows = [];
+        var columnCopy = [];
+        var filteredRows = [];
+        var selectedRowsById = {};
+        var stateCopy = __assign({}, state);
+        var rowIds = {};
+        switch (action.type) {
+            case "SET_ROWS":
+                rows = __spreadArray([], action.data);
+                // preserve sorting if a sort is already enabled when data changes
+                if (state.sortColumn) {
+                    rows = sortByColumn(action.data, state.sortColumn, state.columns);
                 }
-                return column;
-            });
-            return __assign(__assign({}, state), { rows: rows, originalRows: action.data, columns: columnCopy });
-        case "NEXT_PAGE":
-            nextPage = state.pagination.page + 1;
-            return __assign(__assign({}, state), { rows: getPaginatedData(state.originalRows, state.pagination.perPage, nextPage), pagination: __assign(__assign({}, state.pagination), { page: nextPage, canNext: nextPage * state.pagination.perPage < state.originalRows.length, canPrev: nextPage !== 1 }) });
-        case "PREV_PAGE":
-            prevPage = state.pagination.page === 1 ? 1 : state.pagination.page - 1;
-            return __assign(__assign({}, state), { rows: getPaginatedData(state.originalRows, state.pagination.perPage, prevPage), pagination: __assign(__assign({}, state.pagination), { page: prevPage, canNext: prevPage * state.pagination.perPage < state.originalRows.length, canPrev: prevPage !== 1 }) });
-        case "TOGGLE_SORT":
-            if (!(action.columnName in state.columnsByName)) {
-                throw new Error("Invalid column, " + action.columnName + " not found");
-            }
-            // loop through all columns and set the sort parameter to off unless
-            // it's the specified column (only one column at a time for )
-            columnCopy = state.columns.map(function (column) {
-                // if the row was found
-                if (action.columnName === column.name) {
-                    if (action.isAscOverride !== undefined) {
-                        // force the sort order
-                        isAscending = action.isAscOverride;
-                    }
-                    else {
-                        // if it's undefined, start by setting to ascending, otherwise toggle
-                        isAscending = column.sorted.asc === undefined ? true : !column.sorted.asc;
-                    }
-                    if (column.sort) {
-                        sortedRows = isAscending ? state.rows.sort(column.sort) : state.rows.sort(column.sort).reverse();
-                        // default to sort by string
-                    }
-                    else {
-                        sortedRows = isAscending
-                            ? state.rows.sort(byTextAscending(function (object) { return object.original[action.columnName]; }))
-                            : state.rows.sort(byTextDescending(function (object) { return object.original[action.columnName]; }));
-                    }
-                    return __assign(__assign({}, column), { sorted: {
-                            on: true,
-                            asc: isAscending,
-                        } });
+                if (state.paginationEnabled === true) {
+                    rows = getPaginatedData(rows, state.pagination.perPage, state.pagination.page);
                 }
-                // set sorting to false for all other columns
-                return __assign(__assign({}, column), { sorted: {
-                        on: false,
-                        asc: false,
-                    } });
-            });
-            return __assign(__assign({}, state), { columns: columnCopy, rows: sortedRows, sortColumn: action.columnName, columnsByName: getColumnsByName(columnCopy) });
-        case "GLOBAL_FILTER":
-            filteredRows = action.filter(state.originalRows);
-            selectedRowsById = {};
-            state.selectedRows.forEach(function (row) {
-                var _a;
-                selectedRowsById[row.id] = (_a = row.selected) !== null && _a !== void 0 ? _a : false;
-            });
-            return __assign(__assign({}, state), { rows: filteredRows.map(function (row) {
-                    return selectedRowsById[row.id] ? __assign(__assign({}, row), { selected: selectedRowsById[row.id] }) : __assign({}, row);
-                }), filterOn: true });
-        case "SELECT_ROW":
-            stateCopy = __assign({}, state);
-            stateCopy.rows = stateCopy.rows.map(function (row) {
-                var newRow = __assign({}, row);
-                if (newRow.id === action.rowId) {
-                    newRow.selected = !newRow.selected;
+                if (state.paginationEnabled === true) {
+                    rows = getPaginatedData(rows, state.pagination.perPage, state.pagination.page);
                 }
-                return newRow;
-            });
-            stateCopy.originalRows = stateCopy.originalRows.map(function (row) {
-                var newRow = __assign({}, row);
-                if (newRow.id === action.rowId) {
-                    newRow.selected = !newRow.selected;
-                }
-                return newRow;
-            });
-            stateCopy.selectedRows = stateCopy.originalRows.filter(function (row) { return row.selected === true; });
-            stateCopy.toggleAllState =
-                stateCopy.selectedRows.length === stateCopy.rows.length
-                    ? (stateCopy.toggleAllState = true)
-                    : (stateCopy.toggleAllState = false);
-            return stateCopy;
-        case "SEARCH_STRING":
-            stateCopy = __assign({}, state);
-            stateCopy.rows = stateCopy.originalRows.filter(function (row) {
-                return (row.cells.filter(function (cell) {
-                    if (cell.value.includes(action.searchString)) {
-                        return true;
+                columnCopy = state.columns.map(function (column) {
+                    if (state.sortColumn === column.name) {
+                        return __assign(__assign({}, column), {
+                            sorted: {
+                                on: true,
+                                asc: column.sorted.asc,
+                            }
+                        });
                     }
-                    return false;
-                }).length > 0);
-            });
-            return stateCopy;
-        case "TOGGLE_ALL":
-            if (state.selectedRows.length < state.rows.length) {
-                stateCopy.rows = stateCopy.rows.map(function (row) {
-                    rowIds[row.id] = true;
-                    return __assign(__assign({}, row), { selected: true });
+                    return column;
                 });
-                stateCopy.toggleAllState = true;
-            }
-            else {
-                stateCopy.rows = stateCopy.rows.map(function (row) {
-                    rowIds[row.id] = false;
-                    return __assign(__assign({}, row), { selected: false });
+                return __assign(__assign({}, state), { rows: rows, originalRows: action.data, columns: columnCopy });
+            case "NEXT_PAGE":
+                nextPage = state.pagination.page + 1;
+                return __assign(__assign({}, state), { rows: getPaginatedData(state.originalRows, state.pagination.perPage, nextPage), pagination: __assign(__assign({}, state.pagination), { page: nextPage, canNext: nextPage * state.pagination.perPage < state.originalRows.length, canPrev: nextPage !== 1 }) });
+            case "PREV_PAGE":
+                prevPage = state.pagination.page === 1 ? 1 : state.pagination.page - 1;
+                return __assign(__assign({}, state), { rows: getPaginatedData(state.originalRows, state.pagination.perPage, prevPage), pagination: __assign(__assign({}, state.pagination), { page: prevPage, canNext: prevPage * state.pagination.perPage < state.originalRows.length, canPrev: prevPage !== 1 }) });
+            case "TOGGLE_SORT":
+                if (!(action.columnName in state.columnsByName)) {
+                    throw new Error("Invalid column, " + action.columnName + " not found");
+                }
+                // loop through all columns and set the sort parameter to off unless
+                // it's the specified column (only one column at a time for )
+                columnCopy = state.columns.map(function (column) {
+                    // if the row was found
+                    if (action.columnName === column.name) {
+                        if (action.isAscOverride !== undefined) {
+                            // force the sort order
+                            isAscending = action.isAscOverride;
+                        }
+                        else {
+                            // if it's undefined, start by setting to ascending, otherwise toggle
+                            isAscending = column.sorted.asc === undefined ? true : !column.sorted.asc;
+                        }
+                        if (column.sort) {
+                            sortedRows = isAscending ? state.rows.sort(column.sort) : state.rows.sort(column.sort).reverse();
+                            // default to sort by string
+                        }
+                        else {
+                            sortedRows = isAscending
+                                ? state.rows.sort(byTextAscending(function (object) { return object.original[action.columnName]; }))
+                                : state.rows.sort(byTextDescending(function (object) { return object.original[action.columnName]; }));
+                        }
+                        return __assign(__assign({}, column), {
+                            sorted: {
+                                on: true,
+                                asc: isAscending,
+                            }
+                        });
+                    }
+                    // set sorting to false for all other columns
+                    return __assign(__assign({}, column), {
+                        sorted: {
+                            on: false,
+                            asc: false,
+                        }
+                    });
                 });
-                stateCopy.toggleAllState = false;
-            }
-            stateCopy.originalRows = stateCopy.originalRows.map(function (row) {
-                return row.id in rowIds ? __assign(__assign({}, row), { selected: rowIds[row.id] }) : __assign({}, row);
-            });
-            stateCopy.selectedRows = stateCopy.originalRows.filter(function (row) { return row.selected; });
-            return stateCopy;
-        default:
-            throw new Error("Invalid reducer action");
-    }
-}; };
+                return __assign(__assign({}, state), { columns: columnCopy, rows: sortedRows, sortColumn: action.columnName, columnsByName: getColumnsByName(columnCopy) });
+            case "GLOBAL_FILTER":
+                filteredRows = action.filter(state.originalRows);
+                selectedRowsById = {};
+                state.selectedRows.forEach(function (row) {
+                    var _a;
+                    selectedRowsById[row.id] = (_a = row.selected) !== null && _a !== void 0 ? _a : false;
+                });
+                return __assign(__assign({}, state), {
+                    rows: filteredRows.map(function (row) {
+                        return selectedRowsById[row.id] ? __assign(__assign({}, row), { selected: selectedRowsById[row.id] }) : __assign({}, row);
+                    }), filterOn: true
+                });
+            case "SELECT_ROW":
+                stateCopy = __assign({}, state);
+                stateCopy.rows = stateCopy.rows.map(function (row) {
+                    var newRow = __assign({}, row);
+                    if (newRow.id === action.rowId) {
+                        newRow.selected = !newRow.selected;
+                    }
+                    return newRow;
+                });
+                stateCopy.originalRows = stateCopy.originalRows.map(function (row) {
+                    var newRow = __assign({}, row);
+                    if (newRow.id === action.rowId) {
+                        newRow.selected = !newRow.selected;
+                    }
+                    return newRow;
+                });
+                stateCopy.selectedRows = stateCopy.originalRows.filter(function (row) { return row.selected === true; });
+                stateCopy.toggleAllState =
+                    stateCopy.selectedRows.length === stateCopy.rows.length
+                        ? (stateCopy.toggleAllState = true)
+                        : (stateCopy.toggleAllState = false);
+                return stateCopy;
+            case "SEARCH_STRING":
+                stateCopy = __assign({}, state);
+                stateCopy.rows = stateCopy.originalRows.filter(function (row) {
+                    return (row.cells.filter(function (cell) {
+                        if (cell.value.includes(action.searchString)) {
+                            return true;
+                        }
+                        return false;
+                    }).length > 0);
+                });
+                return stateCopy;
+            case "TOGGLE_ALL":
+                if (state.selectedRows.length < state.rows.length) {
+                    stateCopy.rows = stateCopy.rows.map(function (row) {
+                        rowIds[row.id] = true;
+                        return __assign(__assign({}, row), { selected: true });
+                    });
+                    stateCopy.toggleAllState = true;
+                }
+                else {
+                    stateCopy.rows = stateCopy.rows.map(function (row) {
+                        rowIds[row.id] = false;
+                        return __assign(__assign({}, row), { selected: false });
+                    });
+                    stateCopy.toggleAllState = false;
+                }
+                stateCopy.originalRows = stateCopy.originalRows.map(function (row) {
+                    return row.id in rowIds ? __assign(__assign({}, row), { selected: rowIds[row.id] }) : __assign({}, row);
+                });
+                stateCopy.selectedRows = stateCopy.originalRows.filter(function (row) { return row.selected; });
+                return stateCopy;
+            default:
+                throw new Error("Invalid reducer action");
+        }
+    };
+};
 var sortDataInOrder = function (data, columns) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map(function (row) {
@@ -2163,10 +2185,10 @@ var sortDataInOrder = function (data, columns) {
     });
 };
 var makeRender = function (
-// eslint-disable-next-line
-value, 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-render, row) {
+    // eslint-disable-next-line
+    value,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    render, row) {
     return render ? function () { return render({ row: row, value: value }); } : function () { return value; };
 };
 var makeHeaderRender = function (label, render) {
@@ -2175,10 +2197,12 @@ var makeHeaderRender = function (label, render) {
 var useTable = function (columns, data, options) {
     var columnsWithSorting = useMemo(function () {
         return columns.map(function (column) {
-            return __assign(__assign({}, column), { label: column.label ? column.label : column.name, hidden: column.hidden ? column.hidden : false, sort: column.sort, sorted: {
+            return __assign(__assign({}, column), {
+                label: column.label ? column.label : column.name, hidden: column.hidden ? column.hidden : false, sort: column.sort, sorted: {
                     on: false,
                     asc: false,
-                } });
+                }
+            });
         });
     }, [columns]);
     var columnsByName = useMemo(function () { return getColumnsByName(columnsWithSorting); }, [columnsWithSorting]);
@@ -2192,14 +2216,14 @@ var useTable = function (columns, data, options) {
                 original: row,
                 cells: Object.entries(row)
                     .map(function (_a) {
-                    var column = _a[0], value = _a[1];
-                    return {
-                        hidden: columnsByName[column].hidden,
-                        field: column,
-                        value: value,
-                        render: makeRender(value, columnsByName[column].render, row),
-                    };
-                })
+                        var column = _a[0], value = _a[1];
+                        return {
+                            hidden: columnsByName[column].hidden,
+                            field: column,
+                            value: value,
+                            render: makeRender(value, columnsByName[column].render, row),
+                        };
+                    })
                     .filter(function (cell) { return !cell.hidden; }),
             };
         });
@@ -2363,25 +2387,25 @@ var getOutlineStyles = function (_a) {
 var StyledTag = styled.div(templateObject_1$j || (templateObject_1$j = __makeTemplateObject(["\n  align-items: center;\n  border-radius: 16px;\n  color: #ffffff;\n  display: inline-flex;\n  font-weight: 400;\n  white-space: nowrap;\n\n  & > svg {\n    fill: currentColor;\n  }\n\n  ", "\n  ", "\n  ", "\n\n  ", "\n"], ["\n  align-items: center;\n  border-radius: 16px;\n  color: #ffffff;\n  display: inline-flex;\n  font-weight: 400;\n  white-space: nowrap;\n\n  & > svg {\n    fill: currentColor;\n  }\n\n  ",
     "\n  ",
     "\n  ", "\n\n  ", "\n"])), variant$1({
-    prop: "scale",
-    variants: scaleVariants,
-}), variant$1({
-    variants: styleVariants,
-}), space, getOutlineStyles);
+        prop: "scale",
+        variants: scaleVariants,
+    }), variant$1({
+        variants: styleVariants,
+    }), space, getOutlineStyles);
 var templateObject_1$j;
 
 var Tag = function (_a) {
     var startIcon = _a.startIcon, endIcon = _a.endIcon, children = _a.children, props = __rest(_a, ["startIcon", "endIcon", "children"]);
     return (React.createElement(StyledTag, __assign({}, props),
         React.isValidElement(startIcon) &&
-            React.cloneElement(startIcon, {
-                mr: "0.5em",
-            }),
+        React.cloneElement(startIcon, {
+            mr: "0.5em",
+        }),
         children,
         React.isValidElement(endIcon) &&
-            React.cloneElement(endIcon, {
-                ml: "0.5em",
-            })));
+        React.cloneElement(endIcon, {
+            ml: "0.5em",
+        })));
 };
 Tag.defaultProps = {
     variant: "primary",
@@ -2409,10 +2433,12 @@ var scaleKeyValues = {
         toggleWidth: "72px",
     },
 };
-var getScale = function (property) { return function (_a) {
-    var _b = _a.scale, scale = _b === void 0 ? scales$4.MD : _b;
-    return scaleKeyValues[scale][property];
-}; };
+var getScale = function (property) {
+    return function (_a) {
+        var _b = _a.scale, scale = _b === void 0 ? scales$4.MD : _b;
+        return scaleKeyValues[scale][property];
+    };
+};
 var Handle = styled.div(templateObject_1$i || (templateObject_1$i = __makeTemplateObject(["\n  background-color: ", ";\n  border-radius: 50%;\n  cursor: pointer;\n  height: ", ";\n  left: ", ";\n  position: absolute;\n  top: ", ";\n  transition: left 200ms ease-in;\n  width: ", ";\n  z-index: 1;\n"], ["\n  background-color: ", ";\n  border-radius: 50%;\n  cursor: pointer;\n  height: ", ";\n  left: ", ";\n  position: absolute;\n  top: ", ";\n  transition: left 200ms ease-in;\n  width: ", ";\n  z-index: 1;\n"])), function (_a) {
     var theme = _a.theme;
     return theme.toggle.handleBackground;
@@ -2780,17 +2806,19 @@ var ModalProvider = function (_a) {
             handleDismiss();
         }
     };
-    return (React.createElement(Context.Provider, { value: {
+    return (React.createElement(Context.Provider, {
+        value: {
             onPresent: handlePresent,
             onDismiss: handleDismiss,
             setCloseOnOverlayClick: setCloseOnOverlayClick,
-        } },
+        }
+    },
         isOpen && (React.createElement(ModalWrapper, null,
             React.createElement(Overlay, { show: true, onClick: handleOverlayDismiss }),
             React.isValidElement(modalNode) &&
-                React.cloneElement(modalNode, {
-                    onDismiss: handleDismiss,
-                }))),
+            React.cloneElement(modalNode, {
+                onDismiss: handleDismiss,
+            }))),
         children));
 };
 var templateObject_1$f;
@@ -3269,10 +3297,12 @@ var PanelBody = function (_a) {
             var itemsMatchIndex = entry.items.findIndex(function (item) { return item.href === location.pathname; });
             var initialOpenState = entry.initialOpenState === true ? entry.initialOpenState : itemsMatchIndex >= 0;
             return (React.createElement(Accordion$1, { key: entry.label, isPushed: isPushed, pushNav: pushNav, icon: iconElement, label: entry.label, initialOpenState: initialOpenState, className: calloutClass, isActive: entry.items.some(function (item) { return item.href === location.pathname; }) }, isPushed &&
-                entry.items.map(function (item) { return (React.createElement(MenuEntry, { key: item.href, secondary: true, isActive: item.href === location.pathname, onClick: handleClick },
-                    React.createElement(MenuLink, { href: item.href },
-                        React.createElement(LinkLabelMemo, { isPushed: isPushed }, item.label),
-                        item.status && (React.createElement(LinkStatus, { color: item.status.color, fontSize: "14px" }, item.status.text))))); })));
+                entry.items.map(function (item) {
+                    return (React.createElement(MenuEntry, { key: item.href, secondary: true, isActive: item.href === location.pathname, onClick: handleClick },
+                        React.createElement(MenuLink, { href: item.href },
+                            React.createElement(LinkLabelMemo, { isPushed: isPushed }, item.label),
+                            item.status && (React.createElement(LinkStatus, { color: item.status.color, fontSize: "14px" }, item.status.text)))));
+                })));
         }
         return (React.createElement(MenuEntry, { key: entry.label, isActive: entry.href === location.pathname, className: calloutClass },
             React.createElement(MenuLink, { href: entry.href, onClick: handleClick },
@@ -3306,16 +3336,18 @@ var ThemeSwitcher = function (_a) {
 var ThemeSwitcher$1 = React.memo(ThemeSwitcher, function (prev, next) { return prev.isDark === next.isDark; });
 
 var Icons$1 = IconModule;
-var SocialLinks = function () { return (React.createElement(Flex, null, socials.map(function (social, index) {
-    var Icon = Icons$1[social.icon];
-    var iconProps = { width: "24px", color: "textSubtle", style: { cursor: "pointer" } };
-    var mr = index < socials.length - 1 ? "24px" : 0;
-    if (social.items) {
-        return (React.createElement(Dropdown, { key: social.label, position: "top", target: React.createElement(Icon, __assign({}, iconProps, { mr: mr })) }, social.items.map(function (item) { return (React.createElement(Link, { external: true, key: item.label, href: item.href, "aria-label": item.label, color: "textSubtle" }, item.label)); })));
-    }
-    return (React.createElement(Link, { external: true, key: social.label, href: social.href, "aria-label": social.label, mr: mr },
-        React.createElement(Icon, __assign({}, iconProps))));
-}))); };
+var SocialLinks = function () {
+    return (React.createElement(Flex, null, socials.map(function (social, index) {
+        var Icon = Icons$1[social.icon];
+        var iconProps = { width: "24px", color: "textSubtle", style: { cursor: "pointer" } };
+        var mr = index < socials.length - 1 ? "24px" : 0;
+        if (social.items) {
+            return (React.createElement(Dropdown, { key: social.label, position: "top", target: React.createElement(Icon, __assign({}, iconProps, { mr: mr })) }, social.items.map(function (item) { return (React.createElement(Link, { external: true, key: item.label, href: item.href, "aria-label": item.label, color: "textSubtle" }, item.label)); })));
+        }
+        return (React.createElement(Link, { external: true, key: social.label, href: social.href, "aria-label": social.label, mr: mr },
+            React.createElement(Icon, __assign({}, iconProps))));
+    })));
+};
 var SocialLinks$1 = React.memo(SocialLinks, function () { return true; });
 
 var Icons = IconModule;
@@ -3519,11 +3551,13 @@ var connectorLocalStorageKey = "connectorId";
 var WalletCard = function (_a) {
     var login = _a.login, walletConfig = _a.walletConfig, onDismiss = _a.onDismiss, mb = _a.mb;
     var title = walletConfig.title, Icon = walletConfig.icon;
-    return (React.createElement(Button, { width: "100%", variant: "tertiary", onClick: function () {
+    return (React.createElement(Button, {
+        width: "100%", variant: "tertiary", onClick: function () {
             login(walletConfig.connectorId);
             window.localStorage.setItem(connectorLocalStorageKey, walletConfig.connectorId);
             onDismiss();
-        }, style: { justifyContent: "space-between" }, mb: mb, id: "wallet-connect-" + title.toLocaleLowerCase() },
+        }, style: { justifyContent: "space-between" }, mb: mb, id: "wallet-connect-" + title.toLocaleLowerCase()
+    },
         React.createElement(Text, { bold: true, color: "primary", mr: "16px" }, title),
         React.createElement(Icon, { width: "32px" })));
 };
@@ -3556,7 +3590,8 @@ var Tooltip = styled.div(templateObject_2$2 || (templateObject_2$2 = __makeTempl
 var CopyToClipboard = function (_a) {
     var toCopy = _a.toCopy, children = _a.children, props = __rest(_a, ["toCopy", "children"]);
     var _b = useState(false), isTooltipDisplayed = _b[0], setIsTooltipDisplayed = _b[1];
-    return (React.createElement(StyleButton, __assign({ small: true, bold: true, onClick: function () {
+    return (React.createElement(StyleButton, __assign({
+        small: true, bold: true, onClick: function () {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(toCopy);
                 setIsTooltipDisplayed(true);
@@ -3564,7 +3599,8 @@ var CopyToClipboard = function (_a) {
                     setIsTooltipDisplayed(false);
                 }, 1000);
             }
-        } }, props),
+        }
+    }, props),
         children,
         React.createElement(Icon$15, { width: "20px", color: "primary", ml: "4px" }),
         React.createElement(Tooltip, { isTooltipDisplayed: isTooltipDisplayed }, "Copied")));
@@ -3579,11 +3615,13 @@ var AccountModal = function (_a) {
             React.createElement(LinkExternal, { small: true, href: "https://bscscan.com/address/" + account, mr: "16px" }, "View on BscScan"),
             React.createElement(CopyToClipboard, { toCopy: account }, "Copy Address")),
         React.createElement(Flex, { justifyContent: "center" },
-            React.createElement(Button, { scale: "sm", variant: "secondary", onClick: function () {
+            React.createElement(Button, {
+                scale: "sm", variant: "secondary", onClick: function () {
                     logout();
                     window.localStorage.removeItem(connectorLocalStorageKey);
                     onDismiss();
-                } }, "Logout"))));
+                }
+            }, "Logout"))));
 };
 
 var useWalletModal = function (login, logout, account) {
@@ -3596,11 +3634,15 @@ var UserBlock = function (_a) {
     var account = _a.account, login = _a.login, logout = _a.logout;
     var _b = useWalletModal(login, logout, account), onPresentConnectModal = _b.onPresentConnectModal, onPresentAccountModal = _b.onPresentAccountModal;
     var accountEllipsis = account ? account.substring(0, 4) + "..." + account.substring(account.length - 4) : null;
-    return (React.createElement("div", null, account ? (React.createElement(Button, { scale: "sm", variant: "tertiary", onClick: function () {
+    return (React.createElement("div", null, account ? (React.createElement(Button, {
+        scale: "sm", variant: "tertiary", onClick: function () {
             onPresentAccountModal();
-        } }, accountEllipsis)) : (React.createElement(Button, { scale: "sm", onClick: function () {
+        }
+    }, accountEllipsis)) : (React.createElement(Button, {
+        scale: "sm", onClick: function () {
             onPresentConnectModal();
-        } }, "Connect"))));
+        }
+    }, "Connect"))));
 };
 var UserBlock$1 = React.memo(UserBlock, function (prevProps, nextProps) { return prevProps.account === nextProps.account; });
 
@@ -3802,12 +3844,16 @@ var baseColors = {
 var brandColors = {
     binance: "#F0B90B",
 };
-var lightColors = __assign(__assign(__assign({}, baseColors), brandColors), { background: "#FAF9FA", backgroundDisabled: "#E9EAEB", contrast: "#191326", dropdown: "#F6F6F6", invertedContrast: "#FFFFFF", input: "#eeeaf4", inputSecondary: "#d7caec", tertiary: "#EFF4F5", text: "#452A7A", textDisabled: "#BDC2C4", textSubtle: "#8f80ba", borderColor: "#E9EAEB", card: "#FFFFFF", gradients: {
+var lightColors = __assign(__assign(__assign({}, baseColors), brandColors), {
+    background: "#FAF9FA", backgroundDisabled: "#E9EAEB", contrast: "#191326", dropdown: "#F6F6F6", invertedContrast: "#FFFFFF", input: "#eeeaf4", inputSecondary: "#d7caec", tertiary: "#EFF4F5", text: "#452A7A", textDisabled: "#BDC2C4", textSubtle: "#8f80ba", borderColor: "#E9EAEB", card: "#FFFFFF", gradients: {
         bubblegum: "linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)",
-    } });
-var darkColors = __assign(__assign(__assign({}, baseColors), brandColors), { secondary: "#9A6AFF", background: "#100C18", backgroundDisabled: "#3c3742", contrast: "#FFFFFF", dropdown: "#1E1D20", invertedContrast: "#191326", input: "#483f5a", inputSecondary: "#66578D", primaryDark: "#0098A1", tertiary: "#353547", text: "#EAE2FC", textDisabled: "#666171", textSubtle: "#A28BD4", borderColor: "#524B63", card: "#27262c", gradients: {
+    }
+});
+var darkColors = __assign(__assign(__assign({}, baseColors), brandColors), {
+    secondary: "#9A6AFF", background: "#100C18", backgroundDisabled: "#3c3742", contrast: "#FFFFFF", dropdown: "#1E1D20", invertedContrast: "#191326", input: "#483f5a", inputSecondary: "#66578D", primaryDark: "#0098A1", tertiary: "#353547", text: "#EAE2FC", textDisabled: "#666171", textSubtle: "#A28BD4", borderColor: "#524B63", card: "#27262c", gradients: {
         bubblegum: "linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)",
-    } });
+    }
+});
 
 var light$7 = {
     background: lightColors.card,
