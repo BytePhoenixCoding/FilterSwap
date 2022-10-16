@@ -3342,7 +3342,7 @@ var SocialLinks = function () {
         var iconProps = { width: "24px", color: "textSubtle", style: { cursor: "pointer" } };
         var mr = index < socials.length - 1 ? "24px" : 0;
         if (social.items) {
-            return (React.createElement(Dropdown, { key: social.label, position: "top", target: React.createElement(Icon, __assign({}, iconProps, { mr: mr })) }, social.items.map(function (item) { return (React.createElement(Link, { external: true, key: item.label, href: item.href, "aria-label": item.label, color: "textSubtle" }, item.label)); })));
+            return (React.createElement(Dropdown, { key: social.label, position: "top-right", target: React.createElement(Icon, __assign({}, iconProps, { mr: mr })) }, social.items.map(function (item) { return (React.createElement(Link, { external: true, key: item.label, href: item.href, "aria-label": item.label, color: "textSubtle" }, item.label)); })));
         }
         return (React.createElement(Link, { external: true, key: social.label, href: social.href, "aria-label": social.label, mr: mr },
             React.createElement(Icon, __assign({}, iconProps))));
