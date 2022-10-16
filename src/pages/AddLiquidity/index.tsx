@@ -39,8 +39,8 @@ import { ROUTER_ADDRESS } from '../../constants'
 import { Box, Toggle, useMatchBreakpoints } from '../../custom_modules/@filterswap-libs/uikit'
 
 export const FixedHeightRow = styled(RowBetween)`
-      height: 24px;
-    `
+  height: 24px;
+`
 
 export default function AddLiquidity({
   match: {
@@ -51,7 +51,7 @@ export default function AddLiquidity({
   const { account, chainId, library } = useActiveWeb3React()
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-    const TranslateString = useI18n()
+  const TranslateString = useI18n()
 
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
@@ -121,7 +121,7 @@ export default function AddLiquidity({
 
   const addTransaction = useTransactionAdder()
   // const { isSm, isXs } = useMatchBreakpoints()
-  const [burnForever, setBurnForever] = useState(false)
+  const [lockForever, setBurnForever] = useState(false)
   const [daysToBurn, setDaysToBurn] = useState(365)
   const handleDaysToBurnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
@@ -160,7 +160,7 @@ export default function AddLiquidity({
         amountsMin[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
         deadlineFromNow,
-        liquidityLockTime
+        liquidityLockTime,
       ]
       value = BigNumber.from((tokenBIsBNB ? parsedAmountB : parsedAmountA).raw.toString())
     } else {
@@ -175,7 +175,7 @@ export default function AddLiquidity({
         amountsMin[Field.CURRENCY_B].toString(),
         account,
         deadlineFromNow,
-        liquidityLockTime
+        liquidityLockTime,
       ]
       value = null
     }
@@ -292,7 +292,7 @@ export default function AddLiquidity({
       }
     },
     [currencyIdA, history, currencyIdB]
-    )
+  )
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -329,7 +329,7 @@ export default function AddLiquidity({
             pendingText={pendingText}
           />
           <CardBody>
-            <AutoColumn gap="20px">
+            <AutoColumn gap="12px">
               {noLiquidity && (
                 <ColumnCenter>
                   <Pane>
@@ -371,34 +371,37 @@ export default function AddLiquidity({
                 currency={currencies[Field.CURRENCY_B]}
                 id="add-liquidity-input-tokenb"
                 showCommonBases={false}
-                />
-
-                <FixedHeightRow>
-                  <UIKitText fontSize="18px">Liquidity lock time:</UIKitText>
-                </FixedHeightRow>
-
-			<RowBetween>
-                  	<UIKitText fontSize="16px">Liquidity Lock Time (days):</UIKitText>
-                  	<Input
-                      		type="number"
-                      		scale="lg"
-                      		step={1}
-                      		min={1}
-                      		value={daysToBurn}
-                      		onChange={handleDaysToBurnChange}
-                      		style={{width: "30%"}}
-                      		disabled={burnForever}
-                    	/>
-			</RowBetween>
-			or
-                	<RowBetween>
-                  	<UIKitText fontSize="16px">Lock forever</UIKitText>
-                  	<Box>
-                    		{/* <Toggle scale={isSm || isXs ? 'sm' : 'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} /> */}
-                    		<Toggle scale={'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} />
-                  	</Box>
-			</RowBetween>
-
+              />
+              <FixedHeightRow>
+                <UIKitText fontSize="18px">Liquidity lock time:</UIKitText>
+              </FixedHeightRow>
+              <div>
+                <RowBetween>
+                  <UIKitText color="textSubtle" fontSize="14px">
+                    Liquidity Lock Time (days):
+                  </UIKitText>
+                  <Input
+                    type="number"
+                    scale="lg"
+                    step={1}
+                    min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
+                    value={daysToBurn}
+                    onChange={handleDaysToBurnChange}
+                    style={{ width: '30%' }}
+                    disabled={lockForever}
+                  />
+                </RowBetween>
+                or
+                <RowBetween>
+                  <UIKitText color="textSubtle" fontSize="14px">
+                    Lock forever
+                  </UIKitText>
+                  <Box>
+                    {/* <Toggle scale={isSm || isXs ? 'sm' : 'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} /> */}
+                    <Toggle scale={'md'} checked={lockForever} onChange={() => setBurnForever(!lockForever)} />
+                  </Box>
+                </RowBetween>
+              </div>
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
                 <div>
                   <UIKitText
@@ -421,7 +424,6 @@ export default function AddLiquidity({
                   </Pane>
                 </div>
               )}
-
               {!account ? (
                 <ConnectWalletButton width="100%" />
               ) : (
