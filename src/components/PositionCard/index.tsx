@@ -156,7 +156,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
             <Text>{!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}</Text>
           </RowFixed>
           <RowFixed>
-            {liquidityLocked ? <div>Locked</div> : <div>Unlocked</div>}
+            {liquidityLocked ? <Text color="red">Locked</Text> : <Text color="springgreen">Unlocked</Text>}
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (
