@@ -9,7 +9,6 @@ type SettingsModalProps = {
   translateString: (translationId: number, fallback: string) => string
 }
 
-// TODO: Fix UI Kit typings
 const defaultOnDismiss = () => null
 
 const SettingsModal = ({ onDismiss = defaultOnDismiss, translateString }: SettingsModalProps) => {

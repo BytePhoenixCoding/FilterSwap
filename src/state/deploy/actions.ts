@@ -12,5 +12,5 @@ export const replaceDeployState = createAction<{
   field: Field
   typedValue: string
   inputCurrencyId?: string
-  recipient: string | null
+  params: object
 }>('deploy/replaceDeployState')

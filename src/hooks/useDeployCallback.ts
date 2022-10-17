@@ -5,10 +5,11 @@ import { JSBI, Percent, Router, DeployParameters, Trade, TradeType } from '../cu
 import { useMemo } from 'react'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getContract, getDeployerAddress, getManagerContract, getRouterContract, getTokenContract, isAddress, shortenAddress } from '../utils'
+import { calculateGasMargin, getDeployerContract } from '../utils'
 import isZero from '../utils/isZero'
 import { useActiveWeb3React } from './index'
 import useENS from './useENS'
+import { Currency } from '@pancakeswap-libs/sdk'
 
  enum DeployCallbackState {
   INVALID,
@@ -34,29 +35,32 @@ interface FailedCall {
 type EstimatedDeployCall = SuccessfulCall | FailedCall
 
 /**
- * Returns the deploy calls that can be used to make the trade
- * @param trade trade to execute
- * @param allowedSlippage user allowed slippage
+ * Returns the deploy calls that can be used
+ * @param newTokenParams the token to create
+ * @param ownerShare owner's initial liquidity in percent
+ * @param daysToLock time to lock the trading on the token
+ * @param lockForever or whether to always lock
+ * @param inputCurrency base token Currency
+ * @param inputAmount base token amount
+ * @param selectedTemplate template of createToken to use
  * @param deadline the deadline for the trade
- * @param recipientAddressOrName
  */
 function useDeployCallArguments(
-  params: object | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
+  newTokenParams: object | undefined,
+  ownerShare: number,
+  daysToLock: number,
+  lockForever: Boolean,
+  inputCurrency: Currency | undefined,
+  inputAmount: string | undefined,
+  selectedTemplate: number,
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
-  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if deploy should be returned to sender
 ): DeployCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddress
-
   return useMemo(() => {
-    console.log({params})
-    if (!params || !recipient || !library || !account || !chainId) return []
+    if (!newTokenParams || !library || !account || !chainId) return []
 
-    const contract: Contract | null = getManagerContract(chainId, library, account)
-		console.log({contract})
+    const contract: Contract | null = getDeployerContract(chainId, library, account)
     if (!contract) {
       console.log("Found no contract")
       return []
@@ -64,62 +68,46 @@ function useDeployCallArguments(
     const deployMethods = []
 
     deployMethods.push(
-      Router.deployCallParameters(params, {
+      Router.deployCallParameters(newTokenParams, {
+        ownerShare,
+        daysToLock,
+        lockForever,
+        deadline,
+        inputAmount,
+        inputCurrency,
+        selectedTemplate,
+        deadline
       })
     )
-    
-    // if (trade.tradeType === TradeType.EXACT_INPUT) {
-    //   deployMethods.push(
-    //     // @ts-ignore
-    //     Router.deployCallParameters(trade, {
-    //       feeOnTransfer: true,
-    //       allowedSlippage: new Percent(JSBI.BigInt(Math.floor(allowedSlippage)), BIPS_BASE),
-    //       recipient,
-    //       ttl: deadline,
-    //     })
-    //   )
-    // }
+
 
     return deployMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, params])
+  }, [account, chainId, deadline, library, newTokenParams, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount])
 }
 
-// returns a function that will execute a swap, if the parameters are all valid
-// and the user has approved the slippage adjusted input amount for the trade
+// returns a function that will execute a token deploy
 export function useDeployCallback(
-  params: object | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
+  newTokenParams: object,
+  ownerShare: number,
+  daysToLock: number,
+  lockForever: Boolean,
+  inputCurrency: Currency | undefined,
+  inputAmount: string | undefined,
+  selectedTemplate: number,
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
-  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if deploy should be returned to sender
 ): { state: DeployCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
-	
-  const deployCalls = useDeployCallArguments(params, allowedSlippage, deadline, recipientAddressOrName)
-  // const managerContract = getManagerContract(chainId, library, account)
-  // const deployerContract = getDeployerContract(chainId, library, account)
-  // const tokenContract = getTokenContract(chainId, library, account)
-
-  // const wethAddress = getWethAddress()
-
-  
-
+  const deployCalls = useDeployCallArguments(newTokenParams, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount, selectedTemplate, deadline)
   const addTransaction = useTransactionAdder()
 
-  const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddress
-
   return useMemo(() => {
-    console.log({params})
-    if (!params || !library || !account || !chainId) {
+    if (!newTokenParams || !library || !account || !chainId) {
       return { state: DeployCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
-    if (!recipient) {
-      if (recipientAddressOrName !== null) {
-        return { state: DeployCallbackState.INVALID, callback: null, error: 'Invalid recipient' }
-      }
-      return { state: DeployCallbackState.LOADING, callback: null, error: null }
+    if (inputAmount <= 0) {
+      return { state: DeployCallbackState.INVALID, callback: null, error: 'Initial Liquidity must be above 0' }
     }
-
+    
     return {
       state: DeployCallbackState.VALID,
       callback: async function onDeploy(): Promise<string> {
@@ -131,9 +119,6 @@ export function useDeployCallback(
             } = call
             const options = !value || isZero(value) ? {} : { value }
 
-            console.log(methodName)
-            console.log(contract)
-            
             return contract.estimateGas[methodName](...args, options)
             .then((gasEstimate) => {
               console.log(call)
@@ -145,6 +130,7 @@ export function useDeployCallback(
               })
               .catch((gasError) => {
                 console.info('Gas estimate failed, trying eth_call to extract error', call)
+                console.info(gasError)
 
                 return contract.callStatic[methodName](...args, options)
                   .then((result) => {
@@ -194,23 +180,10 @@ export function useDeployCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
-            console.log("We runnin'")
             console.log({response})
-            const inputSymbol = "Hi" // trade.inputAmount.currency.symbol
-            const outputSymbol = "Hi" // trade.outputAmount.currency.symbol
-            const inputAmount = 1.1 // trade.inputAmount.toSignificant(3)
-            const outputAmount = 1.11 // trade.outputAmount.toSignificant(3)
 
             // const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-						const base = `Create and Deploy Token`
-            // const withRecipient =
-            //   recipient === account
-            //     ? base
-            //     : `${base} to ${
-            //         recipientAddressOrName && isAddress(recipientAddressOrName)
-            //           ? shortenAddress(recipientAddressOrName)
-            //           : recipientAddressOrName
-            //       }`
+						const base = `Created and Deployed ${newTokenParams.tokenName}`
 
             addTransaction(response, {
               summary: base,
@@ -231,7 +204,7 @@ export function useDeployCallback(
       },
       error: null,
     }
-  }, [params, library, account, chainId, recipient, recipientAddressOrName, deployCalls, addTransaction])
+  }, [newTokenParams, ownerShare, inputCurrency, inputAmount, daysToLock, lockForever, library, account, chainId, deployCalls, addTransaction])
 }
 
 export default useDeployCallback

@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
+import { useTokenBalance, useIsLiquidityLocked } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import Card from '../Card'
@@ -125,9 +125,10 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
   const [showMore, setShowMore] = useState(false)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
-    const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
 
-  const liquidityUnlockTime = 0
+  // const liquidityUnlockTime = useIsLiquidityLocked(pair.liquidityToken)
+  const liquidityLocked: true | false = useIsLiquidityLocked(pair.liquidityToken)
 
   const poolTokenPercentage =
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
@@ -155,6 +156,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
             <Text>{!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}</Text>
           </RowFixed>
           <RowFixed>
+            {liquidityLocked ? <div>Locked</div> : <div>Unlocked</div>}
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (
@@ -200,10 +202,14 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(2)}%` : '-'}</Text>
             </FixedHeightRow>
             <FixedHeightRow>
-                <Text>Liquidity unlock time:</Text>
-                    <Text color="yellow">01/01/2023 00:00</Text>
-                </FixedHeightRow>
-            <Text color="red">You cannot withdraw this liquidity until the liquidity unlock time.</Text>
+              <Text>Liquidity unlock time:</Text>
+              <Text color="yellow">01/01/2023 00:00</Text>
+            </FixedHeightRow>
+            {liquidityLocked ? (
+              <Text color="red">You cannot withdraw this liquidity until the liquidity unlock time.</Text>
+            ) : (
+              ''
+            )}
 
             <RowBetween marginTop="10px">
               <Button as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '48%' }}>
@@ -211,8 +217,9 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               </Button>
               <Button
                 as={Link}
+                disabled={liquidityLocked}
                 style={{ width: '48%' }}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}              
+                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
               >
                 Remove
               </Button>

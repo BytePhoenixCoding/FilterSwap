@@ -1,61 +1,38 @@
-import { currencyEquals, Trade } from '../../custom_modules/@filterswap-libs/sdk/dist'
-import React, { useCallback, useMemo } from 'react'
+import { Trade } from '../../custom_modules/@filterswap-libs/sdk/dist'
+import { Currency } from '../../custom_modules/@filterswap-libs/sdk'
+import { useCallback, useMemo } from 'react'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from '../TransactionConfirmationModal'
 import DeployModalFooter from './DeployModalFooter'
-// import DeployModalHeader from './SwapModalHeader'
-
-/**
- * Returns true if the trade requires a confirmation of details before we can submit it
- * @param tradeA trade A
- * @param tradeB trade B
- */
-function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
-  return false
-  // return (
-  //   tradeA.tradeType !== tradeB.tradeType ||
-  //   !currencyEquals(tradeA.inputAmount.currency, tradeB.inputAmount.currency) ||
-  //   !tradeA.inputAmount.equalTo(tradeB.inputAmount) ||
-  //   !currencyEquals(tradeA.outputAmount.currency, tradeB.outputAmount.currency) ||
-  //   !tradeA.outputAmount.equalTo(tradeB.outputAmount)
-  // )
-}
 
 export default function ConfirmDeployModal({
   params,
-  calculatedMintFee,
   originalTrade,
+  calculatedMintFee,
+  inputCurrency,
   onAcceptChanges,
-  allowedSlippage,
   onConfirm,
   onDismiss,
-  recipient,
   deployErrorMessage,
   isOpen,
   attemptingTxn,
   txHash,
 }: {
   isOpen: boolean
-  params: object | undefined
-  calculatedMintFee: number | undefined
+  params: any
   originalTrade: object | undefined
+  calculatedMintFee: number | undefined
+  inputCurrency: Currency | undefined
   attemptingTxn: boolean
   txHash: string | undefined
-  recipient: string | null
-  allowedSlippage: number
   onAcceptChanges: () => void
   onConfirm: () => void
   deployErrorMessage: string | undefined
   onDismiss: () => void
 }) {
-  const showAcceptChanges = useMemo(
-    () => Boolean(true),
-    [params]
-    // () => Boolean(params && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
-    //   [originalTrade, trade]
-  )
+  const showAcceptChanges = useMemo(() => Boolean(true), [params])
 
   // const modalHeader = useCallback(() => {
   //   return trade ? (
@@ -76,17 +53,14 @@ export default function ConfirmDeployModal({
         params={params}
         disabledConfirm={false}
         deployErrorMessage={deployErrorMessage}
-        allowedSlippage={allowedSlippage}
         calculatedMintFee={calculatedMintFee}
+        inputCurrency={inputCurrency}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, deployErrorMessage, params, calculatedMintFee])
+  }, [onConfirm, showAcceptChanges, deployErrorMessage, params, calculatedMintFee])
 
   // text to show while loading
-  // const pendingText = `Swapping ${trade?.inputAmount?.toSignificant(6)} ${
-  //   trade?.inputAmount?.currency?.symbol
-  // } for ${trade?.outputAmount?.toSignificant(6)} ${trade?.outputAmount?.currency?.symbol}`
-  const pendingText = 'Creating Token...'
+  const pendingText = `Creating Token ${params.tokenName}...`
 
   const falsey = () => <></>
 
@@ -101,7 +75,6 @@ export default function ConfirmDeployModal({
           // topContent={modalHeader}
           topContent={falsey}
           bottomContent={modalBottom}
-          // bottomContent={falsey}
         />
       ),
     [

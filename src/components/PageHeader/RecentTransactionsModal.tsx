@@ -1,5 +1,13 @@
 import React, { useMemo } from 'react'
-import { CheckmarkCircleIcon, ErrorIcon, Flex, LinkExternal, Text, Modal, Button } from '../../custom_modules/@filterswap-libs/uikit'
+import {
+  CheckmarkCircleIcon,
+  ErrorIcon,
+  Flex,
+  LinkExternal,
+  Text,
+  Modal,
+  Button,
+} from '../../custom_modules/@filterswap-libs/uikit'
 import { useActiveWeb3React } from 'hooks'
 import { getBscScanLink } from 'utils'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
@@ -11,7 +19,6 @@ type RecentTransactionsModalProps = {
   translateString: (translationId: number, fallback: string) => string
 }
 
-// TODO: Fix UI Kit typings
 const defaultOnDismiss = () => null
 
 const newTransactionsFirst = (a: TransactionDetails, b: TransactionDetails) => b.addedTime - a.addedTime

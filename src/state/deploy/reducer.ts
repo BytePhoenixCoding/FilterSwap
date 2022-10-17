@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { Field, replaceDeployState,  } from './actions'
 import { selectCurrency, setRecipient, switchCurrencies, typeInput } from '../swap/actions'
+import { Currency } from 'custom_modules/@filterswap-libs/sdk/dist/sdk.esm'
 
 export interface DeployState {
   readonly independentField: Field
@@ -8,58 +9,59 @@ export interface DeployState {
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
   }
-  // the typed recipient address or ENS name, or null if swap should go to sender
-  readonly recipient: string | null
+  readonly [Field.OUTPUT]: {
+    readonly currencyId: string | undefined
+  }
+  readonly params: object
 }
 
 const initialState: DeployState = {
   independentField: Field.INPUT,
   typedValue: '',
   [Field.INPUT]: {
+    currencyId: Currency.ETHER.symbol,
+  },
+  [Field.OUTPUT]: {
     currencyId: '',
   },
-  recipient: null,
+  params: {
+    
+  }
 }
 
 export default createReducer<DeployState>(initialState, (builder) =>
   builder
     .addCase(
       replaceDeployState,
-      (state, { payload: { typedValue, recipient, field, inputCurrencyId } }) => {
+      (state, { payload: { typedValue, field, inputCurrencyId, params } }) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
           },
+          [Field.OUTPUT]: {
+            currencyId: inputCurrencyId,
+          },
           independentField: field,
           typedValue,
-          recipient,
+          params
         }
       }
     )
     .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
       const otherField = Field.INPUT
       // the normal case
+        console.log(currencyId)
       return {
         ...state,
 				independentField: Field.INPUT,
 				[field]: { currencyId },
       }
     })
-    // .addCase(switchCurrencies, (state) => {
-    //   return {
-    //     ...state,
-    //     independentField: Field.INPUT,
-    //     [Field.INPUT]: { currencyId: state[Field.OUTPUT].currencyId },
-    //   }
-    // })
-    // .addCase(typeInput, (state, { payload: { field, typedValue } }) => {
-    //   return {
-    //     ...state,
-    //     independentField: field,
-    //     typedValue,
-    //   }
-    // })
-    // .addCase(setRecipient, (state, { payload: { recipient } }) => {
-    //   state.recipient = recipient
-    // })
+    .addCase(typeInput, (state, { payload: { field, typedValue } }) => {
+      return {
+        ...state,
+        independentField: field,
+        typedValue,
+      }
+    })
 )
