@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO: Fix types and errors, but default for now
 import React, { useCallback, useContext, useEffect } from 'react'
 import { X } from 'react-feather'
 import { useSpring } from 'react-spring/web'
