@@ -1,4 +1,3 @@
-// TODO: Fix LLTime being manually settable to < min
 // TODO: Add check for base token verified on currency swap
 // TODO: Add check to see if 'transfer amount exceeds allowance'
 // TODO: Add wrap fix
@@ -61,7 +60,12 @@ export default function CreateToken() {
   const [daysToLock, setDaysToLock] = useState(parseInt(process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME!))
   const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
-    setDaysToLock(parseFloat(inputValue))
+
+    const num: number = parseFloat(inputValue)
+    const min: number = parseFloat(evt.target.min || '-1')
+    const max: number = parseFloat(evt.target.max || '1000000000000')
+
+    setDaysToLock(Math.min(Math.max(num, min), max))
   }
 
   const maxOwnerShare = DEPLOYER_MAX_OWNER_SHARE

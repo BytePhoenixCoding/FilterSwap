@@ -145,6 +145,17 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   return balances ?? {}
 }
 
+export function useLiquidityUnlockTime(pairToken: Token) {
+  const { account } = useActiveWeb3React()
+  const managerContract = useManagerContract()
+  if(!managerContract) return ""
+
+  let unlockTime = new Date(0)
+  const inputs: any = useMemo(() => [account, pairToken.address], [pairToken, account])
+  unlockTime.setUTCSeconds(useSingleCallResult(managerContract, 'liquidityUnlockTimes', inputs)?.result?.[0].toNumber())
+  return unlockTime
+}
+
 export function useIsLiquidityLocked(pairToken: Token): any {
   const { account } = useActiveWeb3React()
   const managerContract = useManagerContract()
@@ -153,6 +164,5 @@ export function useIsLiquidityLocked(pairToken: Token): any {
     const isLockedP: any = managerContract.isLiquidityLocked(account, pairToken.address)
     return isLockedP
   }, [pairToken])
-  console.log(isLocked)
   return isLocked
 }
