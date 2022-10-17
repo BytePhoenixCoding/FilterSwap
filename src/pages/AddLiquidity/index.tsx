@@ -124,9 +124,14 @@ export default function AddLiquidity({
   // const { isSm, isXs } = useMatchBreakpoints()
   const [lockForever, setBurnForever] = useState(false)
   const [daysToLock, setDaysToLock] = useState(365)
-  const handleDaysToBurnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
-    setDaysToLock(parseFloat(inputValue))
+
+    const num: number = parseFloat(inputValue)
+    const min: number = parseFloat(evt.target.min || '-1')
+    const max: number = parseFloat(evt.target.max || '1000000000000')
+
+    setDaysToLock(Math.min(Math.max(num, min), max))
   }
 
   async function onAdd() {
@@ -387,7 +392,7 @@ export default function AddLiquidity({
                     step={1}
                     min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
                     value={daysToLock}
-                    onChange={handleDaysToBurnChange}
+                    onChange={handleDaysToLockChange}
                     style={{ width: '30%' }}
                     disabled={lockForever}
                   />
