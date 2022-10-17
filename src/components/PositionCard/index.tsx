@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
-import { useTokenBalance, useIsLiquidityLocked } from '../../state/wallet/hooks'
+import { useTokenBalance, useIsLiquidityLocked, useLiquidityUnlockTime } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import Card from '../Card'
@@ -127,7 +127,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
 
-  // const liquidityUnlockTime = useIsLiquidityLocked(pair.liquidityToken)
+  const liquidityUnlockTime = useLiquidityUnlockTime(pair.liquidityToken)
   const liquidityLocked: true | false = useIsLiquidityLocked(pair.liquidityToken)
 
   const poolTokenPercentage =
@@ -201,10 +201,14 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               <Text>Your pool share:</Text>
               <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(2)}%` : '-'}</Text>
             </FixedHeightRow>
-            <FixedHeightRow>
-              <Text>Liquidity unlock time:</Text>
-              <Text color="yellow">01/01/2023 00:00</Text>
-            </FixedHeightRow>
+            {liquidityLocked ? (
+              <FixedHeightRow>
+                <Text>Liquidity unlock time:</Text>
+                <Text color="yellow">{liquidityUnlockTime.toLocaleString()}</Text>
+              </FixedHeightRow>
+            ) : (
+              ''
+            )}
             {liquidityLocked ? (
               <Text color="red">You cannot withdraw this liquidity until the liquidity unlock time.</Text>
             ) : (
@@ -219,7 +223,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
                 as={Link}
                 disabled={liquidityLocked}
                 style={{ width: '48%' }}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={liquidityLocked ? '#' : `/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
               >
                 Remove
               </Button>
