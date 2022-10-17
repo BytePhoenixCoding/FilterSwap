@@ -11,6 +11,9 @@ import { Contract } from '@ethersproject/contracts';
 import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
 import IUniswapV2Pair from '@uniswap/v2-core/build/IUniswapV2Pair.json';
+import { deployTokenTemplates } from 'constants/deployToken/templates';
+import { BigNumber } from 'ethers';
+import { hexZeroPad } from 'ethers/lib/utils';
 
 var _SOLIDITY_TYPE_MAXIMA;
 var ChainId;
@@ -1453,30 +1456,60 @@ var Router = /*#__PURE__*/function () {
       value: value
     };
   };
-  Router.deployCallParameters = function deployCallParameters(params, options) {
+  Router.deployCallParameters = function deployCallParameters(newTokenParams, options) {
 
-    return [
-      {
-        methodName: "deployerAddress",
-        args: [],
-        value: ""
-      },
-      {
-        methodName: "methodName",
-        args: ["args"],
-        value: "value"
-      },
-      {
-        methodName: "methodName",
-        args: ["args"],
-        value: "value"
-      },
-      {
-        methodName: "methodName",
-        args: ["args"],
-        value: "value"
-      }
-    ];
+    var methodName
+    var args
+    var value
+
+    const allTemplateValues = deployTokenTemplates.map(t => (t.options.map(o => o.id)))
+    const templateValues = allTemplateValues[options.selectedTemplate].slice(2)
+
+    const valuesToSend = templateValues.map((p) =>
+      hexZeroPad(BigNumber.from(newTokenParams[p]), 32)
+    )
+
+    const tokenArgs = [
+      newTokenParams.totalSupply,
+      newTokenParams.buyFee,
+      newTokenParams.sellFee
+    ]
+
+    args = [
+      // template 3 = 2, just calculate it from position of json file).
+      options.selectedTemplate, // _tokenType (uint256)
+      newTokenParams.tokenName, // _tokenName (uint256)
+      newTokenParams.tokenSymbol, // _tokenSymbol (unint256)
+      valuesToSend, // _tokenArgs (bytes32[])
+      options.ownerShare * 100, // _ownerShare (uint256)
+      options.lockForever ? 2 ^ (256 - 1) : options.daysToLock * 86400, // _liquidityLockTime (uint256)
+    ]
+
+    if (options.inputCurrency == ETHER || options.inputCurrency.address == WETH[ChainId.BSCTESTNET].address) {
+
+      methodName = "createTokenETH"
+      value = (options.inputAmount || 0) *
+        10 ** options.inputCurrency.decimals
+
+    } else {
+
+      methodName = 'createToken'
+      value = ZERO_HEX
+
+      args = args.slice(0, 4).concat([
+        // _baseTokenAddress:  address of base token eg. BUSD
+        options.inputCurrency ? options.inputCurrency.address : "0x0000000000000000000000000000000000000000",
+        // _baseTokenAmount: amount of tokens
+        parseFloat(options.inputAmount) *
+        10 ** options.inputCurrency.decimals
+      ]).concat(args.slice(4))
+    }
+
+    return {
+      methodName: methodName,
+      args: args,
+      value: value
+    }
   };
 
   return Router;

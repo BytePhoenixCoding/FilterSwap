@@ -106,3 +106,8 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   )
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
 }
+
+// wraps useApproveCallback in the context of a deploy
+export function useApproveCallbackFromDeployParams(amount: CurrencyAmount | undefined) {
+  return useApproveCallback(amount, ROUTER_ADDRESS)
+}
