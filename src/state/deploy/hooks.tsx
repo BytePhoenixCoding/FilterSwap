@@ -138,7 +138,8 @@ export function useDerivedDeployInfo(): {
   const [selectedTemplate, setSelectedTemplate] = useState(0)
 
   const handleParamChange = (e) => {
-    const value = Math.floor(parseFloat(e.target.value) * 100) / 100
+    const dataType = e.target.dataset.type
+    const value = !dataType ? e.target.value : Math.floor(parseFloat(e.target.value) * 100) / 100
 
     setNewTokenParams({
       ...newTokenParams,
