@@ -1,6 +1,12 @@
 import React, { useState, useCallback } from 'react'
 import { Currency, Pair } from '../../custom_modules/@filterswap-libs/sdk'
-import { Button, ChevronDownIcon, Text } from '../../custom_modules/@filterswap-libs/uikit'
+import {
+  Button,
+  CheckmarkCircleIcon,
+  ChevronDownIcon,
+  ErrorIcon,
+  Text,
+} from '../../custom_modules/@filterswap-libs/uikit'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import useI18n from 'hooks/useI18n'
@@ -107,6 +113,8 @@ export default function CurrencyInputPanel({
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
+
+  const isTokenVerified = currency?.verified
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
@@ -171,6 +179,13 @@ export default function CurrencyInputPanel({
                 </Text>
               )}
               {!disableCurrencySelect && <ChevronDownIcon />}
+              {isTokenVerified == undefined ? (
+                '...'
+              ) : isTokenVerified ? (
+                <CheckmarkCircleIcon color="success" />
+              ) : (
+                <ErrorIcon color="failure" />
+              )}
             </Aligner>
           </CurrencySelect>
         </InputRow>

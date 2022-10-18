@@ -7,6 +7,7 @@ export declare class Currency {
     readonly decimals: number;
     readonly symbol?: string;
     readonly name?: string;
+    readonly verified?: any;
     /**
      * The only instance of the base class `Currency`.
      */
@@ -17,7 +18,7 @@ export declare class Currency {
      * @param symbol symbol of the currency
      * @param name of the currency
      */
-    protected constructor(decimals: number, symbol?: string, name?: string);
+    protected constructor(decimals: number, symbol?: string, name?: string, verified?: any);
 }
 declare const ETHER: Currency;
 export { ETHER };

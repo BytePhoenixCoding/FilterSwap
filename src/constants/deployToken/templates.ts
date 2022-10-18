@@ -26,7 +26,7 @@ export const deployTokenTemplates: {
       { fieldName: 'Token Name', id: 'tokenName' },
       { fieldName: 'Token Symbol', id: 'tokenSymbol' },
       { fieldName: 'Total Supply', id: 'totalSupply', type: 'number', min: 0 },
-      { fieldName: 'Transfer Fee (0-25%)', id: 'transferFee', type: 'number', min: 0, max: 25 },
+      { fieldName: 'Transfer Fee (0-25%)', id: 'transferFee', type: 'percent', min: 0, max: 25 },
     ],
   },
   {
@@ -37,8 +37,8 @@ export const deployTokenTemplates: {
       { fieldName: 'Token Name', id: 'tokenName' },
       { fieldName: 'Token Symbol', id: 'tokenSymbol' },
       { fieldName: 'Total Supply', id: 'totalSupply', type: 'number', min: 0 },
-      { fieldName: 'Buy Fee (0-25%)', id: 'buyFee', type: 'number', min: 0, max: 25 },
-      { fieldName: 'Sell Fee (0-25%)', id: 'sellFee', type: 'number', min: 0, max: 25 },
+      { fieldName: 'Buy Fee (0-25%)', id: 'buyFee', type: 'percent', min: 0, max: 25 },
+      { fieldName: 'Sell Fee (0-25%)', id: 'sellFee', type: 'percent', min: 0, max: 25 },
     ],
   },
 ]
