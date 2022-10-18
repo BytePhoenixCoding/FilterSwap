@@ -20,6 +20,7 @@ export default function DeployModalFooter({
   calculatedMintFee: number | undefined
   inputCurrency: Currency | undefined
 }) {
+  const roundedMintFee = Math.round(((calculatedMintFee || 0) + Number.EPSILON) * 100000) / 100000
   return (
     <>
       <AutoColumn gap="0px">
@@ -29,7 +30,7 @@ export default function DeployModalFooter({
             <QuestionHelper text={'TBA'} /> TODO
           </RowFixed>
           <Text fontSize="14px">
-            {calculatedMintFee} {inputCurrency?.symbol}
+            {roundedMintFee} {inputCurrency?.symbol}
           </Text>
         </RowBetween>
       </AutoColumn>
