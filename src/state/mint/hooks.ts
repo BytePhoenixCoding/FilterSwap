@@ -149,11 +149,11 @@ export function useDerivedMintInfo(
   }
 
   if (currencies[Field.CURRENCY_A]?.verified == undefined) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification Loading`
+    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_A]?.verified) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} is not Verified`
+    error = `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
@@ -161,11 +161,11 @@ export function useDerivedMintInfo(
   }
 
   if (currencies[Field.CURRENCY_B]?.verified == undefined) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification Loading`
+    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_B]?.verified) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} is not Verified`
+    error = `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
   }
 
   return {
