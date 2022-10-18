@@ -363,17 +363,18 @@ var Currency =
    * @param symbol symbol of the currency
    * @param name of the currency
    */
-  function Currency(decimals, symbol, name) {
+  function Currency(decimals, symbol, name, verified = false) {
     validateSolidityTypeInstance(JSBI.BigInt(decimals), SolidityType.uint8);
     this.decimals = decimals;
     this.symbol = symbol;
     this.name = name;
+    this.verified = verified;
   };
 /**
  * The only instance of the base class `Currency`.
  */
 
-Currency.ETHER = /*#__PURE__*/new Currency(18, 'BNB', 'Binance');
+Currency.ETHER = /*#__PURE__*/new Currency(18, 'BNB', 'Binance', true);
 var ETHER = Currency.ETHER;
 
 var _WETH;
@@ -384,12 +385,13 @@ var _WETH;
 var Token = /*#__PURE__*/function (_Currency) {
   _inheritsLoose(Token, _Currency);
 
-  function Token(chainId, address, decimals, symbol, name) {
+  function Token(chainId, address, decimals, symbol, name, verified = false) {
     var _this;
 
     _this = _Currency.call(this, decimals, symbol, name) || this;
     _this.chainId = chainId;
     _this.address = validateAndParseAddress(address);
+    _this.verified = verified;
     return _this;
   }
   /**

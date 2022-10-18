@@ -345,7 +345,7 @@ export default function CreateToken() {
                 showMaxButton={false}
                 currency={currencies[Field.INPUT]}
                 onCurrencySelect={handleInputSelect}
-                id="create-token-food"
+                id="create-token-currency"
               />
               <br />
               <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>

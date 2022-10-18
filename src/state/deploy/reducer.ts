@@ -50,7 +50,6 @@ export default createReducer<DeployState>(initialState, (builder) =>
     .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
       const otherField = Field.INPUT
       // the normal case
-        console.log(currencyId)
       return {
         ...state,
 				independentField: Field.INPUT,

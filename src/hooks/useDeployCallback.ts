@@ -122,7 +122,7 @@ export function useDeployCallback(
             return contract.estimateGas[methodName](...args, options)
             .then((gasEstimate) => {
               console.log(call)
-              console.log(gasEstimate)
+              console.log(gasEstimate.toString())
               return {
                   call,
                   gasEstimate,
