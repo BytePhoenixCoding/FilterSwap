@@ -148,7 +148,7 @@ export default function AddLiquidity({
     }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
-    const liquidityLockTime = daysToLock * 24 * 60 // Convert Days to Hours to Minutes
+    const liquidityLockTime = daysToLock * 86400 // Convert Days to Hours to Minutes
 
     let estimate
     let method: (...args: any) => Promise<TransactionResponse>
