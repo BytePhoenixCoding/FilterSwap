@@ -164,15 +164,15 @@ export function useDerivedDeployInfo(): {
   }
 
   if (currencies[Field.INPUT]?.verified == undefined) {
-    inputError = inputError ?? 'Base Token Verification Loading'
+    inputError = inputError ?? 'Base token verification loading...'
   }
 
   if (!currencies[Field.INPUT]?.verified) {
-    inputError = inputError ?? 'Base Token is not Verified'
+    inputError = inputError ?? 'Base Token is not verified!'
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? 'Enter Base Token Amount'
+    inputError = inputError ?? 'Enter base token amount'
   }
 
   Object.entries(newTokenParams).forEach((param: any, i) => {
