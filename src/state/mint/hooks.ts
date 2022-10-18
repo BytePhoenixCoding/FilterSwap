@@ -145,27 +145,31 @@ export function useDerivedMintInfo(
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-    error = `Insufficient ${currencies[Field.CURRENCY_A]?.symbol} balance`
+    error = error ?? `Insufficient ${currencies[Field.CURRENCY_A]?.symbol} balance`
   }
 
   if (currencies[Field.CURRENCY_A]?.verified == undefined) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_A]?.verified) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-    error = `Insufficient ${currencies[Field.CURRENCY_B]?.symbol} balance`
+    error = error ?? `Insufficient ${currencies[Field.CURRENCY_B]?.symbol} balance`
+  }
+
+  if (!currencies[Field.CURRENCY_B]) {
+    error = error ?? "Select a Pair Currency"
   }
 
   if (currencies[Field.CURRENCY_B]?.verified == undefined) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_B]?.verified) {
-    error = `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
   }
 
   return {

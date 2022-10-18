@@ -1,4 +1,3 @@
-// TODO: Add check for token verification on pool create
 import React, { useCallback, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -149,7 +148,7 @@ export default function AddLiquidity({
     }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
-    const liquidityLockTime = daysToLock * 24 * 60 // Convert Days to Hours to Minutes
+    const liquidityLockTime = daysToLock * 86400 // Convert Days to Hours to Minutes
 
     let estimate
     let method: (...args: any) => Promise<TransactionResponse>
