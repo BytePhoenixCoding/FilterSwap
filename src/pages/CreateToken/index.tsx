@@ -1,6 +1,3 @@
-// TODO: Add check for base token verified on currency swap
-// TODO: Add check to see if 'transfer amount exceeds allowance'
-// TODO: Add wrap fix
 import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { toInteger } from 'lodash'
@@ -16,7 +13,7 @@ import ConfirmDeployModal from 'components/CreateToken/ConfirmDeployModal'
 
 import useI18n from 'hooks/useI18n'
 import { useDeployCallback } from 'hooks/useDeployCallback'
-import { ApprovalState, useApproveCallbackFromDeployParams } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallbackForDeploy } from 'hooks/useApproveCallback'
 
 import { Field } from 'state/swap/actions'
 import { BottomGrouping } from 'components/swap/styleds'
@@ -124,7 +121,7 @@ export default function CreateToken() {
   }
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromDeployParams(parsedAmounts[Field.INPUT])
+  const [approval, approveCallback] = useApproveCallbackForDeploy(parsedAmounts[Field.INPUT])
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)

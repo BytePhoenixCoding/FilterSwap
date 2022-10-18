@@ -2,7 +2,7 @@ import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from '../custom_modules/@filterswap-libs/sdk'
 import { useCallback, useMemo } from 'react'
-import { ROUTER_ADDRESS } from '../constants'
+import { ROUTER_ADDRESS, DEPLOYER_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -108,6 +108,6 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
 }
 
 // wraps useApproveCallback in the context of a deploy
-export function useApproveCallbackFromDeployParams(amount: CurrencyAmount | undefined) {
-  return useApproveCallback(amount, ROUTER_ADDRESS)
+export function useApproveCallbackForDeploy(amount: CurrencyAmount | undefined) {
+  return useApproveCallback(amount, DEPLOYER_ADDRESS)
 }
