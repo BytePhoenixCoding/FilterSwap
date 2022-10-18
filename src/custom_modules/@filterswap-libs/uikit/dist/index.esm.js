@@ -3297,8 +3297,8 @@ var PanelBody = function (_a) {
             var itemsMatchIndex = entry.items.findIndex(function (item) { return item.href === location.pathname; });
             var initialOpenState = entry.initialOpenState === true ? entry.initialOpenState : itemsMatchIndex >= 0;
             return (React.createElement(Accordion$1, { key: entry.label, isPushed: isPushed, pushNav: pushNav, icon: iconElement, label: entry.label, initialOpenState: initialOpenState, className: calloutClass, isActive: entry.items.some(function (item) { return item.href === location.pathname; }) }, isPushed &&
-                entry.items.map(function (item) {
-                    return (React.createElement(MenuEntry, { key: item.href, secondary: true, isActive: item.href === location.pathname, onClick: handleClick },
+                entry.items.map(function (item, i) {
+                    return (React.createElement(MenuEntry, { key: i + "-" + item.href, secondary: true, isActive: item.href === location.pathname, onClick: handleClick },
                         React.createElement(MenuLink, { href: item.href },
                             React.createElement(LinkLabelMemo, { isPushed: isPushed }, item.label),
                             item.status && (React.createElement(LinkStatus, { color: item.status.color, fontSize: "14px" }, item.status.text)))));
