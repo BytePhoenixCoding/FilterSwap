@@ -160,13 +160,21 @@ export function useDerivedDeployInfo(): {
     inputError = inputError ?? 'Select a token'
   }
 
+  if (currencies[Field.INPUT]?.verified == undefined) {
+    inputError = inputError ?? 'Base Token Verification Loading'
+  }
+
+  if (!currencies[Field.INPUT]?.verified) {
+    inputError = inputError ?? 'Base Token is not Verified'
+  }
+
   if (!parsedAmount) {
-    inputError = inputError ?? 'Enter an amount'
+    inputError = inputError ?? 'Enter Base Token Amount'
   }
 
   Object.entries(newTokenParams).forEach((param: any, i) => {
     if ((!param[1] || param[1] == '0') && createOptions.options.map((e) => e.id).includes(param[0])) {
-      inputError = inputError ?? 'Fill in ' + createOptions.options[i].fieldName
+      inputError = inputError ?? 'Enter ' + createOptions.options[i].fieldName
     }
   })
 
