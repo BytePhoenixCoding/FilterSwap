@@ -1466,9 +1466,14 @@ var Router = /*#__PURE__*/function () {
 
     const allTemplateValues = deployTokenTemplates.map(t => (t.options.map(o => o.id)))
     const templateValues = allTemplateValues[options.selectedTemplate].slice(2)
+    const selectedTemplateOptions = deployTokenTemplates[options.selectedTemplate].options
 
-    const valuesToSend = templateValues.map((p) =>
-      hexZeroPad(BigNumber.from(newTokenParams[p]), 32)
+    const valuesToSend = templateValues.map((p) => {
+      const currentField = (selectedTemplateOptions.find((o) => o.id === p))
+      const value = Math.round(newTokenParams[p] * ((currentField.type == "percent") ? 100 : 1))
+      const bigNum = BigNumber.from(value)
+      return hexZeroPad(bigNum, 32)
+    }
     )
 
     const tokenArgs = [

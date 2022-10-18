@@ -69,7 +69,7 @@ export default function CreateToken() {
   const [ownerShare, setOwnerShare] = useState(0)
   const [liquidityShare, setLiquidityShare] = useState(100)
   const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    let value = toInteger(evt.target.value)
+    let value = Math.floor(parseFloat(evt.target.value) * 100) / 100
 
     if (value > maxOwnerShare) {
       value = maxOwnerShare
@@ -78,7 +78,7 @@ export default function CreateToken() {
     setLiquidityShare(100 - value)
   }
   const handleLiquidityShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    let value = toInteger(evt.target.value)
+    let value = Math.round(parseFloat(evt.target.value) * 100) / 100
 
     if (value < 100 - maxOwnerShare) {
       value = 100 - maxOwnerShare
@@ -272,17 +272,18 @@ export default function CreateToken() {
                 <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
                 {(createOptions.options || selectTemplates[0].options).map((e, i) => {
                   var inside
-                  if (e.type == 'number') {
+                  if (e.type == 'number' || e.type == 'percent') {
                     inside = (
                       <Input
                         id={e.id}
                         type="number"
                         scale="lg"
-                        step={1}
+                        step={e.type == 'percent' ? 0.25 : 1}
                         min={e.min || 0}
                         max={e.max || 1000000000000000}
                         value={params[e.id]}
                         onChange={handleParamChange}
+                        data-type={e.type}
                       />
                     )
                   } else {
@@ -306,7 +307,7 @@ export default function CreateToken() {
                 <Input
                   type="number"
                   scale="lg"
-                  step={1}
+                  step={0.25}
                   min={0}
                   max={process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE}
                   value={ownerShare}
@@ -322,7 +323,7 @@ export default function CreateToken() {
                 <Input
                   type="number"
                   scale="lg"
-                  step={1}
+                  step={0.25}
                   min={85}
                   max={100}
                   value={liquidityShare}
