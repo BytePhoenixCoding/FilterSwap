@@ -8,7 +8,7 @@ import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
 import { useActiveWeb3React } from './index'
-import { useBytes32TokenContract, useTokenContract } from './useContract'
+import { useBytes32TokenContract, useManagerContract, useTokenContract } from './useContract'
 
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
@@ -72,18 +72,25 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
   const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
   const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
+  
+  const managerContract = useManagerContract()
+  const verified = useSingleCallResult(managerContract ? managerContract : undefined, 'isTokenVerified', [token?.address], NEVER_RELOAD)
 
   return useMemo(() => {
-    if (token) return token
+    if (token){
+      token.verified = verified.result?.[0]
+      return token
+    } 
     if (!chainId || !address) return undefined
-    if (decimals.loading || symbol.loading || tokenName.loading) return null
-    if (decimals.result) {
+    if (decimals.loading || symbol.loading || tokenName.loading || verified.loading) return null
+    if (decimals.result && verified.result) {
       return new Token(
         chainId,
         address,
         decimals.result[0],
         parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
-        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token')
+        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token'),
+        token == Currency.ETHER || verified.result[0]
       )
     }
     return undefined
@@ -99,6 +106,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
     tokenName.loading,
     tokenName.result,
     tokenNameBytes32.result,
+    verified.loading,
+    verified.result
   ])
 }
 
