@@ -148,8 +148,24 @@ export function useDerivedMintInfo(
     error = `Insufficient ${currencies[Field.CURRENCY_A]?.symbol} balance`
   }
 
+  if (currencies[Field.CURRENCY_A]?.verified == undefined) {
+    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification Loading`
+  }
+
+  if (!currencies[Field.CURRENCY_A]?.verified) {
+    error = `${currencies[Field.CURRENCY_B]?.symbol} is not Verified`
+  }
+
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
     error = `Insufficient ${currencies[Field.CURRENCY_B]?.symbol} balance`
+  }
+
+  if (currencies[Field.CURRENCY_B]?.verified == undefined) {
+    error = `${currencies[Field.CURRENCY_B]?.symbol} Verification Loading`
+  }
+
+  if (!currencies[Field.CURRENCY_B]?.verified) {
+    error = `${currencies[Field.CURRENCY_B]?.symbol} is not Verified`
   }
 
   return {
