@@ -1,4 +1,3 @@
-// TODO: Add check for token verification on pool create
 import React, { useCallback, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
