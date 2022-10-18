@@ -139,7 +139,7 @@ export function useDerivedDeployInfo(): {
 
   const handleParamChange = (e) => {
     const dataType = e.target.dataset.type
-    const value = !dataType ? e.target.value : Math.floor(parseFloat(e.target.value) * 100) / 100
+    const value = !dataType ? e.target.value : Math.floor(parseFloat(e.target.value || 0) * 100) / 100
 
     setNewTokenParams({
       ...newTokenParams,
