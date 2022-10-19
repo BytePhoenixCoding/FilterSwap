@@ -60,7 +60,7 @@ export default function ConfirmDeployModal({
   }, [onConfirm, showAcceptChanges, deployErrorMessage, params, calculatedMintFee])
 
   // text to show while loading
-  const pendingText = `Creating Token ${params.tokenName}...`
+  const pendingText = `Creating token ${params.tokenName}...`
 
   const falsey = () => <></>
 
@@ -70,7 +70,7 @@ export default function ConfirmDeployModal({
         <TransactionErrorContent onDismiss={onDismiss} message={deployErrorMessage} />
       ) : (
         <ConfirmationModalContent
-          title="Confirm Deploy"
+          title="Confirm token deployment"
           onDismiss={onDismiss}
           // topContent={modalHeader}
           topContent={falsey}
