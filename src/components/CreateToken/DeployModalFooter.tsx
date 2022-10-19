@@ -26,7 +26,7 @@ export default function DeployModalFooter({
       <AutoColumn gap="0px">
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">Token Mint Fee</Text>
+            <Text fontSize="14px">Token mint fee</Text>
             <QuestionHelper text={'TBA'} /> TODO
           </RowFixed>
           <Text fontSize="14px">
