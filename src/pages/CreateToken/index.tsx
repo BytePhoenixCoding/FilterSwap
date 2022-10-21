@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
+import { useCallback, useEffect, useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { toInteger } from 'lodash'
+import { DEPLOYER_MAX_OWNER_SHARE, LIQUIDITY_MIN_LOCK_TIME, LIQUIDITY_RECOMMENDED_LOCK_TIME } from '../../constants'
 
 import AppBody from '../AppBody'
 import { Box, Button, Toggle, CardBody, Text, Heading, Input } from '../../custom_modules/@filterswap-libs/uikit'
@@ -301,7 +301,7 @@ export default function CreateToken() {
                   scale="lg"
                   step={0.25}
                   min={0}
-                  max={process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE}
+                  max={DEPLOYER_MAX_OWNER_SHARE}
                   value={ownerShare}
                   onChange={handleOwnerShareChange}
                   style={{ width: '30%' }}
@@ -351,13 +351,22 @@ export default function CreateToken() {
                   type="number"
                   scale="lg"
                   step={1}
-                  min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
+                  min={LIQUIDITY_MIN_LOCK_TIME}
                   value={daysToLock}
                   onChange={handleDaysToLockChange}
                   style={{ width: '30%' }}
                   disabled={lockForever}
                 />
               </RowBetween>
+              {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
+                <Box marginTop={2}>
+                  <Text color="warning" fontSize="12px">
+                    It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
+                  </Text>
+                </Box>
+              ) : (
+                ''
+              )}
               or
               <RowBetween>
                 <Text color="textSubtle" fontSize="14px">

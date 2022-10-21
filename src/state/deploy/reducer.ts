@@ -3,6 +3,7 @@ import { Field, replaceDeployState, ownerShareChange, daysToLockChange, toggleLo
 import { selectCurrency, setRecipient, switchCurrencies, typeInput } from '../swap/actions'
 import { Currency } from 'custom_modules/@filterswap-libs/sdk/dist/sdk.esm'
 import { deployTokenTemplates } from '../../constants/deployToken/templates'
+import { LIQUIDITY_RECOMMENDED_LOCK_TIME } from '../../constants'
 
 export interface DeployState {
   readonly independentField: Field
@@ -52,7 +53,7 @@ const initialState: DeployState = {
   },
   ownerShare: 0,
   liquidityShare: 100,
-  daysToLock: 14,
+  daysToLock: LIQUIDITY_RECOMMENDED_LOCK_TIME,
   lockForever: false,
   selectedTemplate: 0,
   createOptions: deployTokenTemplates[0]
