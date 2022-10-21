@@ -5,13 +5,11 @@ import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from '../TransactionConfirmationModal'
+import DeployModalHeader from './DeployModalHeader'
 import DeployModalFooter from './DeployModalFooter'
+import { useDeployState } from 'state/deploy/hooks'
 
 export default function ConfirmDeployModal({
-  params,
-  originalTrade,
-  calculatedMintFee,
-  inputCurrency,
   onAcceptChanges,
   onConfirm,
   onDismiss,
@@ -21,10 +19,6 @@ export default function ConfirmDeployModal({
   txHash,
 }: {
   isOpen: boolean
-  params: any
-  originalTrade: object | undefined
-  calculatedMintFee: number | undefined
-  inputCurrency: Currency | undefined
   attemptingTxn: boolean
   txHash: string | undefined
   onAcceptChanges: () => void
@@ -32,32 +26,26 @@ export default function ConfirmDeployModal({
   deployErrorMessage: string | undefined
   onDismiss: () => void
 }) {
+  const { params } = useDeployState()
   const showAcceptChanges = useMemo(() => Boolean(true), [params])
 
-  // const modalHeader = useCallback(() => {
-  //   return trade ? (
-  //     <SwapModalHeader
-  //       trade={trade}
-  //       allowedSlippage={allowedSlippage}
-  //       recipient={recipient}
-  //       showAcceptChanges={showAcceptChanges}
-  //       onAcceptChanges={onAcceptChanges}
-  //     />
-  //   ) : null
-  // }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
+  const modalHeader = useCallback(() => {
+    // return trade ? (
+    //   <DeployModalHeader
+    //     trade={trade}
+    //     allowedSlippage={allowedSlippage}
+    //     recipient={recipient}
+    //     showAcceptChanges={showAcceptChanges}
+    //     onAcceptChanges={onAcceptChanges}
+    //   />
+    // ) : null
+  }, [onAcceptChanges, showAcceptChanges])
 
   const modalBottom = useCallback(() => {
     return params ? (
-      <DeployModalFooter
-        onConfirm={onConfirm}
-        params={params}
-        disabledConfirm={false}
-        deployErrorMessage={deployErrorMessage}
-        calculatedMintFee={calculatedMintFee}
-        inputCurrency={inputCurrency}
-      />
+      <DeployModalFooter onConfirm={onConfirm} disabledConfirm={false} deployErrorMessage={deployErrorMessage} />
     ) : null
-  }, [onConfirm, showAcceptChanges, deployErrorMessage, params, calculatedMintFee])
+  }, [onConfirm, showAcceptChanges, deployErrorMessage, params])
 
   // text to show while loading
   const pendingText = `Creating Token ${params.tokenName}...`
