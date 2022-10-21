@@ -1,5 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '../custom_modules/@filterswap-libs/sdk'
 
+export const CHAIN_ID: number = Number(<string>process.env.REACT_APP_CHAIN_ID)
 export const FACTORY_ADDRESS: string = <string>process.env.REACT_APP_FACTORY_ADDRESS
 export const ROUTER_ADDRESS: string = <string>process.env.REACT_APP_ROUTER_ADDRESS
 export const INIT_CODE_HASH: string = <string>process.env.REACT_APP_INIT_CODE_HASH
@@ -9,7 +10,8 @@ export const DEPLOYER_ADDRESS = <string>process.env.REACT_APP_DEPLOYER_ADDRESS;
 
 export const DEPLOYER_MINT_FEE = Number(process.env.REACT_APP_DEPLOYER_MINT_FEE)
 export const DEPLOYER_MAX_OWNER_SHARE = Number(process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE)
-export const LIQUIDITIY_MIN_LOCK_TIME = Number(process.env.REACT_APP_LIQUIDITIY_MIN_LOCK_TIME)
+export const LIQUIDITY_MIN_LOCK_TIME = Number(process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME)
+export const LIQUIDITY_RECOMMENDED_LOCK_TIME = Number(<string>process.env.REACT_APP_LIQUIDITY_RECOMMENDED_LOCK_TIME)
 export const VERIFICATION_REQUEST_FEE = Number(process.env.REACT_APP_VERIFICATION_REQUEST_FEE)
 export const VERIFICATION_REQUEST_DEADLINE = Number(process.env.REACT_APP_VERIFICATION_REQUEST_DEADLINE)
 export const GOVERNANCE_TOKEN = <string>process.env.REACT_APP_GOVERNANCE_TOKEN

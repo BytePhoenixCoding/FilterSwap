@@ -37,6 +37,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { PoolPriceBar } from './PoolPriceBar'
 import { ROUTER_ADDRESS } from '../../constants'
 import { Box, Toggle, useMatchBreakpoints } from '../../custom_modules/@filterswap-libs/uikit'
+import { LIQUIDITY_MIN_LOCK_TIME, LIQUIDITY_RECOMMENDED_LOCK_TIME } from '../../constants'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -389,13 +390,22 @@ export default function AddLiquidity({
                     type="number"
                     scale="lg"
                     step={1}
-                    min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
+                    min={LIQUIDITY_MIN_LOCK_TIME}
                     value={daysToLock}
                     onChange={handleDaysToLockChange}
                     style={{ width: '30%' }}
                     disabled={lockForever}
                   />
                 </RowBetween>
+                {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
+                  <Box marginTop={2}>
+                    <UIKitText color="warning" fontSize="12px">
+                      It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
+                    </UIKitText>
+                  </Box>
+                ) : (
+                  ''
+                )}
                 or
                 <RowBetween>
                   <UIKitText color="textSubtle" fontSize="14px">

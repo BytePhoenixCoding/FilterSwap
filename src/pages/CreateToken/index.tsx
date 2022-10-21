@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
+import { useCallback, useEffect, useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { toInteger } from 'lodash'
+import { DEPLOYER_MAX_OWNER_SHARE, LIQUIDITY_MIN_LOCK_TIME, LIQUIDITY_RECOMMENDED_LOCK_TIME } from '../../constants'
 
 import AppBody from '../AppBody'
 import { Box, Button, Toggle, CardBody, Text, Heading, Input } from '../../custom_modules/@filterswap-libs/uikit'
@@ -17,15 +17,23 @@ import { ApprovalState, useApproveCallbackForDeploy } from 'hooks/useApproveCall
 
 import { Field } from 'state/swap/actions'
 import { BottomGrouping } from 'components/swap/styleds'
-import { useDerivedDeployInfo, useDeployActionHandlers, useDeployState } from 'state/deploy/hooks'
+import {
+  useDerivedDeployInfo,
+  useDeployActionHandlers,
+  useDeployState,
+  useOwnerShare,
+  useDaysToLock,
+  useParams,
+  useTemplates,
+} from 'state/deploy/hooks'
 
 import { useUserDeadline } from 'state/user/hooks'
 
-import { DEPLOYER_MAX_OWNER_SHARE } from 'constants/index'
 import { useActiveWeb3React } from 'hooks'
 import Loader from 'components/Loader'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ProgressSteps from 'components/ProgressSteps'
+import { deployTokenTemplates } from '../../constants/deployToken/templates'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -53,59 +61,35 @@ export default function CreateToken() {
   const theme = useContext(ThemeContext)
   const TranslateString = useI18n()
 
-  const [lockForever, setLockForever] = useState(false)
-  const [daysToLock, setDaysToLock] = useState(parseInt(process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME!))
-  const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: inputValue } = evt.target
+  const { handleParamsChange } = useParams()
+  const { handleDaysToLockChange, handleLockForever } = useDaysToLock()
+  const { handleOwnerShareChange, handleLiquidityShareChange } = useOwnerShare()
+  const { handleTemplateChange } = useTemplates()
 
-    const num: number = parseFloat(inputValue)
-    const min: number = parseFloat(evt.target.min || '-1')
-    const max: number = parseFloat(evt.target.max || '1000000000000')
-
-    setDaysToLock(Math.min(Math.max(num, min), max))
-  }
-
-  const maxOwnerShare = DEPLOYER_MAX_OWNER_SHARE
-  const [ownerShare, setOwnerShare] = useState(0)
-  const [liquidityShare, setLiquidityShare] = useState(100)
-  const handleOwnerShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    let value = Math.floor(parseFloat(evt.target.value) * 100) / 100
-
-    if (value > maxOwnerShare) {
-      value = maxOwnerShare
-    }
-    setOwnerShare(value)
-    setLiquidityShare(100 - value)
-  }
-  const handleLiquidityShareChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    let value = Math.round(parseFloat(evt.target.value) * 100) / 100
-
-    if (value < 100 - maxOwnerShare) {
-      value = 100 - maxOwnerShare
-    } else if (value > 100) {
-      value = 100
-    }
-
-    setLiquidityShare(value)
-    setOwnerShare(100 - value)
-  }
-
-  const { onSwitchTokens, onCurrencySelection, onUserInput } = useDeployActionHandlers()
+  const { onCurrencySelection, onUserInput } = useDeployActionHandlers()
 
   const {
-    params,
-    handleParamChange,
-    selectedTemplate,
-    handleSelectChange,
-    selectTemplates,
-    createOptions,
-    currencyBalances,
+    // handleSelectChange,
+    // selectedTemplate,
+    // createOptions,
     parsedAmount,
     currencies,
-    calculatedMintFee,
     inputError: deployInputError,
   } = useDerivedDeployInfo()
-  const { independentField, typedValue } = useDeployState()
+  const {
+    independentField,
+    typedValue,
+
+    ownerShare,
+    liquidityShare,
+
+    daysToLock,
+    lockForever,
+    params,
+
+    selectedTemplate,
+    createOptions,
+  } = useDeployState()
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -132,26 +116,28 @@ export default function CreateToken() {
   }, [approval, approvalSubmitted])
 
   // modal and loading
-  const [{ showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash }, setDeployState] = useState<{
+  const [
+    { showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash, newTokenAddress },
+    setDeployState,
+  ] = useState<{
     showConfirm: boolean
     paramsToConfirm: object | undefined
     attemptingTxn: boolean
     deployErrorMessage: string | undefined
     txHash: string | undefined
+    newTokenAddress: string | undefined
   }>({
     showConfirm: false,
     paramsToConfirm: undefined,
     attemptingTxn: false,
     deployErrorMessage: undefined,
     txHash: undefined,
+    newTokenAddress: undefined,
   })
 
   // the callback to execute the create
   const { callback: deployCallback, error: deployCallbackError } = useDeployCallback(
     params,
-    ownerShare,
-    daysToLock,
-    lockForever,
     currencies[Field.INPUT],
     typedValue,
     selectedTemplate,
@@ -166,14 +152,17 @@ export default function CreateToken() {
       attemptingTxn: true,
       deployErrorMessage: undefined,
       txHash: undefined,
+      newTokenAddress: undefined,
     }))
     deployCallback()
       .then((response: any) => {
+        console.log(response)
         setDeployState((prevState) => ({
           ...prevState,
           attemptingTxn: false,
           deployErrorMessage: undefined,
           txHash: response.hash,
+          newTokenAddress: response.newTokenAddress,
         }))
       })
       .catch((error) => {
@@ -184,6 +173,7 @@ export default function CreateToken() {
           attemptingTxn: false,
           deployErrorMessage: error.message,
           txHash: undefined,
+          newTokenAddress: undefined,
         }))
       })
   }, [setDeployState, deployCallback])
@@ -227,10 +217,6 @@ export default function CreateToken() {
         <AutoColumn gap="lg" justify="center">
           <ConfirmDeployModal
             isOpen={showConfirm}
-            calculatedMintFee={calculatedMintFee}
-            inputCurrency={currencies[Field.INPUT]}
-            params={params}
-            originalTrade={paramsToConfirm}
             onAcceptChanges={handleAcceptChanges}
             attemptingTxn={attemptingTxn}
             txHash={txHash}
@@ -255,8 +241,8 @@ export default function CreateToken() {
               </Text>
               <br />
               <div style={{ display: 'flex', gap: '5%', justifyContent: 'center' }}>
-                <Select onChange={handleSelectChange}>
-                  {selectTemplates.map((e, i) => (
+                <Select onChange={handleTemplateChange}>
+                  {deployTokenTemplates.map((e, i) => (
                     <option key={i} value={i}>
                       {e.name}
                     </option>
@@ -270,7 +256,7 @@ export default function CreateToken() {
               <br />
               <fieldset>
                 <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
-                {(createOptions.options || selectTemplates[0].options).map((e, i) => {
+                {(createOptions.options || deployTokenTemplates[0].options).map((e, i) => {
                   var inside
                   if (e.type == 'number' || e.type == 'percent') {
                     inside = (
@@ -282,13 +268,19 @@ export default function CreateToken() {
                         min={e.min || 0}
                         max={e.max || 1000000000000000}
                         value={params[e.id]}
-                        onChange={handleParamChange}
+                        onChange={handleParamsChange}
                         data-type={e.type}
                       />
                     )
                   } else {
                     inside = (
-                      <Input id={e.id} value={e.value} key={i} onChange={handleParamChange} placeholder={e.fieldName} />
+                      <Input
+                        id={e.id}
+                        value={e.value}
+                        key={i}
+                        onChange={handleParamsChange}
+                        placeholder={e.fieldName}
+                      />
                     )
                   }
                   return (
@@ -309,7 +301,7 @@ export default function CreateToken() {
                   scale="lg"
                   step={0.25}
                   min={0}
-                  max={process.env.REACT_APP_DEPLOYER_MAX_OWNER_SHARE}
+                  max={DEPLOYER_MAX_OWNER_SHARE}
                   value={ownerShare}
                   onChange={handleOwnerShareChange}
                   style={{ width: '30%' }}
@@ -359,20 +351,29 @@ export default function CreateToken() {
                   type="number"
                   scale="lg"
                   step={1}
-                  min={process.env.REACT_APP_LIQUIDITY_MIN_LOCK_TIME}
+                  min={LIQUIDITY_MIN_LOCK_TIME}
                   value={daysToLock}
                   onChange={handleDaysToLockChange}
                   style={{ width: '30%' }}
                   disabled={lockForever}
                 />
               </RowBetween>
+              {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
+                <Box marginTop={2}>
+                  <Text color="warning" fontSize="12px">
+                    It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
+                  </Text>
+                </Box>
+              ) : (
+                ''
+              )}
               or
               <RowBetween>
                 <Text color="textSubtle" fontSize="14px">
                   Lock forever
                 </Text>
                 <Box>
-                  <Toggle scale={'md'} checked={lockForever} onChange={() => setLockForever(!lockForever)} />
+                  <Toggle scale={'md'} checked={lockForever} onChange={() => handleLockForever(!lockForever)} />
                 </Box>
               </RowBetween>
               <BottomGrouping>
@@ -407,6 +408,7 @@ export default function CreateToken() {
                           deployErrorMessage: undefined,
                           showConfirm: true,
                           txHash: undefined,
+                          newTokenAddress: undefined,
                         })
                       }}
                     >
@@ -425,6 +427,7 @@ export default function CreateToken() {
                         deployErrorMessage: undefined,
                         showConfirm: true,
                         txHash: undefined,
+                        newTokenAddress: undefined,
                       })
                     }}
                   >

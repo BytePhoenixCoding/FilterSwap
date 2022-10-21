@@ -7,6 +7,7 @@ import { useMulticallContract, useManagerContract } from '../../hooks/useContrac
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData, useSingleCallResult } from '../multicall/hooks'
 import { DEPLOYER_MINT_FEE } from '../../constants'
+import { tryParseAmount } from 'state/swap/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -119,17 +120,14 @@ export function useCurrencyBalances(
   )
 }
 export function useMintFee(
-  inputLq: number
-): number {
+  parsedAmount
+): CurrencyAmount | undefined {
   
   // const managerContract = useManagerContract()
   // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
-  const tokenMintFee = DEPLOYER_MINT_FEE
   
-  const calculatedMintFee: number = (inputLq * (tokenMintFee / 10000))
-
-  return calculatedMintFee
-  
+  const fee = parsedAmount.divide(DEPLOYER_MINT_FEE)
+  return tryParseAmount(fee.toSignificant(50), parsedAmount.currency)
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
@@ -152,7 +150,9 @@ export function useLiquidityUnlockTime(pairToken: Token) {
 
   let unlockTime = new Date(0)
   const inputs: any = useMemo(() => [account, pairToken.address], [pairToken, account])
-  unlockTime.setUTCSeconds(useSingleCallResult(managerContract, 'liquidityUnlockTimes', inputs)?.result?.[0].toNumber())
+  const utcTime = useSingleCallResult(managerContract, 'liquidityUnlockTimes', inputs)?.result?.[0].toNumber()
+  console.log(utcTime)
+  unlockTime.setUTCSeconds(utcTime)
   return unlockTime
 }
 

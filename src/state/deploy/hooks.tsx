@@ -8,29 +8,33 @@ import {
   TokenAmount,
   Trade,
 } from '../../custom_modules/@filterswap-libs/sdk'
-import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances, useMintFee } from '../wallet/hooks'
-import { Field, replaceDeployState } from './actions'
-import { selectCurrency, setRecipient, switchCurrencies, typeInput } from '../swap/actions'
+import { Field, ownerShareChange, daysToLockChange, toggleLockForever, paramsChange, templateChange } from './actions'
+import { selectCurrency, switchCurrencies, typeInput } from '../swap/actions'
 import { DeployState } from './reducer'
 import { tryParseAmount } from '../swap/hooks'
-import { deployTokenTemplates } from '../../constants/deployToken/templates'
-
-// Todo: Break components out for efficiency
+import { DEPLOYER_MAX_OWNER_SHARE } from '../../constants/index'
 
 export function useDeployState(): AppState['deploy'] {
-  return useSelector<AppState, AppState['deploy']>((state) => state.deploy)
+  return useSelector<AppState, AppState['deploy']>((state) => {
+    return state.deploy
+  })
 }
 
 export function useDeployActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string) => void
+  onOwnerShareChange: (ownerShare: number, liquidityShare: number) => void
+  onDaysToLockChange: (daysToLock: number) => void
+  onToggleLockForever: () => void
+  onParamsChange: (params) => void
+  onTemplateChange: (templateId: number) => void
 } {
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
@@ -56,10 +60,156 @@ export function useDeployActionHandlers(): {
     [dispatch]
   )
 
+  const onOwnerShareChange = useCallback(
+    (ownerShare: number, liquidityShare: number) => {
+      dispatch(ownerShareChange({ ownerShare, liquidityShare }))
+    },
+    [dispatch]
+  )
+
+  const onDaysToLockChange = useCallback(
+    (daysToLock: number) => {
+      dispatch(daysToLockChange({ daysToLock }))
+    },
+    [dispatch]
+  )
+  const onToggleLockForever = useCallback(() => {
+    dispatch(toggleLockForever())
+  }, [dispatch])
+
+  const onParamsChange = useCallback(
+    (params) => {
+      dispatch(paramsChange(params))
+    },
+    [dispatch]
+  )
+
+  const onTemplateChange = useCallback(
+    (templateId: number) => {
+      dispatch(templateChange({ templateId }))
+    },
+    [dispatch]
+  )
+
+  // TODO
+
   return {
     onSwitchTokens,
     onCurrencySelection,
     onUserInput,
+    onOwnerShareChange,
+    onDaysToLockChange,
+    onToggleLockForever,
+    onParamsChange,
+    onTemplateChange,
+  }
+}
+
+export function useDaysToLock(): {
+  handleDaysToLockChange
+  handleLockForever
+} {
+  const { onDaysToLockChange, onToggleLockForever } = useDeployActionHandlers()
+  const handleDaysToLockChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      const { value: inputValue } = evt.target
+
+      const num: number = parseFloat(inputValue)
+      const min: number = parseFloat(evt.target.min || '-1')
+      const max: number = parseFloat(evt.target.max || '1000000000000')
+
+      onDaysToLockChange(Math.min(Math.max(num, min), max))
+    },
+    [onDaysToLockChange]
+  )
+  const handleLockForever = useCallback(() => {
+    onToggleLockForever()
+  }, [onToggleLockForever])
+
+  return {
+    handleDaysToLockChange,
+    handleLockForever,
+  }
+}
+
+export function useParams(): {
+  handleParamsChange
+} {
+  const { params } = useDeployState()
+  const { onParamsChange } = useDeployActionHandlers()
+
+  const handleParamsChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      const dataType = evt.target.dataset.type
+
+      onParamsChange({
+        id: evt.target.id,
+        value: !dataType ? evt.target.value : Math.floor(parseFloat(evt.target.value) * 100) / 100,
+      })
+    },
+    [onParamsChange]
+  )
+
+  return {
+    handleParamsChange,
+  }
+}
+
+export function useOwnerShare(): {
+  handleOwnerShareChange
+  handleLiquidityShareChange
+} {
+  const maxOwnerShare = DEPLOYER_MAX_OWNER_SHARE
+  const { onOwnerShareChange } = useDeployActionHandlers()
+
+  const handleOwnerShareChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      let value = Math.floor(parseFloat(evt.target.value) * 100) / 100
+
+      if (value > maxOwnerShare) {
+        value = maxOwnerShare
+      }
+      onOwnerShareChange(value, 100 - value)
+    },
+    [onOwnerShareChange]
+  )
+  const handleLiquidityShareChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      let value = Math.round(parseFloat(evt.target.value) * 100) / 100
+
+      if (value < 100 - maxOwnerShare) {
+        value = 100 - maxOwnerShare
+      } else if (value > 100) {
+        value = 100
+      }
+      onOwnerShareChange(100 - value, value)
+    },
+    [onOwnerShareChange]
+  )
+
+  return {
+    handleOwnerShareChange,
+    handleLiquidityShareChange,
+  }
+}
+
+export function useTemplates(): {
+  handleTemplateChange
+} {
+  const { onTemplateChange } = useDeployActionHandlers()
+
+  const handleTemplateChange = useCallback(
+    (evt: any) => {
+      console.log(evt.target)
+      const templateId = parseInt(evt.target.selectedIndex)
+
+      onTemplateChange(templateId)
+    },
+    [onTemplateChange]
+  )
+
+  return {
+    handleTemplateChange,
   }
 }
 
@@ -67,14 +217,9 @@ export function useDerivedDeployInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
-  calculatedMintFee: number | undefined
+  calculatedMintFee: CurrencyAmount | undefined
   inputCurrency: CurrencyAmount | undefined
-  params: object
-  handleParamChange
-  createOptions
-  selectTemplates
-  selectedTemplate: number
-  handleSelectChange
+
   inputError?: string
 } {
   const { account } = useActiveWeb3React()
@@ -82,13 +227,15 @@ export function useDerivedDeployInfo(): {
   const {
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
+    params,
+    createOptions,
   } = useDeployState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [inputCurrency ?? undefined])
 
-  const parsedAmount = tryParseAmount(typedValue, inputCurrency ?? undefined)
+  const parsedAmount = tryParseAmount(typedValue || '0', inputCurrency ?? undefined)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -98,61 +245,7 @@ export function useDerivedDeployInfo(): {
     [Field.INPUT]: inputCurrency ?? undefined,
   }
 
-  const calculatedMintFee = useMintFee(Number(typedValue))
-
-  // Create the default parameters using all unique fieldName options
-  const allFieldNames = useMemo(() => {
-    const allFields = [
-      ...new Map(
-        deployTokenTemplates
-          .map((template) => template.options)
-          .flat()
-          .map((item) => [item['fieldName'], item])
-      ).values(),
-    ]
-
-    const allFieldsWithValues = allFields
-      .map((e) => ({
-        ...e,
-        value: e.type == 'number' ? '0' : '',
-      }))
-      .reduce((ac, a) => ({ ...ac, [a.id]: a.value }), {})
-
-    return allFieldsWithValues
-  }, [deployTokenTemplates])
-
-  const [newTokenParams, setNewTokenParams] = useState<any>(allFieldNames)
-
-  // For quick testing:
-  // useEffect(() => {
-  //   setNewTokenParams({
-  //     tokenName: 'ASDer',
-  //     tokenSymbol: 'ASD',
-  //     totalSupply: '9',
-  //     transferFee: '1',
-  //     buyFee: '2',
-  //     sellFee: '3',
-  //   })
-  // }, [])
-
-  const [selectedTemplate, setSelectedTemplate] = useState(0)
-
-  const handleParamChange = (e) => {
-    const dataType = e.target.dataset.type
-    const value = !dataType ? e.target.value : Math.floor(parseFloat(e.target.value || 0) * 100) / 100
-
-    setNewTokenParams({
-      ...newTokenParams,
-      [e.target.id]: value,
-    })
-  }
-
-  const [createOptions, setCreateOptions] = useState(deployTokenTemplates[selectedTemplate])
-  const handleSelectChange = (e) => {
-    const index = e.target.selectedIndex
-    setCreateOptions(deployTokenTemplates[index])
-    setSelectedTemplate(index)
-  }
+  const calculatedMintFee = parsedAmount ? useMintFee(parsedAmount) : undefined
 
   let inputError: string | undefined
   if (!account) {
@@ -175,8 +268,8 @@ export function useDerivedDeployInfo(): {
     inputError = inputError ?? 'Enter base token amount'
   }
 
-  Object.entries(newTokenParams).forEach((param: any, i) => {
-    if ((!param[1] || param[1] == '0') && createOptions.options.map((e) => e.id).includes(param[0])) {
+  Object.entries(params).forEach((param: any, i) => {
+    if (createOptions && (!param[1] || param[1] == '0') && createOptions.options.map((e) => e.id).includes(param[0])) {
       inputError = inputError ?? 'Enter ' + createOptions.options[i].fieldName
     }
   })
@@ -186,12 +279,6 @@ export function useDerivedDeployInfo(): {
     currencyBalances,
     parsedAmount,
     calculatedMintFee,
-    params: newTokenParams,
-    handleParamChange,
-    selectedTemplate,
-    createOptions,
-    selectTemplates: deployTokenTemplates,
-    handleSelectChange,
     inputError,
     inputCurrency: undefined,
   }

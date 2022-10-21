@@ -10,6 +10,7 @@ import isZero from '../utils/isZero'
 import { useActiveWeb3React } from './index'
 import useENS from './useENS'
 import { Currency } from '@pancakeswap-libs/sdk'
+import {  useDeployState } from 'state/deploy/hooks'
 
  enum DeployCallbackState {
   INVALID,
@@ -37,9 +38,6 @@ type EstimatedDeployCall = SuccessfulCall | FailedCall
 /**
  * Returns the deploy calls that can be used
  * @param newTokenParams the token to create
- * @param ownerShare owner's initial liquidity in percent
- * @param daysToLock time to lock the trading on the token
- * @param lockForever or whether to always lock
  * @param inputCurrency base token Currency
  * @param inputAmount base token amount
  * @param selectedTemplate template of createToken to use
@@ -47,16 +45,13 @@ type EstimatedDeployCall = SuccessfulCall | FailedCall
  */
 function useDeployCallArguments(
   newTokenParams: object | undefined,
-  ownerShare: number,
-  daysToLock: number,
-  lockForever: Boolean,
   inputCurrency: Currency | undefined,
   inputAmount: string | undefined,
   selectedTemplate: number,
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
 ): DeployCall[] {
   const { account, chainId, library } = useActiveWeb3React()
-
+  const { ownerShare, daysToLock, lockForever } = useDeployState()
   return useMemo(() => {
     if (!newTokenParams || !library || !account || !chainId) return []
 
@@ -88,16 +83,15 @@ function useDeployCallArguments(
 // returns a function that will execute a token deploy
 export function useDeployCallback(
   newTokenParams: object,
-  ownerShare: number,
-  daysToLock: number,
-  lockForever: Boolean,
   inputCurrency: Currency | undefined,
   inputAmount: string | undefined,
   selectedTemplate: number,
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
 ): { state: DeployCallbackState; callback: null | (() => Promise<string>); error: string | null } {
+
   const { account, chainId, library } = useActiveWeb3React()
-  const deployCalls = useDeployCallArguments(newTokenParams, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount, selectedTemplate, deadline)
+  const { ownerShare, daysToLock, lockForever } = useDeployState()
+  const deployCalls = useDeployCallArguments(newTokenParams, inputCurrency, inputAmount, selectedTemplate, deadline)
   const addTransaction = useTransactionAdder()
 
   return useMemo(() => {
@@ -179,17 +173,24 @@ export function useDeployCallback(
           gasLimit: calculateGasMargin(gasEstimate),
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
-          .then((response: any) => {
+          .then((response) => {
             console.log({response})
 
-            // const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
 						const base = `Created and Deployed ${newTokenParams.tokenName}`
 
             addTransaction(response, {
               summary: base,
             })
+            const hash = response.hash
+            return response.wait().then(res => {
+              
+              console.log(hash, res)
+              const address = res.events[0].address
+              return {
+                hash,
+                address
+              }})
 
-            return response
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along

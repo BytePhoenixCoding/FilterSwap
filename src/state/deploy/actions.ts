@@ -12,5 +12,19 @@ export const replaceDeployState = createAction<{
   field: Field
   typedValue: string
   inputCurrencyId?: string
+
+  ownerShare: number
+  liquidityShare: number
+
+  daysToLock: number
+  lockForever: boolean
   params: object
+
+  selectedTemplate: number,
+  createOptions
 }>('deploy/replaceDeployState')
+export const ownerShareChange = createAction<{ ownerShare: number, liquidityShare: number }>('deploy/ownerShareChange')
+export const daysToLockChange = createAction<{ daysToLock: number }>('deploy/daysToLockChange')
+export const toggleLockForever = createAction('deploy/toggleLockForever')
+export const paramsChange = createAction<{ id: string, value: any }>('deploy/paramsChange')
+export const templateChange = createAction<{templateId: number}>('deploy/templateChange')
