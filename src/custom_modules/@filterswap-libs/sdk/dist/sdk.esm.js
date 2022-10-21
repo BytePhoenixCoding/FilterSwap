@@ -1495,8 +1495,8 @@ var Router = /*#__PURE__*/function () {
     if (options.inputCurrency == ETHER || options.inputCurrency.address == WETH[ChainId.BSCTESTNET].address) {
 
       methodName = "createTokenETH"
-      value = (options.inputAmount || 0) *
-        10 ** options.inputCurrency.decimals
+      value = BigNumber.from(((options.inputAmount || 0) *
+        10 ** options.inputCurrency.decimals).toString())._hex
 
     } else {
 
