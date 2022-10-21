@@ -1507,8 +1507,8 @@ var Router = /*#__PURE__*/function () {
         // _baseTokenAddress:  address of base token eg. BUSD
         options.inputCurrency ? options.inputCurrency.address : "0x0000000000000000000000000000000000000000",
         // _baseTokenAmount: amount of tokens
-        parseFloat(options.inputAmount) *
-        10 ** options.inputCurrency.decimals
+        BigNumber.from((parseFloat(options.inputAmount || 0) *
+          10 ** options.inputCurrency.decimals).toString())._hex
       ]).concat(args.slice(4))
     }
 
