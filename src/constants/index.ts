@@ -1,5 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '../custom_modules/@filterswap-libs/sdk'
 
+export const CHAIN_ID: number = Number(<string>process.env.REACT_APP_CHAIN_ID)
 export const FACTORY_ADDRESS: string = <string>process.env.REACT_APP_FACTORY_ADDRESS
 export const ROUTER_ADDRESS: string = <string>process.env.REACT_APP_ROUTER_ADDRESS
 export const INIT_CODE_HASH: string = <string>process.env.REACT_APP_INIT_CODE_HASH
