@@ -164,7 +164,7 @@ export function useOwnerShare(): {
 
   const handleOwnerShareChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      let value = Math.floor(parseFloat(evt.target.value) * 100) / 100
+      let value = Math.floor(parseFloat(evt.target.value || '0') * 100) / 100
 
       if (value > maxOwnerShare) {
         value = maxOwnerShare
@@ -175,7 +175,7 @@ export function useOwnerShare(): {
   )
   const handleLiquidityShareChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      let value = Math.round(parseFloat(evt.target.value) * 100) / 100
+      let value = Math.round(parseFloat(evt.target.value || '0') * 100) / 100
 
       if (value < 100 - maxOwnerShare) {
         value = 100 - maxOwnerShare
