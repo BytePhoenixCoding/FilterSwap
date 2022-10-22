@@ -24,7 +24,7 @@ export default function DeployModalFooter({
   const outputAmount = tryParseAmount(params.totalSupply.toString(), outputCurrency)
 
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const ownerShareAmt = Math.round((ownerShare / params.totalSupply) * 10000) / 10000
+  const ownerShareAmt = params.totalSupply * (ownerShare / 100)
   const initLqAmount =
     !!calculatedMintFee && !!parsedAmount ? parsedAmount.subtract(calculatedMintFee).toSignificant(5) : 0
 
