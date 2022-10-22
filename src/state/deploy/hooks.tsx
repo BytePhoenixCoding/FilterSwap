@@ -144,7 +144,7 @@ export function useParams(): {
 
       onParamsChange({
         id: evt.target.id,
-        value: !dataType ? evt.target.value : Math.floor(parseFloat(evt.target.value) * 100) / 100,
+        value: !dataType ? evt.target.value : Math.floor(parseFloat(evt.target.value || '0') * 100) / 100,
       })
     },
     [onParamsChange]
