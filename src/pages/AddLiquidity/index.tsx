@@ -127,7 +127,7 @@ export default function AddLiquidity({
   const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = evt.target
 
-    const num: number = parseFloat(inputValue)
+    const num: number = parseFloat(inputValue || '0')
     const min: number = parseFloat(evt.target.min || '-1')
     const max: number = parseFloat(evt.target.max || '1000000000000')
 
