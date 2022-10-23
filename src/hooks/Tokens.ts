@@ -83,14 +83,14 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
     } 
     if (!chainId || !address) return undefined
     if (decimals.loading || symbol.loading || tokenName.loading || verified.loading) return null
-    if (decimals.result && verified.result) {
+    if (decimals.result) {
       return new Token(
         chainId,
         address,
         decimals.result[0],
         parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
         parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token'),
-        token == Currency.ETHER || verified.result[0]
+        token == Currency.ETHER || verified.result?.[0]
       )
     }
     return undefined
