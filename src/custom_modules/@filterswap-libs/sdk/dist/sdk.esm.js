@@ -1476,12 +1476,6 @@ var Router = /*#__PURE__*/function () {
     }
     )
 
-    const tokenArgs = [
-      newTokenParams.totalSupply,
-      newTokenParams.buyFee,
-      newTokenParams.sellFee
-    ]
-
     args = [
       // template 3 = 2, just calculate it from position of json file).
       options.selectedTemplate, // _tokenType (uint256)
