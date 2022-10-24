@@ -209,7 +209,6 @@ export function useTemplates(): {
 
   const handleTemplateChange = useCallback(
     (evt: any) => {
-      console.log(evt.target)
       const templateId = parseInt(evt.target.selectedIndex)
 
       onTemplateChange(templateId)
