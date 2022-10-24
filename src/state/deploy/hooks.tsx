@@ -135,16 +135,25 @@ export function useDaysToLock(): {
 export function useParams(): {
   handleParamsChange
 } {
-  const { params } = useDeployState()
   const { onParamsChange } = useDeployActionHandlers()
 
   const handleParamsChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       const dataType = evt.target.dataset.type
 
+      let value
+      if (!dataType) {
+        value = evt.target.value
+      } else {
+        const min = parseInt(evt.target.min || '0')
+        const max = parseInt(evt.target.max) || Number.MAX_SAFE_INTEGER
+
+        value = Math.max(min, Math.min(max, Math.floor(parseFloat(evt.target.value || '0') * 100) / 100))
+      }
+
       onParamsChange({
         id: evt.target.id,
-        value: !dataType ? evt.target.value : Math.floor(parseFloat(evt.target.value || '0') * 100) / 100,
+        value: value,
       })
     },
     [onParamsChange]
@@ -200,7 +209,6 @@ export function useTemplates(): {
 
   const handleTemplateChange = useCallback(
     (evt: any) => {
-      console.log(evt.target)
       const templateId = parseInt(evt.target.selectedIndex)
 
       onTemplateChange(templateId)

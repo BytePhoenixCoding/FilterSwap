@@ -146,23 +146,33 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
 export function useLiquidityUnlockTime(pairToken: Token) {
   const { account } = useActiveWeb3React()
   const managerContract = useManagerContract()
+  const isLocked = useSingleCallResult(
+    managerContract || undefined,
+    "isLiquidityLocked",
+    [account || "0x0", pairToken.address]
+  )
   if(!managerContract) return ""
 
   let unlockTime = new Date(0)
+
   const inputs: any = useMemo(() => [account, pairToken.address], [pairToken, account])
-  const utcTime = useSingleCallResult(managerContract, 'liquidityUnlockTimes', inputs)?.result?.[0].toNumber()
-  console.log(utcTime)
-  unlockTime.setUTCSeconds(utcTime)
-  return unlockTime
+  const utcTime = useSingleCallResult(
+    managerContract,
+    'liquidityUnlockTimes',
+    inputs
+    )
+  unlockTime.setUTCSeconds(utcTime.result?.[0].toNumber())
+  return utcTime.loading ? "..." : unlockTime
 }
 
 export function useIsLiquidityLocked(pairToken: Token): any {
   const { account } = useActiveWeb3React()
   const managerContract = useManagerContract()
+  const isLocked = useSingleCallResult(
+    managerContract || undefined,
+    "isLiquidityLocked",
+    [account || "0x0", pairToken.address]
+  )
   if(!managerContract) return true
-  const isLocked = useMemo(async () => {
-    const isLockedP: any = managerContract.isLiquidityLocked(account, pairToken.address)
-    return isLockedP
-  }, [pairToken])
-  return isLocked
+  return isLocked.loading ? undefined : isLocked.result?.[0]
 }

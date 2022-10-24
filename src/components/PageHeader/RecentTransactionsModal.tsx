@@ -26,8 +26,8 @@ const newTransactionsFirst = (a: TransactionDetails, b: TransactionDetails) => b
 const getRowStatus = (sortedRecentTransaction: TransactionDetails) => {
   const { hash, receipt } = sortedRecentTransaction
 
-  if (!hash) {
-    return { icon: <Loader />, color: 'text' }
+  if (!hash || (hash && !receipt)) {
+    return { icon: <Loader />, color: 'warning' }
   }
 
   if (hash && receipt?.status === 1) {

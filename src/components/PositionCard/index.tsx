@@ -128,7 +128,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
 
   const liquidityUnlockTime = useLiquidityUnlockTime(pair.liquidityToken)
-  const liquidityLocked: true | false = useIsLiquidityLocked(pair.liquidityToken)
+  const liquidityLocked: true | false | undefined = useIsLiquidityLocked(pair.liquidityToken)
 
   const poolTokenPercentage =
     !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
@@ -156,7 +156,13 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
             <Text>{!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}</Text>
           </RowFixed>
           <RowFixed>
-            {liquidityLocked ? <Text color="red">Locked</Text> : <Text color="success">Unlocked</Text>}
+            {liquidityLocked == undefined ? (
+              <Text color="subtle">...</Text>
+            ) : liquidityLocked ? (
+              <Text color="red">Locked</Text>
+            ) : (
+              <Text color="success">Unlocked</Text>
+            )}
             {showMore ? (
               <ChevronUp size="20" style={{ marginLeft: '10px' }} />
             ) : (

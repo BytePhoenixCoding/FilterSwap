@@ -20,7 +20,7 @@ export default function DeployModalFooter({
 }) {
   const { ownerShare, liquidityShare, params, createOptions, daysToLock, lockForever, typedValue } = useDeployState()
   const { calculatedMintFee, parsedAmount } = useDerivedDeployInfo()
-  const outputCurrency = new Token(CHAIN_ID, DEPLOYER_ADDRESS, 18, 'ASD', 'ASDer', false) // { decimals: 18, symbol: 'ASD', name: 'ASDer' }
+  const outputCurrency = new Token(CHAIN_ID, DEPLOYER_ADDRESS, 18, params.tokenSymbol, params.tokenName, false)
   const outputAmount = tryParseAmount(params.totalSupply.toString(), outputCurrency)
 
   const [showInverted, setShowInverted] = useState<boolean>(false)
