@@ -5,6 +5,7 @@ import { TranslateString } from 'utils/translateTextHelpers'
 import { RowBetween, RowFixed } from '../../components/Row'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import { Field } from '../../state/mint/actions'
+import { useMintState } from '../../state/mint/hooks'
 
 export function ConfirmAddModalBottom({
   noLiquidity,
@@ -21,6 +22,8 @@ export function ConfirmAddModalBottom({
   poolTokenPercentage?: Percent
   onAdd: () => void
 }) {
+  const { daysToLock, lockForever } = useMintState()
+
   return (
     <>
       <RowBetween>
@@ -55,6 +58,11 @@ export function ConfirmAddModalBottom({
       <RowBetween>
         <Text>Share of Pool:</Text>
         <Text>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</Text>
+      </RowBetween>
+      <RowBetween>
+        <Text>Liquidity Lock Time</Text>
+        {/* <QuestionHelper text={'To Change'} /> */}
+        <Text>{lockForever ? 'Forever' : `${daysToLock} Days`}</Text>
       </RowBetween>
       <Button mt="20px" onClick={onAdd}>
         {noLiquidity ? 'Create Pool & Supply' : 'Confirm Supply'}
