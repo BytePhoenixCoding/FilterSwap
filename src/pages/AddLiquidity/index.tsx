@@ -21,6 +21,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Field } from 'state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
+import { useDaysToLock } from 'state/deploy/hooks'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useIsExpertMode, useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
@@ -62,7 +63,7 @@ export default function AddLiquidity({
   const expertMode = useIsExpertMode()
 
   // mint state
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue, otherTypedValue, daysToLock, lockForever } = useMintState()
   const {
     dependentField,
     currencies,
@@ -122,17 +123,8 @@ export default function AddLiquidity({
 
   const addTransaction = useTransactionAdder()
   // const { isSm, isXs } = useMatchBreakpoints()
-  const [lockForever, setBurnForever] = useState(false)
-  const [daysToLock, setDaysToLock] = useState(365)
-  const handleDaysToLockChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: inputValue } = evt.target
 
-    const num: number = parseFloat(inputValue || '0')
-    const min: number = parseFloat(evt.target.min || '-1')
-    const max: number = parseFloat(evt.target.max || '1000000000000')
-
-    setDaysToLock(Math.min(Math.max(num, min), max))
-  }
+  const { handleDaysToLockChange, handleLockForever } = useDaysToLock()
 
   async function onAdd() {
     if (!chainId || !library || !account) return
@@ -149,7 +141,7 @@ export default function AddLiquidity({
     }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
-    const liquidityLockTime = daysToLock * 86400 // Convert Days to Hours to Minutes
+    const liquidityLockTime = lockForever ? Number.MAX_SAFE_INTEGER - 1 : daysToLock * 86400 // Convert Days to Hours to Minutes
 
     let estimate
     let method: (...args: any) => Promise<TransactionResponse>
@@ -413,7 +405,7 @@ export default function AddLiquidity({
                   </UIKitText>
                   <Box>
                     {/* <Toggle scale={isSm || isXs ? 'sm' : 'md'} checked={burnForever} onChange={() => setBurnForever(!burnForever)} /> */}
-                    <Toggle scale={'md'} checked={lockForever} onChange={() => setBurnForever(!lockForever)} />
+                    <Toggle scale={'md'} checked={lockForever} onChange={handleLockForever} />
                   </Box>
                 </RowBetween>
               </div>

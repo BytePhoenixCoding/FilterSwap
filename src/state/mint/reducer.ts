@@ -1,16 +1,22 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { Field, resetMintState, typeInput } from './actions'
+import { daysToLockChange, toggleLockForever } from '../deploy/actions'
+
 
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
   readonly otherTypedValue: string // for the case when there's no liquidity
+  readonly daysToLock: number
+  readonly lockForever: boolean
 }
 
 const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
-  otherTypedValue: ''
+  otherTypedValue: '',
+  daysToLock: 365,
+  lockForever: false,
 }
 
 export default createReducer<MintState>(initialState, builder =>
@@ -43,5 +49,17 @@ export default createReducer<MintState>(initialState, builder =>
           otherTypedValue: ''
         }
       
+    })
+    .addCase(daysToLockChange, (state, { payload: { daysToLock } }) => {
+      return {
+        ...state,
+        daysToLock
+      }
+    })
+    .addCase(toggleLockForever, (state) => {
+      return {
+        ...state,
+        lockForever: !state.lockForever,
+      }
     })
 )

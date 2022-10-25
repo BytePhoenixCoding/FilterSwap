@@ -1483,7 +1483,7 @@ var Router = /*#__PURE__*/function () {
       newTokenParams.tokenSymbol, // _tokenSymbol (unint256)
       valuesToSend, // _tokenArgs (bytes32[])
       options.ownerShare * 100, // _ownerShare (uint256)
-      options.lockForever ? 2 ^ (256 - 1) : options.daysToLock * 86400, // _liquidityLockTime (uint256)
+      options.lockForever ? Number.MAX_SAFE_INTEGER - 1 : options.daysToLock * 86400, // _liquidityLockTime (uint256)
     ]
 
     if (options.inputCurrency == ETHER || options.inputCurrency.address == WETH[ChainId.BSCTESTNET].address) {
