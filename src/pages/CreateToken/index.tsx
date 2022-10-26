@@ -27,13 +27,14 @@ import {
   useTemplates,
 } from 'state/deploy/hooks'
 
-import { useUserDeadline } from 'state/user/hooks'
-
 import { useActiveWeb3React } from 'hooks'
 import Loader from 'components/Loader'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ProgressSteps from 'components/ProgressSteps'
 import { deployTokenTemplates } from '../../constants/deployToken/templates'
+
+import { PairState, usePairCurAddress } from 'data/Reserves'
+import { useUserDeadline, usePairAdder } from 'state/user/hooks'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -68,14 +69,7 @@ export default function CreateToken() {
 
   const { onCurrencySelection, onUserInput } = useDeployActionHandlers()
 
-  const {
-    // handleSelectChange,
-    // selectedTemplate,
-    // createOptions,
-    parsedAmount,
-    currencies,
-    inputError: deployInputError,
-  } = useDerivedDeployInfo()
+  const { parsedAmount, currencies, inputError: deployInputError } = useDerivedDeployInfo()
   const {
     independentField,
     typedValue,
@@ -135,6 +129,16 @@ export default function CreateToken() {
     newTokenAddress: undefined,
   })
 
+  const [pairState, pair] = usePairCurAddress(currencies[Field.INPUT] ?? undefined, newTokenAddress)
+  const addPair = usePairAdder()
+
+  // Add lq pair when it exists
+  useEffect(() => {
+    if (pairState == PairState.EXISTS && pair) {
+      addPair(pair)
+    }
+  }, [pairState])
+
   // the callback to execute the create
   const { callback: deployCallback, error: deployCallbackError } = useDeployCallback(
     params,
@@ -162,7 +166,7 @@ export default function CreateToken() {
           attemptingTxn: false,
           deployErrorMessage: undefined,
           txHash: response.hash,
-          newTokenAddress: response.newTokenAddress,
+          newTokenAddress: response.address,
         }))
       })
       .catch((error) => {

@@ -138,13 +138,8 @@ export default createReducer<DeployState>(initialState, (builder) =>
     })
     .addCase(templateChange, (state, { payload: { templateId } }) => {
 
-      console.log(templateId)
-      
       const selectedTemplate = templateId
       const createOptions = deployTokenTemplates[selectedTemplate]
-      console.log(deployTokenTemplates)
-      console.log(createOptions)
-      console.log(selectedTemplate)
       
       return {
         ...state,

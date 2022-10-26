@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../hooks'
+import { useCurrency } from '../hooks/Tokens'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
@@ -59,4 +60,11 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
   return usePairs([[tokenA, tokenB]])[0]
+}
+
+export function usePairCurAddress(tokenA?: Currency, newTokenAddress?: string): [PairState, Pair | null] {
+
+  
+  const currencyB = <Currency | undefined>useCurrency(newTokenAddress)
+  return usePairs([[tokenA,  currencyB]])[0]
 }
