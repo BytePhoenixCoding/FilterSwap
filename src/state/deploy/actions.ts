@@ -21,10 +21,12 @@ export const replaceDeployState = createAction<{
   params: object
 
   selectedTemplate: number,
-  createOptions
+  createOptions,
+  newTokenAddress: string
 }>('deploy/replaceDeployState')
 export const ownerShareChange = createAction<{ ownerShare: number, liquidityShare: number }>('deploy/ownerShareChange')
 export const daysToLockChange = createAction<{ daysToLock: number }>('deploy/daysToLockChange')
 export const toggleLockForever = createAction('deploy/toggleLockForever')
 export const paramsChange = createAction<{ id: string, value: any }>('deploy/paramsChange')
 export const templateChange = createAction<{templateId: number}>('deploy/templateChange')
+export const updateNewTokenAddress = createAction<{newTokenAddress: string}>('deploy/updateNewTokenAddress')

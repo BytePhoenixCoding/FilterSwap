@@ -115,8 +115,6 @@ export function useDeployCallback(
 
             return contract.estimateGas[methodName](...args, options)
             .then((gasEstimate) => {
-              console.log(call)
-              console.log(gasEstimate.toString())
               return {
                   call,
                   gasEstimate,
@@ -174,7 +172,6 @@ export function useDeployCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response) => {
-            console.log({response})
 
 						const base = `Created and Deployed ${newTokenParams.tokenName}`
 
@@ -184,7 +181,6 @@ export function useDeployCallback(
             const hash = response.hash
             return response.wait().then(res => {
               
-              console.log(hash, res)
               const address = res.events[0].address
               return {
                 hash,

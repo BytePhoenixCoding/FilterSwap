@@ -14,7 +14,15 @@ import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances, useMintFee } from '../wallet/hooks'
-import { Field, ownerShareChange, daysToLockChange, toggleLockForever, paramsChange, templateChange } from './actions'
+import {
+  Field,
+  ownerShareChange,
+  daysToLockChange,
+  toggleLockForever,
+  paramsChange,
+  templateChange,
+  updateNewTokenAddress,
+} from './actions'
 import { selectCurrency, switchCurrencies, typeInput } from '../swap/actions'
 import { DeployState } from './reducer'
 import { tryParseAmount } from '../swap/hooks'
@@ -35,6 +43,7 @@ export function useDeployActionHandlers(): {
   onToggleLockForever: () => void
   onParamsChange: (params) => void
   onTemplateChange: (templateId: number) => void
+  onNewTokenAddress: (newTokenAddress: string) => void
 } {
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
@@ -90,6 +99,12 @@ export function useDeployActionHandlers(): {
     },
     [dispatch]
   )
+  const onNewTokenAddress = useCallback(
+    (newTokenAddress) => {
+      dispatch(updateNewTokenAddress({ newTokenAddress }))
+    },
+    [dispatch]
+  )
 
   // TODO
 
@@ -102,6 +117,7 @@ export function useDeployActionHandlers(): {
     onToggleLockForever,
     onParamsChange,
     onTemplateChange,
+    onNewTokenAddress,
   }
 }
 
@@ -161,6 +177,23 @@ export function useParams(): {
 
   return {
     handleParamsChange,
+  }
+}
+
+export function useNewTokenAddress(): {
+  handleNewTokenAddress
+} {
+  const { onNewTokenAddress } = useDeployActionHandlers()
+
+  const handleNewTokenAddress = useCallback(
+    (newTokenAddress) => {
+      onNewTokenAddress(newTokenAddress)
+    },
+    [onNewTokenAddress]
+  )
+
+  return {
+    handleNewTokenAddress,
   }
 }
 
