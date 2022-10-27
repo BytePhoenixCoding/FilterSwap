@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, replaceDeployState, ownerShareChange, daysToLockChange, toggleLockForever, paramsChange, templateChange } from './actions'
+import { Field, replaceDeployState, ownerShareChange, daysToLockChange, toggleLockForever, paramsChange, templateChange, updateNewTokenAddress } from './actions'
 import { selectCurrency, setRecipient, switchCurrencies, typeInput } from '../swap/actions'
 import { Currency } from 'custom_modules/@filterswap-libs/sdk/dist/sdk.esm'
 import { deployTokenTemplates } from '../../constants/deployToken/templates'
@@ -32,6 +32,7 @@ export interface DeployState {
       max?: number
     }[]
   }
+  readonly newTokenAddress: string | undefined
 }
 
 const initialState: DeployState = {
@@ -56,7 +57,8 @@ const initialState: DeployState = {
   daysToLock: LIQUIDITY_RECOMMENDED_LOCK_TIME,
   lockForever: false,
   selectedTemplate: 0,
-  createOptions: deployTokenTemplates[0]
+  createOptions: deployTokenTemplates[0],
+  newTokenAddress: undefined
 }
 
 export default createReducer<DeployState>(initialState, (builder) =>
@@ -73,7 +75,8 @@ export default createReducer<DeployState>(initialState, (builder) =>
         daysToLock,
         lockForever,
         selectedTemplate,
-        createOptions
+        createOptions,
+        newTokenAddress
       } }) => {
         return {
           [Field.INPUT]: {
@@ -90,7 +93,8 @@ export default createReducer<DeployState>(initialState, (builder) =>
           daysToLock,
           lockForever,
           selectedTemplate,
-          createOptions
+          createOptions,
+          newTokenAddress,
         }
       }
     )
@@ -145,6 +149,12 @@ export default createReducer<DeployState>(initialState, (builder) =>
         ...state,
         createOptions,
         selectedTemplate
+      }
+    })
+    .addCase(updateNewTokenAddress, (state, { payload: { newTokenAddress } }) => {
+      return {
+        ...state,
+        newTokenAddress
       }
     })
 )

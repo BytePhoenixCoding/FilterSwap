@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { DEPLOYER_MAX_OWNER_SHARE, LIQUIDITY_MIN_LOCK_TIME, LIQUIDITY_RECOMMENDED_LOCK_TIME } from '../../constants'
+import {
+  DEPLOYER_MAX_OWNER_SHARE,
+  LIQUIDITY_MIN_LOCK_TIME,
+  LIQUIDITY_RECOMMENDED_LOCK_TIME,
+  CHAIN_ID,
+} from '../../constants'
 
 import AppBody from '../AppBody'
 import { Box, Button, Toggle, CardBody, Text, Heading, Input } from '../../custom_modules/@filterswap-libs/uikit'
+import { Token } from '../../custom_modules/@filterswap-libs/sdk'
 
 import CardNav from 'components/CardNav'
 import { AutoRow, RowBetween } from 'components/Row'
@@ -24,6 +30,7 @@ import {
   useOwnerShare,
   useDaysToLock,
   useParams,
+  useNewTokenAddress,
   useTemplates,
 } from 'state/deploy/hooks'
 
@@ -34,7 +41,7 @@ import ProgressSteps from 'components/ProgressSteps'
 import { deployTokenTemplates } from '../../constants/deployToken/templates'
 
 import { PairState, usePairCurAddress } from 'data/Reserves'
-import { useUserDeadline, usePairAdder } from 'state/user/hooks'
+import { useUserDeadline, usePairAdder, useAddUserToken } from 'state/user/hooks'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -66,6 +73,7 @@ export default function CreateToken() {
   const { handleDaysToLockChange, handleLockForever } = useDaysToLock()
   const { handleOwnerShareChange, handleLiquidityShareChange } = useOwnerShare()
   const { handleTemplateChange } = useTemplates()
+  const { handleNewTokenAddress } = useNewTokenAddress()
 
   const { onCurrencySelection, onUserInput } = useDeployActionHandlers()
 
@@ -83,6 +91,7 @@ export default function CreateToken() {
 
     selectedTemplate,
     createOptions,
+    newTokenAddress,
   } = useDeployState()
 
   const handleTypeInput = useCallback(
@@ -110,27 +119,23 @@ export default function CreateToken() {
   }, [approval, approvalSubmitted])
 
   // modal and loading
-  const [
-    { showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash, newTokenAddress },
-    setDeployState,
-  ] = useState<{
+  const [{ showConfirm, paramsToConfirm, deployErrorMessage, attemptingTxn, txHash }, setDeployState] = useState<{
     showConfirm: boolean
     paramsToConfirm: object | undefined
     attemptingTxn: boolean
     deployErrorMessage: string | undefined
     txHash: string | undefined
-    newTokenAddress: string | undefined
   }>({
     showConfirm: false,
     paramsToConfirm: undefined,
     attemptingTxn: false,
     deployErrorMessage: undefined,
     txHash: undefined,
-    newTokenAddress: undefined,
   })
 
   const [pairState, pair] = usePairCurAddress(currencies[Field.INPUT] ?? undefined, newTokenAddress)
   const addPair = usePairAdder()
+  const addToken = useAddUserToken()
 
   // Add lq pair when it exists
   useEffect(() => {
@@ -156,17 +161,17 @@ export default function CreateToken() {
       attemptingTxn: true,
       deployErrorMessage: undefined,
       txHash: undefined,
-      newTokenAddress: undefined,
     }))
     deployCallback()
       .then((response: any) => {
-        console.log(response)
+        const newToken = new Token(CHAIN_ID, response.address, 18, params.tokenSymbol, params.tokenName, false)
+        addToken(newToken)
+        handleNewTokenAddress(response.address)
         setDeployState((prevState) => ({
           ...prevState,
           attemptingTxn: false,
           deployErrorMessage: undefined,
           txHash: response.hash,
-          newTokenAddress: response.address,
         }))
       })
       .catch((error) => {
@@ -177,7 +182,6 @@ export default function CreateToken() {
           attemptingTxn: false,
           deployErrorMessage: error.message,
           txHash: undefined,
-          newTokenAddress: undefined,
         }))
       })
   }, [setDeployState, deployCallback])
@@ -377,7 +381,14 @@ export default function CreateToken() {
                   Lock forever
                 </Text>
                 <Box>
-                  <Toggle scale={'md'} checked={lockForever} onChange={() => handleLockForever(!lockForever)} />
+                  <Toggle
+                    scale={'md'}
+                    checked={lockForever}
+                    onChange={() => {
+                      handleLockForever(!lockForever)
+                      handleNewTokenAddress('0x0')
+                    }}
+                  />
                 </Box>
               </RowBetween>
               <BottomGrouping>
@@ -412,7 +423,6 @@ export default function CreateToken() {
                           deployErrorMessage: undefined,
                           showConfirm: true,
                           txHash: undefined,
-                          newTokenAddress: undefined,
                         })
                       }}
                     >
@@ -431,7 +441,6 @@ export default function CreateToken() {
                         deployErrorMessage: undefined,
                         showConfirm: true,
                         txHash: undefined,
-                        newTokenAddress: undefined,
                       })
                     }}
                   >
