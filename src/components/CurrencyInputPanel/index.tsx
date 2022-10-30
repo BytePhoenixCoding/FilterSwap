@@ -179,7 +179,7 @@ export default function CurrencyInputPanel({
                 </Text>
               )}
               {!disableCurrencySelect && <ChevronDownIcon />}
-              {isTokenVerified == undefined ? (
+              {disableCurrencySelect ? "" : isTokenVerified == undefined ? (
                 '...'
               ) : isTokenVerified ? (
                 <CheckmarkCircleIcon color="success" />
