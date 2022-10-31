@@ -161,7 +161,7 @@ export function useLiquidityUnlockTime(pairToken: Token) {
     'liquidityUnlockTimes',
     inputs
     )
-  unlockTime.setUTCSeconds(utcTime.result?.[0].toNumber())
+  unlockTime.setUTCSeconds(utcTime.result?.[0].toString())
   return utcTime.loading ? "..." : unlockTime
 }
 
