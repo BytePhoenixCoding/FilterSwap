@@ -377,7 +377,6 @@ export default function CreateToken() {
                   checked={lockForever}
                   onChange={() => {
                     handleLockForever(!lockForever)
-                    handleNewTokenAddress('0x0')
                   }}
                 />
               </Box>
