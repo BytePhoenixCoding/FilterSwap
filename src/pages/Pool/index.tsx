@@ -1,7 +1,7 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Pair } from '../../custom_modules/@filterswap-libs/sdk'
-import { Button, CardBody, Text } from '../../custom_modules/@filterswap-libs/uikit'
+import { Button, CardBody, Text, Box, Toggle } from '../../custom_modules/@filterswap-libs/uikit'
 import { Link } from 'react-router-dom'
 import CardNav from 'components/CardNav'
 import Question from 'components/QuestionHelper'
@@ -54,6 +54,11 @@ export default function Pool() {
 
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
 
+  const [onlyShowUnlocked, setOnlyShowUnlocked] = useState(false)
+  const userMappedPairs = allV2PairsWithLiquidity.map((v2Pair) => (
+    <FullPositionCard onlyShowUnlocked={onlyShowUnlocked} key={v2Pair.liquidityToken.address} pair={v2Pair} />
+  ))
+
   return (
     <>
       <CardNav activeIndex={1} />
@@ -78,7 +83,20 @@ export default function Pool() {
                   )}
                 />
               </RowBetween>
-
+              <RowBetween>
+                <Text color="textSubtle" fontSize="14px">
+                  Show Unlocked Only
+                </Text>
+                <Box>
+                  <Toggle
+                    scale={'sm'}
+                    checked={onlyShowUnlocked}
+                    onChange={() => {
+                      setOnlyShowUnlocked(!onlyShowUnlocked)
+                    }}
+                  />
+                </Box>
+              </RowBetween>
               {!account ? (
                 <LightCard padding="40px">
                   <Text color="textDisabled" textAlign="center">
@@ -92,11 +110,7 @@ export default function Pool() {
                   </Text>
                 </LightCard>
               ) : allV2PairsWithLiquidity?.length > 0 ? (
-                <>
-                  {allV2PairsWithLiquidity.map((v2Pair) => (
-                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
-                  ))}
-                </>
+                <>{userMappedPairs}</>
               ) : (
                 <LightCard padding="40px">
                   <Text color="textDisabled" textAlign="center">
@@ -112,11 +126,13 @@ export default function Pool() {
                     {TranslateString(108, 'Import it.')}
                   </StyledInternalLink>
                 </Text>
-                 
+
                 <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0', color: 'yellow' }}>
-                    {TranslateString(1172, 'When you add liquidity in FilterSwap, you will be unable to withdraw it for a certain time period. This is to protect investors and prevent rug-pulls.')}                           
-                 </Text>
-               
+                  {TranslateString(
+                    1172,
+                    'When you add liquidity in FilterSwap, you will be unable to withdraw it for a certain time period. This is to protect investors and prevent rug-pulls.'
+                  )}
+                </Text>
               </div>
             </AutoColumn>
           </CardBody>
