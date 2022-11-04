@@ -162,7 +162,7 @@ export function useLiquidityUnlockTime(pairToken: Token) {
     inputs
     )
   unlockTime.setUTCSeconds(utcTime.result?.[0].toString())
-  return utcTime.loading ? "..." : unlockTime
+  return utcTime.loading ? "..." : isNaN(unlockTime.getTime()) ? "Forever" : unlockTime
 }
 
 export function useIsLiquidityLocked(pairToken: Token): any {
