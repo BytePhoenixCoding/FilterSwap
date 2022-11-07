@@ -60,7 +60,7 @@ export function ConfirmAddModalBottom({
         <Text>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</Text>
       </RowBetween>
       <RowBetween>
-        <Text>Liquidity Lock Time</Text>
+        <Text>Liquidity Lock Time:</Text>
         {/* <QuestionHelper text={'To Change'} /> */}
         <Text>{lockForever ? 'Forever' : `${daysToLock} Days`}</Text>
       </RowBetween>

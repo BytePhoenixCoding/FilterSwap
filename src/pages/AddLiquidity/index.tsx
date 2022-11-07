@@ -392,7 +392,7 @@ export default function AddLiquidity({
                 {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
                   <Box marginTop={2}>
                     <UIKitText color="warning" fontSize="12px">
-                      It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
+                      It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher.
                     </UIKitText>
                   </Box>
                 ) : (
