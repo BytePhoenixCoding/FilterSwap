@@ -127,7 +127,7 @@ export function useMintFee(
   // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
   
   const fee = parsedAmount.divide(DEPLOYER_MINT_FEE)
-  return tryParseAmount(fee.toSignificant(50), parsedAmount.currency)
+  return tryParseAmount(fee.toFixed(18), parsedAmount.currency)
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
