@@ -27,7 +27,7 @@ const config: MenuEntry[] = [
     items: [
       {
         label: 'Token Verification',
-        href: 'about:blank',
+        href: '/verifytoken',
       },
       {
         label: 'Presales (coming soon!)',

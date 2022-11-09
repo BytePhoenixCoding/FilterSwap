@@ -6,6 +6,7 @@ export const ROUTER_ADDRESS: string = <string>process.env.REACT_APP_ROUTER_ADDRE
 export const INIT_CODE_HASH: string = <string>process.env.REACT_APP_INIT_CODE_HASH
 export const MANAGER_ADDRESS = <string>process.env.REACT_APP_MANAGER_ADDRESS;
 export const DEPLOYER_ADDRESS = <string>process.env.REACT_APP_DEPLOYER_ADDRESS;
+export const VERIFIER_ADDRESS = <string>process.env.REACT_APP_VERIFIER_ADDRESS;
 
 
 export const DEPLOYER_MINT_FEE = Number(process.env.REACT_APP_DEPLOYER_MINT_FEE)

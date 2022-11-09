@@ -5,8 +5,9 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '../custom_modules/@filterswap-libs/sdk'
-import { MANAGER_ADDRESS, ROUTER_ADDRESS, DEPLOYER_ADDRESS } from '../constants'
+import { MANAGER_ADDRESS, ROUTER_ADDRESS, DEPLOYER_ADDRESS, VERIFIER_ADDRESS } from '../constants'
 import { DEPLOYER_ABI, ERC20_ABI, MANAGER_ABI, ROUTER_ABI } from '../constants/deployToken/ABIs'
+import { VERIFIER_ABI } from '../constants/verifyToken/ABIs'
 import { TokenAddressMap } from '../state/lists/hooks'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -105,6 +106,10 @@ export function getDeployerAddress(_: number, library: Web3Provider, account?: s
 export function getDeployerContract(_: number, library: Web3Provider, account?: string): Contract {
   // const DEPLOYER_ADDRESS = getDeployerAddress(_, library, account)
   return getContract(DEPLOYER_ADDRESS, DEPLOYER_ABI, library, account)
+}
+
+export function getVerifierContract(_: number, library: Web3Provider, account?: string): Contract {
+  return getContract(VERIFIER_ADDRESS, VERIFIER_ABI, library, account)
 }
 
 export function getTokenContract(token_address: string, library: Web3Provider, account?: string): Contract {
