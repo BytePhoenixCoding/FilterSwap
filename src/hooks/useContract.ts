@@ -10,8 +10,9 @@ import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { MANAGER_ADDRESS } from "../constants/index"
+import { MANAGER_ADDRESS, VERIFIER_ADDRESS } from "../constants/index"
 import { MANAGER_ABI } from '../constants/deployToken/ABIs'
+import { VERIFIER_ABI } from '../constants/verifyToken/ABIs'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -67,4 +68,8 @@ export function useMulticallContract(): Contract | null {
 }
 export function useManagerContract(): Contract | null {
   return useContract(MANAGER_ADDRESS, MANAGER_ABI, false)
+}
+
+export function useVerifierContract(): Contract | null {
+  return useContract(VERIFIER_ADDRESS, VERIFIER_ABI, false)
 }

@@ -127,7 +127,7 @@ export function useMintFee(
   // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
   
   const fee = parsedAmount.divide(DEPLOYER_MINT_FEE)
-  return tryParseAmount(fee.toSignificant(50), parsedAmount.currency)
+  return tryParseAmount(fee.toFixed(18), parsedAmount.currency)
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
@@ -161,8 +161,8 @@ export function useLiquidityUnlockTime(pairToken: Token) {
     'liquidityUnlockTimes',
     inputs
     )
-  unlockTime.setUTCSeconds(utcTime.result?.[0].toNumber())
-  return utcTime.loading ? "..." : unlockTime
+  unlockTime.setUTCSeconds(utcTime.result?.[0].toString())
+  return utcTime.loading ? "..." : isNaN(unlockTime.getTime()) ? "Forever" : unlockTime
 }
 
 export function useIsLiquidityLocked(pairToken: Token): any {

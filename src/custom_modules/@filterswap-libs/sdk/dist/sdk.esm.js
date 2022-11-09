@@ -13,7 +13,7 @@ import { getDefaultProvider } from '@ethersproject/providers';
 import IUniswapV2Pair from '@uniswap/v2-core/build/IUniswapV2Pair.json';
 import { deployTokenTemplates } from 'constants/deployToken/templates';
 import { BigNumber } from 'ethers';
-import { hexZeroPad } from 'ethers/lib/utils';
+import { hexZeroPad, parseUnits } from 'ethers/lib/utils';
 
 var _SOLIDITY_TYPE_MAXIMA;
 var ChainId;
@@ -1488,21 +1488,27 @@ var Router = /*#__PURE__*/function () {
 
     if (options.inputCurrency == ETHER || options.inputCurrency.address == WETH[ChainId.BSCTESTNET].address) {
 
+      const decimals = options.inputCurrency.decimals
+      const input = options.inputAmount || "0"
+      const amount = parseUnits(input, decimals)
+
       methodName = "createTokenETH"
-      value = BigNumber.from(((options.inputAmount || 0) *
-        10 ** options.inputCurrency.decimals).toString())._hex
+      value = amount
 
     } else {
 
       methodName = 'createToken'
       value = ZERO_HEX
 
+      const decimals = options.inputCurrency.decimals
+      const input = options.inputAmount || "0"
+      const amount = parseUnits(input, decimals)
+
       args = args.slice(0, 4).concat([
         // _baseTokenAddress:  address of base token eg. BUSD
         options.inputCurrency ? options.inputCurrency.address : "0x0000000000000000000000000000000000000000",
         // _baseTokenAmount: amount of tokens
-        BigNumber.from((parseFloat(options.inputAmount || 0) *
-          10 ** options.inputCurrency.decimals).toString())._hex
+        amount
       ]).concat(args.slice(4))
     }
 

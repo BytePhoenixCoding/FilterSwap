@@ -55,7 +55,7 @@ const TransactionSubmittedContent = ({ onDismiss, chainId, hash }: TransactionSu
         <AutoColumn gap="8px" justify="center">
           {chainId && hash && (
             <>
-              {newTokenAddress ? (
+              {newTokenAddress && newTokenAddress != '0x0' ? (
                 <>
                   <Text color="primary" fontSize="24px">{`${params.tokenSymbol} has been deployed!`}</Text>
                   <Text color="textSubtle" fontSize="12px">{`Token address: ${newTokenAddress}`}</Text>

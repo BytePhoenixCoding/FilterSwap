@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, DeployParameters, Trade, TradeType } from '../custom_modules/@filterswap-libs/sdk'
 import { useMemo } from 'react'
-import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
+import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, DEPLOYER_ADDRESS, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, getDeployerContract } from '../utils'
 import isZero from '../utils/isZero'
@@ -11,6 +11,7 @@ import { useActiveWeb3React } from './index'
 import useENS from './useENS'
 import { Currency } from '@pancakeswap-libs/sdk'
 import {  useDeployState } from 'state/deploy/hooks'
+import { hexZeroPad } from 'ethers/lib/utils'
 
  enum DeployCallbackState {
   INVALID,
@@ -78,6 +79,22 @@ function useDeployCallArguments(
 
     return deployMethods.map((parameters) => ({ parameters, contract }))
   }, [account, chainId, deadline, library, newTokenParams, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount])
+}
+
+const findTokenAddressFromLogs = (logs) => {
+  // Find the token that in which the topic 1st index is 
+  // "0x0000000000000000000000000000000000000000000000000000000000000000"
+  // and 2nd index is DEPLOYER_ADDRESS
+
+  const DEPLOYER_CLEANED = hexZeroPad(DEPLOYER_ADDRESS.toLowerCase(),32)
+  
+  const nta = logs.find(log => {
+    const topics = log.topics
+    return topics[1] == "0x0000000000000000000000000000000000000000000000000000000000000000" 
+    && topics[2] == DEPLOYER_CLEANED
+})
+  
+  return nta.address
 }
 
 // returns a function that will execute a token deploy
@@ -181,7 +198,7 @@ export function useDeployCallback(
             const hash = response.hash
             return response.wait().then(res => {
               
-              const address = res.events[0].address
+              const address = findTokenAddressFromLogs(res.logs)
               return {
                 hash,
                 address

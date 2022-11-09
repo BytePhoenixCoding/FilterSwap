@@ -35,6 +35,7 @@ import {
 } from 'state/deploy/hooks'
 
 import { useActiveWeb3React } from 'hooks'
+import PageHeader from 'components/PageHeader'
 import Loader from 'components/Loader'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ProgressSteps from 'components/ProgressSteps'
@@ -205,11 +206,11 @@ export default function CreateToken() {
       (approvalSubmitted && approval === ApprovalState.APPROVED))
 
   const handleConfirmDismiss = useCallback(() => {
-    setDeployState((prevState) => ({ ...prevState, showConfirm: false }))
-
-    // if there was a tx hash, we want to clear the input
+    setDeployState((prevState) => ({ ...prevState, newTokenAddress: undefined, showConfirm: false }))
+    // if there was a tx hash, we want to clear the input and new token address
     if (txHash) {
       onUserInput(Field.INPUT, '')
+      handleNewTokenAddress('0x0')
     }
   }, [onUserInput, txHash, setDeployState])
   const { account } = useActiveWeb3React()
@@ -222,6 +223,12 @@ export default function CreateToken() {
     <>
       <CardNav activeIndex={2} />
       <AppBody>
+        <PageHeader
+          title={'Create Token'}
+          description={
+            'To create a token on FilterSwap, deploy a token contract then add liquidity to make it tradeable.'
+          }
+        />
         <AutoColumn gap="lg" justify="center">
           <ConfirmDeployModal
             isOpen={showConfirm}
@@ -233,207 +240,172 @@ export default function CreateToken() {
             onDismiss={handleConfirmDismiss}
           />
           <CardBody>
-            <AutoColumn gap="12px" style={{ width: '100%' }}>
-              <Heading mb="8px">{TranslateString(107, 'Create Token')}</Heading>
-              <Text color="textSubtle" fontSize="16px">
-                {TranslateString(
-                  107,
-                  'To create a token on FilterSwap, deploy a token contract then add liquidity to make it tradeable.'
-                )}
-              </Text>
-            </AutoColumn>
-            <CardBody>
-              <Text color={theme.colors.text}>{TranslateString(107, 'Step 1')}</Text>
-              <Text color="textSubtle" fontSize="17px">
-                {TranslateString(107, 'Choose a token template below.')}
-              </Text>
-              <br />
-              <div style={{ display: 'flex', gap: '5%', justifyContent: 'center' }}>
-                <Select onChange={handleTemplateChange}>
-                  {deployTokenTemplates.map((e, i) => (
-                    <option key={i} value={i}>
-                      {e.name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <br />
-              <Text color="textSubtle" fontSize="14px">
-                {createOptions.description}
-              </Text>
-              <br />
-              <fieldset>
-                <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
-                {(createOptions.options || deployTokenTemplates[0].options).map((e, i) => {
-                  var inside
-                  if (e.type == 'number' || e.type == 'percent') {
-                    inside = (
-                      <Input
-                        id={e.id}
-                        type="number"
-                        scale="lg"
-                        step={e.type == 'percent' ? 0.25 : 1}
-                        min={e.min || 0}
-                        max={e.max || 1000000000000000}
-                        value={params[e.id]}
-                        onChange={handleParamsChange}
-                        data-type={e.type}
-                      />
-                    )
-                  } else {
-                    inside = (
-                      <Input
-                        id={e.id}
-                        value={e.value}
-                        key={i}
-                        onChange={handleParamsChange}
-                        placeholder={e.fieldName}
-                      />
-                    )
-                  }
-                  return (
-                    <div key={e.fieldName}>
-                      <Text color="textSubtle">{TranslateString(107, e.fieldName)}</Text>
-                      {inside}
-                    </div>
+            <Text color={theme.colors.text}>{TranslateString(107, 'Step 1')}</Text>
+            <Text color="textSubtle" fontSize="17px">
+              {TranslateString(107, 'Choose a token template below.')}
+            </Text>
+            <br />
+            <div style={{ display: 'flex', gap: '5%', justifyContent: 'center' }}>
+              <Select onChange={handleTemplateChange}>
+                {deployTokenTemplates.map((e, i) => (
+                  <option key={i} value={i}>
+                    {e.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <br />
+            <Text color="textSubtle" fontSize="14px">
+              {createOptions.description}
+            </Text>
+            <br />
+            <fieldset>
+              <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
+              {(createOptions.options || deployTokenTemplates[0].options).map((e, i) => {
+                var inside
+                if (e.type == 'number' || e.type == 'percent') {
+                  inside = (
+                    <Input
+                      id={e.id}
+                      type="number"
+                      scale="lg"
+                      step={e.type == 'percent' ? 0.25 : 1}
+                      min={e.min || 0}
+                      max={e.max || 1000000000000000}
+                      value={params[e.id]}
+                      onChange={handleParamsChange}
+                      data-type={e.type}
+                    />
                   )
-                })}
-              </fieldset>
-              <br />
-              <RowBetween>
-                <Text color="textSubtle" fontSize="16px">
-                  Owner Token Share (%):
-                </Text>
-                <Input
-                  type="number"
-                  scale="lg"
-                  step={0.25}
-                  min={0}
-                  max={DEPLOYER_MAX_OWNER_SHARE}
-                  value={ownerShare}
-                  onChange={handleOwnerShareChange}
-                  style={{ width: '30%' }}
-                />
-              </RowBetween>
-              <br />
-              <RowBetween>
-                <Text color="textSubtle" fontSize="16px">
-                  Liquidity Pool Share (%):
-                </Text>
-                <Input
-                  type="number"
-                  scale="lg"
-                  step={0.25}
-                  min={85}
-                  max={100}
-                  value={liquidityShare}
-                  onChange={handleLiquidityShareChange}
-                  style={{ width: '30%' }}
-                />
-              </RowBetween>
-              <br />
-              <Text color={theme.colors.text}>{TranslateString(107, 'Step 2')}</Text>
-              <Text color="textSubtle" fontSize="17px">
-                {TranslateString(107, 'Choose token pair and initial liquidity amount.')}
+                } else {
+                  inside = (
+                    <Input id={e.id} value={e.value} key={i} onChange={handleParamsChange} placeholder={e.fieldName} />
+                  )
+                }
+                return (
+                  <div key={e.fieldName}>
+                    <Text color="textSubtle">{TranslateString(107, e.fieldName)}</Text>
+                    {inside}
+                  </div>
+                )
+              })}
+            </fieldset>
+            <br />
+            <RowBetween>
+              <Text color="textSubtle" fontSize="16px">
+                Owner Token Share (%):
               </Text>
-              <br />
-              <CurrencyInputPanel
-                value={formattedAmounts[Field.INPUT]}
-                onUserInput={handleTypeInput}
-                showMaxButton={false}
-                currency={currencies[Field.INPUT]}
-                onCurrencySelect={handleInputSelect}
-                id="create-token-currency"
+              <Input
+                type="number"
+                scale="lg"
+                step={0.25}
+                min={0}
+                max={DEPLOYER_MAX_OWNER_SHARE}
+                value={ownerShare}
+                onChange={handleOwnerShareChange}
+                style={{ width: '30%' }}
               />
-              <br />
-              <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>
-              <Text color="textSubtle" fontSize="17px">
-                {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
+            </RowBetween>
+            <br />
+            <RowBetween>
+              <Text color="textSubtle" fontSize="16px">
+                Liquidity Pool Share (%):
               </Text>
-              <br />
-              <RowBetween>
-                <Text color="textSubtle" fontSize="14px">
-                  Liquidity Lock Time (days):
+              <Input
+                type="number"
+                scale="lg"
+                step={0.25}
+                min={85}
+                max={100}
+                value={liquidityShare}
+                onChange={handleLiquidityShareChange}
+                style={{ width: '30%' }}
+              />
+            </RowBetween>
+            <br />
+            <Text color={theme.colors.text}>{TranslateString(107, 'Step 2')}</Text>
+            <Text color="textSubtle" fontSize="17px">
+              {TranslateString(107, 'Choose token pair and initial liquidity amount.')}
+            </Text>
+            <br />
+            <CurrencyInputPanel
+              value={formattedAmounts[Field.INPUT]}
+              onUserInput={handleTypeInput}
+              showMaxButton={false}
+              currency={currencies[Field.INPUT]}
+              onCurrencySelect={handleInputSelect}
+              id="create-token-currency"
+            />
+            <br />
+            <Text color={theme.colors.text}>{TranslateString(107, 'Step 3')}</Text>
+            <Text color="textSubtle" fontSize="17px">
+              {TranslateString(107, 'Choose liquidity lock time then deploy token.')}
+            </Text>
+            <br />
+            <RowBetween>
+              <Text color="textSubtle" fontSize="14px">
+                Liquidity Lock Time (days):
+              </Text>
+              <Input
+                type="number"
+                scale="lg"
+                step={1}
+                min={LIQUIDITY_MIN_LOCK_TIME}
+                value={daysToLock}
+                onChange={handleDaysToLockChange}
+                style={{ width: '30%' }}
+                disabled={lockForever}
+              />
+            </RowBetween>
+            {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
+              <Box marginTop={2}>
+                <Text color="warning" fontSize="12px">
+                  It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
                 </Text>
-                <Input
-                  type="number"
-                  scale="lg"
-                  step={1}
-                  min={LIQUIDITY_MIN_LOCK_TIME}
-                  value={daysToLock}
-                  onChange={handleDaysToLockChange}
-                  style={{ width: '30%' }}
-                  disabled={lockForever}
+              </Box>
+            ) : (
+              ''
+            )}
+            or
+            <RowBetween>
+              <Text color="textSubtle" fontSize="14px">
+                Lock forever
+              </Text>
+              <Box>
+                <Toggle
+                  scale={'md'}
+                  checked={lockForever}
+                  onChange={() => {
+                    handleLockForever(!lockForever)
+                  }}
                 />
-              </RowBetween>
-              {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
-                <Box marginTop={2}>
-                  <Text color="warning" fontSize="12px">
-                    It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher.
-                  </Text>
-                </Box>
-              ) : (
-                ''
-              )}
-              or
-              <RowBetween>
-                <Text color="textSubtle" fontSize="14px">
-                  Lock forever
-                </Text>
-                <Box>
-                  <Toggle
-                    scale={'md'}
-                    checked={lockForever}
-                    onChange={() => {
-                      handleLockForever(!lockForever)
-                      handleNewTokenAddress('0x0')
-                    }}
-                  />
-                </Box>
-              </RowBetween>
-              <BottomGrouping>
-                {!account ? (
-                  <ConnectWalletButton width="100%" />
-                ) : showApproveFlow ? (
-                  <RowBetween>
-                    <Button
-                      onClick={approveCallback}
-                      disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                      style={{ width: '48%' }}
-                      variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
-                    >
-                      {approval === ApprovalState.PENDING ? (
-                        <AutoRow gap="6px" justify="center">
-                          Approving <Loader stroke="white" />
-                        </AutoRow>
-                      ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                        'Approved'
-                      ) : (
-                        `Approve ${currencies[Field.INPUT]?.symbol}`
-                      )}
-                    </Button>
-                    <Button
-                      id="deploy-token-button"
-                      style={{ width: '48%' }}
-                      disabled={!!deployInputError || approval !== ApprovalState.APPROVED}
-                      onClick={() => {
-                        setDeployState({
-                          paramsToConfirm: params,
-                          attemptingTxn: false,
-                          deployErrorMessage: undefined,
-                          showConfirm: true,
-                          txHash: undefined,
-                        })
-                      }}
-                    >
-                      {deployInputError || 'Deploy Token'}
-                    </Button>
-                  </RowBetween>
-                ) : (
+              </Box>
+            </RowBetween>
+            <BottomGrouping>
+              {!account ? (
+                <ConnectWalletButton width="100%" />
+              ) : showApproveFlow ? (
+                <RowBetween>
                   <Button
-                    id="upload-contract-button"
-                    width="100%"
-                    disabled={!!deployInputError}
+                    onClick={approveCallback}
+                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                    style={{ width: '48%' }}
+                    variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
+                  >
+                    {approval === ApprovalState.PENDING ? (
+                      <AutoRow gap="6px" justify="center">
+                        Approving <Loader stroke="white" />
+                      </AutoRow>
+                    ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                      'Approved'
+                    ) : (
+                      `Approve ${currencies[Field.INPUT]?.symbol}`
+                    )}
+                  </Button>
+                  <Button
+                    id="deploy-token-button"
+                    style={{ width: '48%' }}
+                    disabled={!!deployInputError || approval !== ApprovalState.APPROVED}
                     onClick={() => {
                       setDeployState({
                         paramsToConfirm: params,
@@ -446,10 +418,27 @@ export default function CreateToken() {
                   >
                     {deployInputError || 'Deploy Token'}
                   </Button>
-                )}
-                {showApproveFlow && <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />}
-              </BottomGrouping>
-            </CardBody>
+                </RowBetween>
+              ) : (
+                <Button
+                  id="upload-contract-button"
+                  width="100%"
+                  disabled={!!deployInputError}
+                  onClick={() => {
+                    setDeployState({
+                      paramsToConfirm: params,
+                      attemptingTxn: false,
+                      deployErrorMessage: undefined,
+                      showConfirm: true,
+                      txHash: undefined,
+                    })
+                  }}
+                >
+                  {deployInputError || 'Deploy Token'}
+                </Button>
+              )}
+              {showApproveFlow && <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />}
+            </BottomGrouping>
           </CardBody>
         </AutoColumn>
       </AppBody>

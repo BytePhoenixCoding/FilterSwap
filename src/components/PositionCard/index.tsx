@@ -33,6 +33,7 @@ interface PositionCardProps {
   pair: Pair
   // eslint-disable-next-line react/no-unused-prop-types
   showUnwrapped?: boolean
+  onlyShowUnlocked?: boolean
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
@@ -116,7 +117,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
   )
 }
 
-export default function FullPositionCard({ pair }: PositionCardProps) {
+export default function FullPositionCard({ pair, onlyShowUnlocked }: PositionCardProps) {
   const { account } = useActiveWeb3React()
 
   const currency0 = unwrappedToken(pair.token0)
@@ -146,6 +147,10 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
           pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
         ]
       : [undefined, undefined]
+
+  if (onlyShowUnlocked && liquidityLocked) {
+    return null
+  }
 
   return (
     <HoverCard>

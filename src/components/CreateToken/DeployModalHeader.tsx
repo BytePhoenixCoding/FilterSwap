@@ -21,7 +21,7 @@ const PriceInfoText = styled(Text)`
   }
 `
 
-export default function SwapModalHeader({
+export default function DeployModalHeader({
   trade,
   allowedSlippage,
   recipient,
