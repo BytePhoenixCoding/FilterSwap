@@ -7,7 +7,7 @@ import { VERIFICATION_REQUEST_FEE } from '../../constants'
 import AppBody from '../AppBody'
 
 import { Box, Button, CardBody, Text, Input } from '../../custom_modules/@filterswap-libs/uikit'
-import { Token } from '../../custom_modules/@filterswap-libs/sdk'
+import { Currency, Token } from '../../custom_modules/@filterswap-libs/sdk'
 
 import Question from 'components/QuestionHelper'
 import { AutoRow, RowBetween } from 'components/Row'
@@ -56,7 +56,7 @@ export default function CreateToken() {
 
   const addTransaction = useTransactionAdder()
 
-  const onSubmitRequest = async () => {
+  const onSubmitRequest = async (verificationTip = 0) => {
     if (!chainId || !library || !account || !token) return
     const verifyContract = getVerifierContract(chainId, library, account)
 
@@ -68,8 +68,7 @@ export default function CreateToken() {
     estimate = verifyContract.estimateGas.submitVerificationRequest
     method = verifyContract.submitVerificationRequest
     args = [token.address]
-    value = BigNumber.from(VERIFICATION_REQUEST_FEE.toString())
-
+    value = BigNumber.from((VERIFICATION_REQUEST_FEE + verificationTip * 10 ** Currency.ETHER.decimals).toString())
     setVerifyState((prevState) => ({ ...prevState, attemptingTxn: true }))
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
@@ -137,7 +136,7 @@ export default function CreateToken() {
     setVerifyState((prevState) => ({ ...prevState, showConfirm: false }))
   }, [setVerifyState])
 
-  const [addressToVerify, setAddress] = useState('0x5effb3df4755a5ad0311d459bce7d30c8d5c6095')
+  const [addressToVerify, setAddress] = useState('')
 
   const handleAddressChange = (e) => setAddress(e.target.value)
   const token = useToken(isAddress(addressToVerify) ? addressToVerify : undefined)
@@ -192,8 +191,8 @@ export default function CreateToken() {
   //   verifyInputError = 'Verification Deadline Not Passed'
   // }
 
-  const handleVerificationRequest = () => {
-    onSubmitRequest()
+  const handleVerificationRequest = (tip: number) => {
+    onSubmitRequest(tip)
   }
   const handleVerificationCancellation = () => {
     onCancelRequest()
@@ -205,6 +204,7 @@ export default function CreateToken() {
         <PageHeader
           title={'Token Verification'}
           description={'Submit a new verification request for a token, or check the status of an existing request'}
+          hideSettings={true}
         ></PageHeader>
         <AutoColumn gap="lg" justify="center">
           <ConfirmVerifyModal
