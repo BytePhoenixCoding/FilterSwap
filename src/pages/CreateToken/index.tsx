@@ -228,6 +228,7 @@ export default function CreateToken() {
           description={
             'To create a token on FilterSwap, deploy a token contract then add liquidity to make it tradeable.'
           }
+          hideSettings={true}
         />
         <AutoColumn gap="lg" justify="center">
           <ConfirmDeployModal

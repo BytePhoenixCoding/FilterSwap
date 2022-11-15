@@ -204,6 +204,7 @@ export default function CreateToken() {
         <PageHeader
           title={'Token Verification'}
           description={'Submit a new verification request for a token, or check the status of an existing request'}
+          hideSettings={true}
         ></PageHeader>
         <AutoColumn gap="lg" justify="center">
           <ConfirmVerifyModal
