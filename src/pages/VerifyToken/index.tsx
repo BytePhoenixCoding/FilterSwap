@@ -3,7 +3,7 @@ import styled, { ThemeContext } from 'styled-components'
 import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 
-import { VERIFICATION_REQUEST_FEE } from '../../constants'
+import { VERIFICATION_REQUEST_DEADLINE, VERIFICATION_REQUEST_FEE } from '../../constants'
 import AppBody from '../AppBody'
 
 import { Box, Button, CardBody, Text, Input } from '../../custom_modules/@filterswap-libs/uikit'
@@ -223,8 +223,8 @@ export default function CreateToken() {
           <CardBody>
             <AutoColumn gap="16px" style={{ width: '100%' }}>
               <Text color="textSubtle">
-                If you submit a verification request and it isn't processed within [ADD_TIME_HERE], you can claim back
-                the full fee amount.
+                If you submit a verification request and it isn't processed within{' '}
+                {VERIFICATION_REQUEST_DEADLINE / 86400} days, you can claim back the full fee amount.
               </Text>
               <Box>
                 <Text fontSize="16px" mb={2}>
