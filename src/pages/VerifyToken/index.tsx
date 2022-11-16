@@ -151,11 +151,19 @@ export default function CreateToken() {
   const verificationRequestStatuses = useSingleCallResult(verifierContract, 'verificationRequestStatuses', [
     isAddress(addressToVerify) ? addressToVerify : undefined,
   ])
-  const verificationRequestDealine = useSingleCallResult(verifierContract, 'verificationRequestDeadlines', [
+  const verificationRequestDeadlines = useSingleCallResult(verifierContract, 'verificationRequestDeadlines', [
+    isAddress(addressToVerify) ? addressToVerify : undefined,
+  ])
+  const verificationRequestCreator = useSingleCallResult(verifierContract, 'verificationRequestCreator', [
     isAddress(addressToVerify) ? addressToVerify : undefined,
   ])
   const verificationStatus = verificationRequestStatuses?.result?.[0].toNumber()
-  const verificationDeadline = verificationRequestStatuses?.result?.[0]
+  const verificationDeadline = new Date(0)
+  verificationDeadline.setUTCSeconds(verificationRequestDeadlines?.result?.[0].toNumber())
+  const verificationCreator = verificationRequestCreator?.result?.[0]
+  const verificationReqExpired: boolean =
+    token?.verified ||
+    (verificationStatus == VerificationStatus.AWAITING_PROCESSING && verificationDeadline.getTime() < Date.now())
 
   let verificationStatusText
   switch (verificationStatus) {
@@ -188,10 +196,11 @@ export default function CreateToken() {
     verifyInputError = 'Token is Already Verified'
   } else if (verificationStatus == VerificationStatus.REQUEST_REJECTED) {
     verifyInputError = 'Verification Request Rejected'
+  } else if (verificationCreator != account) {
+    verifyInputError = 'Request Submitted by Another User'
+  } else if (!verificationReqExpired) {
+    verifyInputError = 'Verification Deadline Not Passed'
   }
-  // else if (verificationStatus == VerificationStatus.AWAITING_PROCESSING && verificationDeadline) {
-  //   verifyInputError = 'Verification Deadline Not Passed'
-  // }
 
   const handleVerificationRequest = (tip: number) => {
     onSubmitRequest(tip)
@@ -267,6 +276,14 @@ export default function CreateToken() {
                         )}
                       </Text>
                     </RowBetween>
+                    {!verificationReqExpired && (
+                      <RowBetween>
+                        <Text as="span">Request Deadline:</Text>
+                        <Text ml={2} as="span" color="textSubtle">
+                          {verificationDeadline.toLocaleString()}
+                        </Text>
+                      </RowBetween>
+                    )}
                   </Box>
                 ) : (
                   ''
