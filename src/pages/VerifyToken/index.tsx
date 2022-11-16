@@ -184,8 +184,10 @@ export default function CreateToken() {
     verifyInputError = 'Token Not Found at Address'
   } else if (token.verified == undefined) {
     verifyInputError = <Dots>Loading Token Status</Dots>
-  } else if (token.verified) {
+  } else if (token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED) {
     verifyInputError = 'Token is Already Verified'
+  } else if (verificationStatus == VerificationStatus.REQUEST_REJECTED) {
+    verifyInputError = 'Verification Request Rejected'
   }
   // else if (verificationStatus == VerificationStatus.AWAITING_PROCESSING && verificationDeadline) {
   //   verifyInputError = 'Verification Deadline Not Passed'
@@ -245,8 +247,18 @@ export default function CreateToken() {
                     </RowBetween>
                     <RowBetween>
                       <Text as="span">Status:</Text>
-                      <Text ml={2} color={token.verified ? 'success' : 'textSubtle'} as="span">
-                        {token.verified ? (
+                      <Text
+                        ml={2}
+                        color={
+                          token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED
+                            ? 'success'
+                            : verificationStatus == VerificationStatus.REQUEST_REJECTED
+                            ? 'failure'
+                            : 'textSubtle'
+                        }
+                        as="span"
+                      >
+                        {token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED ? (
                           'Token Verified'
                         ) : verificationRequestStatuses.loading ? (
                           <Dots>Loading</Dots>
