@@ -1,5 +1,5 @@
 {
-  "name": "PancakeSwap Default List",
+  "name": "Filterswap Default List",
   "timestamp": "2021-03-17T09:56:23Z",
   "version": {
     "major": 2,
@@ -7,8 +7,11 @@
     "patch": 0
   },
   "tags": {},
-  "logoURI": "https://bsc.pancake.kiemtienonline360.com/images/Pancakeswap.png",
-  "keywords": ["Pancake", "default"],
+  "logoURI": "",
+  "keywords": [
+    "Filterswap",
+    "default"
+  ],
   "tokens": [
     {
       "name": "WBNB Token",
