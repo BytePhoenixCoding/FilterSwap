@@ -172,9 +172,15 @@ export default function CreateToken() {
       break
     case VerificationStatus.AWAITING_PROCESSING:
       verificationStatusText = 'Request Submitted. Awaiting Processing'
+      if (verificationCreator != account) {
+        verifyInputError = 'Request Submitted by Another User'
+      } else if (!verificationReqExpired) {
+        verifyInputError = 'Verification Deadline Not Passed'
+      }
       break
     case VerificationStatus.REQUEST_REJECTED:
       verificationStatusText = 'Request Rejected. Contact for more info'
+      verifyInputError = 'Verification Request Rejected'
       break
     case VerificationStatus.REQUEST_ACCEPTED:
       verificationStatusText = 'Request Accepted'
@@ -194,12 +200,6 @@ export default function CreateToken() {
     verifyInputError = <Dots>Loading Token Status</Dots>
   } else if (token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED) {
     verifyInputError = 'Token is Already Verified'
-  } else if (verificationStatus == VerificationStatus.REQUEST_REJECTED) {
-    verifyInputError = 'Verification Request Rejected'
-  } else if (verificationCreator != account) {
-    verifyInputError = 'Request Submitted by Another User'
-  } else if (!verificationReqExpired) {
-    verifyInputError = 'Verification Deadline Not Passed'
   }
 
   const handleVerificationRequest = (tip: number) => {
@@ -276,7 +276,7 @@ export default function CreateToken() {
                         )}
                       </Text>
                     </RowBetween>
-                    {!verificationReqExpired && (
+                    {!verificationReqExpired && verificationDeadline.getTime() != 0 && (
                       <RowBetween>
                         <Text as="span">Request Deadline:</Text>
                         <Text ml={2} as="span" color="textSubtle">
