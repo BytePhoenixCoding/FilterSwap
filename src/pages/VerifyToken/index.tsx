@@ -168,38 +168,38 @@ export default function CreateToken() {
   let verificationStatusText
   switch (verificationStatus) {
     case VerificationStatus.NO_REQUEST:
-      verificationStatusText = 'No Request Submitted'
+      verificationStatusText = 'No request submitted'
       break
     case VerificationStatus.AWAITING_PROCESSING:
-      verificationStatusText = 'Request Submitted. Awaiting Processing'
+      verificationStatusText = 'Request submitted, under review...'
       if (verificationCreator != account) {
-        verifyInputError = 'Request Submitted by Another User'
+        verifyInputError = 'Request submitted by another user'
       } else if (!verificationReqExpired) {
-        verifyInputError = 'Verification Deadline Not Passed'
+        verifyInputError = 'Verification deadline not passed'
       }
       break
     case VerificationStatus.REQUEST_REJECTED:
-      verificationStatusText = 'Request Rejected. Contact for more info'
-      verifyInputError = 'Verification Request Rejected'
+      verificationStatusText = 'Request rejected'
+      verifyInputError = 'Request rejected.'
       break
     case VerificationStatus.REQUEST_ACCEPTED:
-      verificationStatusText = 'Request Accepted'
+      verificationStatusText = 'Request accepted.'
       break
     default:
-      verificationStatusText = 'Unknown Error'
+      verificationStatusText = 'Unknown error, contact support.'
       break
   }
 
   if (!addressToVerify) {
-    verifyInputError = 'Enter Token Address'
+    verifyInputError = 'Enter token address'
   } else if (token === null) {
     verifyInputError = <Dots>Loading</Dots>
   } else if (token === undefined) {
-    verifyInputError = 'Token Not Found at Address'
+    verifyInputError = 'No token found'
   } else if (token.verified == undefined) {
     verifyInputError = <Dots>Loading Token Status</Dots>
   } else if (token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED) {
-    verifyInputError = 'Token is Already Verified'
+    verifyInputError = 'Token already verified!'
   }
 
   const handleVerificationRequest = (tip: number) => {
@@ -243,7 +243,7 @@ export default function CreateToken() {
                 </Text>
                 <Input
                   value={addressToVerify}
-                  placeholder={'0x0000000000000000000000000000000000000000'}
+                  placeholder={'Enter token address here'}
                   onChange={handleAddressChange}
                 ></Input>
                 {token ? (
@@ -306,7 +306,7 @@ export default function CreateToken() {
                     })
                   }}
                 >
-                  {verifyInputError || 'Cancel Verification Request'}
+                  {verifyInputError || 'Cancel verification request'}
                 </Button>
               ) : (
                 <Button
@@ -324,7 +324,7 @@ export default function CreateToken() {
                     })
                   }}
                 >
-                  {verifyInputError || 'Submit Verification Request'}
+                  {verifyInputError || 'Submit verification request'}
                 </Button>
               )}
             </AutoColumn>
