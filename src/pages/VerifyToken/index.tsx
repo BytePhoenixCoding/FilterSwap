@@ -13,8 +13,9 @@ import Question from 'components/QuestionHelper'
 import { AutoRow, RowBetween } from 'components/Row'
 import { AutoColumn } from 'components/Column'
 import ConfirmVerifyModal, { RequestType } from 'components/VerifyToken/ConfirmVerifyModal'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import PageHeader from 'components/PageHeader'
-import { Dots } from 'components/swap/styleds'
+import { Dots, BottomGrouping } from 'components/swap/styleds'
 
 import { calculateGasMargin, getVerifierContract, isAddress } from '../../utils'
 
@@ -32,7 +33,7 @@ enum VerificationStatus {
   REQUEST_ACCEPTED,
 }
 
-export default function CreateToken() {
+export default function VerifyToken() {
   const theme = useContext(ThemeContext)
 
   // modal and loading
@@ -232,12 +233,12 @@ export default function CreateToken() {
             requestType={requestType}
           />
           <CardBody>
-            <AutoColumn gap="16px" style={{ width: '100%' }}>
+            <>
               <Text color="textSubtle">
                 If you submit a verification request and it isn't processed within{' '}
                 {VERIFICATION_REQUEST_DEADLINE / 86400} days, you can claim back the full fee amount.
               </Text>
-              <Box>
+              <Box mt={2}>
                 <Text fontSize="16px" mb={2}>
                   Token to Verify
                 </Text>
@@ -246,8 +247,10 @@ export default function CreateToken() {
                   placeholder={'0x0000000000000000000000000000000000000000'}
                   onChange={handleAddressChange}
                 ></Input>
+              </Box>
+              <BottomGrouping>
                 {token ? (
-                  <Box mt={3}>
+                  <Box mb={1}>
                     <RowBetween>
                       <Text as="span">Token:</Text>
                       <Text ml={2} color="textSubtle" as="span">
@@ -288,46 +291,48 @@ export default function CreateToken() {
                 ) : (
                   ''
                 )}
-              </Box>
-              {verificationStatus == VerificationStatus.AWAITING_PROCESSING ? (
-                <Button
-                  id="request-cancel-verify-button"
-                  variant="danger"
-                  width="100%"
-                  disabled={!!verifyInputError}
-                  onClick={() => {
-                    setVerifyState({
-                      showConfirm: true,
-                      attemptingTxn: false,
-                      verifyErrorMessage: undefined,
-                      txHash: undefined,
-                      token: token,
-                      requestType: RequestType.CANCEL_REQUEST,
-                    })
-                  }}
-                >
-                  {verifyInputError || 'Cancel Verification Request'}
-                </Button>
-              ) : (
-                <Button
-                  id="request-verify-button"
-                  width="100%"
-                  disabled={!!verifyInputError}
-                  onClick={() => {
-                    setVerifyState({
-                      showConfirm: true,
-                      attemptingTxn: false,
-                      verifyErrorMessage: undefined,
-                      txHash: undefined,
-                      token: token,
-                      requestType: RequestType.SUBMIT_REQUEST,
-                    })
-                  }}
-                >
-                  {verifyInputError || 'Submit Verification Request'}
-                </Button>
-              )}
-            </AutoColumn>
+                {!account ? (
+                  <ConnectWalletButton width="100%" />
+                ) : verificationStatus == VerificationStatus.AWAITING_PROCESSING ? (
+                  <Button
+                    id="request-cancel-verify-button"
+                    variant="danger"
+                    width="100%"
+                    disabled={!!verifyInputError}
+                    onClick={() => {
+                      setVerifyState({
+                        showConfirm: true,
+                        attemptingTxn: false,
+                        verifyErrorMessage: undefined,
+                        txHash: undefined,
+                        token: token,
+                        requestType: RequestType.CANCEL_REQUEST,
+                      })
+                    }}
+                  >
+                    {verifyInputError || 'Cancel Verification Request'}
+                  </Button>
+                ) : (
+                  <Button
+                    id="request-verify-button"
+                    width="100%"
+                    disabled={!!verifyInputError}
+                    onClick={() => {
+                      setVerifyState({
+                        showConfirm: true,
+                        attemptingTxn: false,
+                        verifyErrorMessage: undefined,
+                        txHash: undefined,
+                        token: token,
+                        requestType: RequestType.SUBMIT_REQUEST,
+                      })
+                    }}
+                  >
+                    {verifyInputError || 'Submit Verification Request'}
+                  </Button>
+                )}
+              </BottomGrouping>
+            </>
           </CardBody>
         </AutoColumn>
       </AppBody>
