@@ -46,7 +46,8 @@ export default function ConfirmVerifyRequestModal({
   const [addTip, setAddTip] = useState(false)
   const [verificationTip, setVerificationTip] = useState('0')
   const handleTipValueChange = (e) => {
-    setVerificationTip(e.target.value)
+    const value = Math.min(Math.max(e.target.value, 0), 100000000000000000000).toString()
+    setVerificationTip(value)
   }
   const verificationFee = tryParseAmount(
     (VERIFICATION_REQUEST_FEE / 10 ** Currency.ETHER.decimals).toString(),
