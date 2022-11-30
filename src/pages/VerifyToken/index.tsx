@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useContext, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
@@ -6,7 +6,7 @@ import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { VERIFICATION_REQUEST_DEADLINE, VERIFICATION_REQUEST_FEE } from '../../constants'
 import AppBody from '../AppBody'
 
-import { Box, Button, CardBody, Text, Input } from '../../custom_modules/@filterswap-libs/uikit'
+import { Box, Button, CardBody, Text, Input, Link } from '../../custom_modules/@filterswap-libs/uikit'
 import { Currency, Token } from '../../custom_modules/@filterswap-libs/sdk'
 
 import Question from 'components/QuestionHelper'
@@ -180,7 +180,17 @@ export default function VerifyToken() {
       }
       break
     case VerificationStatus.REQUEST_REJECTED:
-      verificationStatusText = 'Request rejected'
+      const questionTextElement = React.createElement(
+        "div",
+        {style: {display: "grid", gridGap: "12px"}},
+        React.createElement("span", null, "Your verification request has been rejected. Our team has reviewed this token and have decided it does not fit the criteria to be verified on our platform."),
+        React.createElement("span", null, "You have been refunded 50% of the initial verification fee."),
+        React.createElement("span", null, "You can view our criteria ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here"),". If you have any other questions, please contact us ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here")," on Telegram.")
+      )
+      verificationStatusText = <>
+        Request rejected
+        <Question text={questionTextElement} />
+        </>
       verifyInputError = 'Request rejected.'
       break
     case VerificationStatus.REQUEST_ACCEPTED:
