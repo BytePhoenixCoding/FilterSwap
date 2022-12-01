@@ -37,9 +37,10 @@ export default function VerifyToken() {
   const theme = useContext(ThemeContext)
 
   // modal and loading
-  const [{ showConfirm, verifyErrorMessage, attemptingTxn, txHash, requestType }, setVerifyState] = useState<{
+  const [{ showConfirm, verifyErrorMessage, attemptingTxn, tokenSubmitted, txHash, requestType }, setVerifyState] = useState<{
     showConfirm: boolean
     attemptingTxn: boolean
+    tokenSubmitted: string | undefined
     verifyErrorMessage: string | undefined
     txHash: string | undefined
     token: Token | null | undefined
@@ -47,6 +48,7 @@ export default function VerifyToken() {
   }>({
     showConfirm: false,
     attemptingTxn: false,
+    tokenSubmitted: undefined,
     verifyErrorMessage: undefined,
     txHash: undefined,
     token: undefined,
@@ -70,7 +72,7 @@ export default function VerifyToken() {
     method = verifyContract.submitVerificationRequest
     args = [token.address]
     value = BigNumber.from((VERIFICATION_REQUEST_FEE + verificationTip * 10 ** Currency.ETHER.decimals).toString())
-    setVerifyState((prevState) => ({ ...prevState, attemptingTxn: true }))
+    setVerifyState((prevState) => ({ ...prevState, attemptingTxn: true, tokenSubmitted: undefined }))
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
@@ -79,7 +81,7 @@ export default function VerifyToken() {
         })
       )
       .then((response) => {
-        setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false }))
+        setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false, tokenSubmitted: token.address }))
 
         addTransaction(response, {
           summary: `Making Verification Request for ${token.name} (${token.symbol})`,
@@ -147,7 +149,7 @@ export default function VerifyToken() {
   }, [token])
 
   let verifyInputError: string | Element | any = ''
-
+  
   const verifierContract = useVerifierContract()
   const verificationRequestStatuses = useSingleCallResult(verifierContract, 'verificationRequestStatuses', [
     isAddress(addressToVerify) ? addressToVerify : undefined,
@@ -211,6 +213,8 @@ export default function VerifyToken() {
     verifyInputError = <Dots>Loading Token Status</Dots>
   } else if (token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED) {
     verifyInputError = 'Token already verified!'
+  } else if (verificationStatus == VerificationStatus.NO_REQUEST && tokenSubmitted == token.address) {
+    verifyInputError = <Dots>Submitting verification request</Dots>
   }
 
   const handleVerificationRequest = (tip: number) => {
@@ -289,7 +293,7 @@ export default function VerifyToken() {
                         )}
                       </Text>
                     </RowBetween>
-                    {!verificationReqExpired && verificationDeadline.getTime() != 0 && (
+                    {!verificationReqExpired && verificationDeadline.getTime() != 0 && verificationDeadline.getTime() > Date.now() && (
                       <RowBetween>
                         <Text as="span">Request Deadline:</Text>
                         <Text ml={2} as="span" color="textSubtle">
@@ -313,6 +317,7 @@ export default function VerifyToken() {
                       setVerifyState({
                         showConfirm: true,
                         attemptingTxn: false,
+                        tokenSubmitted: undefined,
                         verifyErrorMessage: undefined,
                         txHash: undefined,
                         token: token,
@@ -331,6 +336,7 @@ export default function VerifyToken() {
                       setVerifyState({
                         showConfirm: true,
                         attemptingTxn: false,
+                        tokenSubmitted: undefined,
                         verifyErrorMessage: undefined,
                         txHash: undefined,
                         token: token,
