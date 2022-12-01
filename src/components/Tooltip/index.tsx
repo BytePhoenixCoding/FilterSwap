@@ -10,7 +10,7 @@ const TooltipContainer = styled.div`
 `
 
 interface TooltipProps extends Omit<PopoverProps, 'content'> {
-  text: string
+  text: string | React.ReactElement
 }
 
 export default function Tooltip({ text, ...rest }: TooltipProps) {
@@ -23,7 +23,7 @@ export function MouseoverTooltip({ children, ...rest }: Omit<TooltipProps, 'show
   const close = useCallback(() => setShow(false), [setShow])
   return (
     <Tooltip {...rest} show={show}>
-      <div onMouseEnter={open} onMouseLeave={close}>
+      <div onMouseEnter={open}>
         {children}
       </div>
     </Tooltip>

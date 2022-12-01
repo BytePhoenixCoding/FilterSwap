@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useContext, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useContext, useState, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { BigNumber } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
@@ -6,7 +6,7 @@ import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { VERIFICATION_REQUEST_DEADLINE, VERIFICATION_REQUEST_FEE } from '../../constants'
 import AppBody from '../AppBody'
 
-import { Box, Button, CardBody, Text, Input } from '../../custom_modules/@filterswap-libs/uikit'
+import { Box, Button, CardBody, Text, Input, Link } from '../../custom_modules/@filterswap-libs/uikit'
 import { Currency, Token } from '../../custom_modules/@filterswap-libs/sdk'
 
 import Question from 'components/QuestionHelper'
@@ -37,9 +37,10 @@ export default function VerifyToken() {
   const theme = useContext(ThemeContext)
 
   // modal and loading
-  const [{ showConfirm, verifyErrorMessage, attemptingTxn, txHash, requestType }, setVerifyState] = useState<{
+  const [{ showConfirm, verifyErrorMessage, attemptingTxn, tokenSubmitted, txHash, requestType }, setVerifyState] = useState<{
     showConfirm: boolean
     attemptingTxn: boolean
+    tokenSubmitted: string | undefined
     verifyErrorMessage: string | undefined
     txHash: string | undefined
     token: Token | null | undefined
@@ -47,6 +48,7 @@ export default function VerifyToken() {
   }>({
     showConfirm: false,
     attemptingTxn: false,
+    tokenSubmitted: undefined,
     verifyErrorMessage: undefined,
     txHash: undefined,
     token: undefined,
@@ -70,7 +72,7 @@ export default function VerifyToken() {
     method = verifyContract.submitVerificationRequest
     args = [token.address]
     value = BigNumber.from((VERIFICATION_REQUEST_FEE + verificationTip * 10 ** Currency.ETHER.decimals).toString())
-    setVerifyState((prevState) => ({ ...prevState, attemptingTxn: true }))
+    setVerifyState((prevState) => ({ ...prevState, attemptingTxn: true, tokenSubmitted: undefined }))
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
@@ -79,7 +81,7 @@ export default function VerifyToken() {
         })
       )
       .then((response) => {
-        setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false }))
+        setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false, tokenSubmitted: token.address }))
 
         addTransaction(response, {
           summary: `Making Verification Request for ${token.name} (${token.symbol})`,
@@ -147,7 +149,7 @@ export default function VerifyToken() {
   }, [token])
 
   let verifyInputError: string | Element | any = ''
-
+  
   const verifierContract = useVerifierContract()
   const verificationRequestStatuses = useSingleCallResult(verifierContract, 'verificationRequestStatuses', [
     isAddress(addressToVerify) ? addressToVerify : undefined,
@@ -180,7 +182,17 @@ export default function VerifyToken() {
       }
       break
     case VerificationStatus.REQUEST_REJECTED:
-      verificationStatusText = 'Request rejected'
+      const questionTextElement = React.createElement(
+        "div",
+        {style: {display: "grid", gridGap: "12px"}},
+        React.createElement("span", null, "Your verification request has been rejected. Our team has reviewed this token and have decided it does not fit the criteria to be verified on our platform."),
+        React.createElement("span", null, "You have been refunded 50% of the initial verification fee."),
+        React.createElement("span", null, "You can view our criteria ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here"),". If you have any other questions, please contact us ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here")," on Telegram.")
+      )
+      verificationStatusText = <>
+        Request rejected
+        <Question text={questionTextElement} />
+        </>
       verifyInputError = 'Request rejected.'
       break
     case VerificationStatus.REQUEST_ACCEPTED:
@@ -201,6 +213,8 @@ export default function VerifyToken() {
     verifyInputError = <Dots>Loading Token Status</Dots>
   } else if (token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED) {
     verifyInputError = 'Token already verified!'
+  } else if (verificationStatus == VerificationStatus.NO_REQUEST && tokenSubmitted == token.address) {
+    verifyInputError = <Dots>Submitting verification request</Dots>
   }
 
   const handleVerificationRequest = (tip: number) => {
@@ -262,7 +276,9 @@ export default function VerifyToken() {
                       <Text
                         ml={2}
                         color={
-                          token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED
+                          token.verified || verificationStatus == VerificationStatus.AWAITING_PROCESSING
+                            ? 'warning'
+                            : token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED
                             ? 'success'
                             : verificationStatus == VerificationStatus.REQUEST_REJECTED
                             ? 'failure'
@@ -279,7 +295,7 @@ export default function VerifyToken() {
                         )}
                       </Text>
                     </RowBetween>
-                    {!verificationReqExpired && verificationDeadline.getTime() != 0 && (
+                    {!verificationReqExpired && verificationDeadline.getTime() != 0 && verificationDeadline.getTime() > Date.now() && (
                       <RowBetween>
                         <Text as="span">Request Deadline:</Text>
                         <Text ml={2} as="span" color="textSubtle">
@@ -303,6 +319,7 @@ export default function VerifyToken() {
                       setVerifyState({
                         showConfirm: true,
                         attemptingTxn: false,
+                        tokenSubmitted: undefined,
                         verifyErrorMessage: undefined,
                         txHash: undefined,
                         token: token,
@@ -321,6 +338,7 @@ export default function VerifyToken() {
                       setVerifyState({
                         showConfirm: true,
                         attemptingTxn: false,
+                        tokenSubmitted: undefined,
                         verifyErrorMessage: undefined,
                         txHash: undefined,
                         token: token,
