@@ -262,7 +262,9 @@ export default function VerifyToken() {
                       <Text
                         ml={2}
                         color={
-                          token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED
+                          token.verified || verificationStatus == VerificationStatus.AWAITING_PROCESSING
+                            ? 'warning'
+                            : token.verified || verificationStatus == VerificationStatus.REQUEST_ACCEPTED
                             ? 'success'
                             : verificationStatus == VerificationStatus.REQUEST_REJECTED
                             ? 'failure'
