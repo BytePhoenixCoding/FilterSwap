@@ -85,7 +85,7 @@ export default function Pool() {
               </RowBetween>
               <RowBetween>
                 <Text color="textSubtle" fontSize="14px">
-                  Show Unlocked Only
+                  Show unlocked only?
                 </Text>
                 <Box>
                   <Toggle
