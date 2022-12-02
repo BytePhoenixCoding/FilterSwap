@@ -261,7 +261,6 @@ export default function CreateToken() {
             </Text>
             <br />
             <fieldset>
-              <legend style={{ margin: '2%', padding: '1%' }}>Token Details</legend>
               {(createOptions.options || deployTokenTemplates[0].options).map((e, i) => {
                 var inside
                 if (e.type == 'number' || e.type == 'percent') {
