@@ -65,8 +65,8 @@ export default function ConfirmVerifyRequestModal({
             <AutoRow gap="4px">
               <RowBetween>
                 <RowFixed>
-                  <Text fontSize="18px">Add Verification Tip?</Text>
-                  <QuestionHelper text={'Adding a tip will ensure your request is prioritised in the queue.'} />
+                  <Text fontSize="18px">Add verification tip?</Text>
+                  <QuestionHelper text={'Adding a tip will prioritise your request. It is completely optional and you can tip any amount.'} />
                 </RowFixed>
                 <RowFixed>
                   <Toggle scale={'sm'} checked={addTip} onChange={() => setAddTip(!addTip)} />
@@ -92,7 +92,7 @@ export default function ConfirmVerifyRequestModal({
             ''
           )}
           <RowBetween>
-            <Text fontSize="14px">Token to Verify</Text>
+            <Text fontSize="14px">Token to verify:</Text>
             <Text fontSize="14px">
               {token?.name} ({token?.symbol})
             </Text>
@@ -101,10 +101,10 @@ export default function ConfirmVerifyRequestModal({
             <>
               <RowBetween>
                 <RowFixed>
-                  <Text fontSize="14px">Token Verification Fee</Text>
+                  <Text fontSize="14px">Token verification fee:</Text>
                   <QuestionHelper
                     text={
-                      'Verifying a Token has a fee associated to the work put into making sure each token is legitimate. If FilterSwap cannot complete this in a timely manner you will be refunded.'
+                      'There is a request fee as we need to take time to make sure each token is legitimate. If FilterSwap cannot complete this by the request deadline you can claim a full refund.'
                     }
                   />
                 </RowFixed>

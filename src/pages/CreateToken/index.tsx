@@ -293,7 +293,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="16px">
-                Owner Token Share (%):
+                Owner token share (%):
               </Text>
               <Input
                 type="number"
@@ -309,7 +309,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="16px">
-                Liquidity Pool Share (%):
+                Liquidity pool share (%):
               </Text>
               <Input
                 type="number"
@@ -344,7 +344,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="14px">
-                Liquidity Lock Time (days):
+                Liquidity lock time (days):
               </Text>
               <Input
                 type="number"
@@ -360,7 +360,7 @@ export default function CreateToken() {
             {!lockForever && daysToLock < LIQUIDITY_RECOMMENDED_LOCK_TIME ? (
               <Box marginTop={2}>
                 <Text color="warning" fontSize="12px">
-                  It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher
+                  It is recommended to keep the lock time {LIQUIDITY_RECOMMENDED_LOCK_TIME} days or higher.
                 </Text>
               </Box>
             ) : (

@@ -3829,12 +3829,12 @@ var templateObject_1;
 
 var baseColors = {
     failure: "#ED4B9E",
-    primary: "#8FD7FF",
-    primaryBright: "#53DEE9",
-    primaryDark: "#2a9edd",
+    primary: "#5D3FD3",
+    primaryBright: "#5D3FD3",
+    primaryDark: "#5D3FD3",
     secondary: "#7645D9",
-    success: "#31D0AA",
-    warning: "#FFB237",
+    success: "#1BFF00",
+    warning: "#FF9D00",
 };
 var brandColors = {
     binance: "#F0B90B",

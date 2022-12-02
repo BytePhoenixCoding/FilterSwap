@@ -65,7 +65,7 @@ export default function Pool() {
       <AppBody>
         <PageHeader
           title={TranslateString(262, 'Liquidity')}
-          description={TranslateString(1168, 'Add liquidity to receive LP tokens')}
+          description={TranslateString(1168, 'Add liquidity to receive LP tokens.')}
         >
           <Button id="join-pool-button" as={Link} to="/add/BNB">
             {TranslateString(168, 'Add Liquidity')}
@@ -75,7 +75,7 @@ export default function Pool() {
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <RowBetween padding="0 8px">
-                <Text color={theme.colors.text}>{TranslateString(107, 'Your Liquidity')}</Text>
+                <Text color={theme.colors.text}>{TranslateString(107, 'Your liquidity')}</Text>
                 <Question
                   text={TranslateString(
                     1170,
@@ -85,7 +85,7 @@ export default function Pool() {
               </RowBetween>
               <RowBetween>
                 <Text color="textSubtle" fontSize="14px">
-                  Show Unlocked Only
+                  Show unlocked only?
                 </Text>
                 <Box>
                   <Toggle
