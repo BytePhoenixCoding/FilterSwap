@@ -293,7 +293,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="16px">
-                Owner token share (%):
+                Owner token share(%):
               </Text>
               <Input
                 type="number"
