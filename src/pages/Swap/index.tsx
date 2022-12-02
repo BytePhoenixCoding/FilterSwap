@@ -302,7 +302,7 @@ const Swap = () => {
             onDismiss={handleConfirmDismiss}
           />
           <PageHeader
-            title={TranslateString(8, 'Exchange')}
+            title={TranslateString(8, 'Swap')}
             description={TranslateString(1192, 'Trade tokens securely in an instant.')}
           />
           <CardBody>
