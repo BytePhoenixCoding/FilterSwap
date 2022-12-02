@@ -153,7 +153,7 @@ export function useDerivedMintInfo(
   }
 
   if (!currencies[Field.CURRENCY_A]?.verified) {
-    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
@@ -169,7 +169,7 @@ export function useDerivedMintInfo(
   }
 
   if (!currencies[Field.CURRENCY_B]?.verified) {
-    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified!`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} is not verified`
   }
 
   return {
