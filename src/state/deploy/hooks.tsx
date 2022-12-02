@@ -302,7 +302,7 @@ export function useDerivedDeployInfo(): {
   }
 
   if (!currencies[Field.INPUT]?.verified) {
-    inputError = inputError ?? 'Base Token is not verified!'
+    inputError = inputError ?? 'Base token is not verified!'
   }
 
   if (!parsedAmount) {
