@@ -293,7 +293,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="16px">
-                Owner Token Share (%):
+                Owner token share (%):
               </Text>
               <Input
                 type="number"
@@ -309,7 +309,7 @@ export default function CreateToken() {
             <br />
             <RowBetween>
               <Text color="textSubtle" fontSize="16px">
-                Liquidity Pool Share (%):
+                Liquidity pool share (%):
               </Text>
               <Input
                 type="number"
