@@ -84,7 +84,7 @@ export default function VerifyToken() {
         setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false, tokenSubmitted: token.address }))
 
         addTransaction(response, {
-          summary: `Making Verification Request for ${token.name} (${token.symbol})`,
+          summary: `Submitted verification request for ${token.name} (${token.symbol})`,
         })
       })
       .catch((e) => {
@@ -122,7 +122,7 @@ export default function VerifyToken() {
         setVerifyState((prevState) => ({ ...prevState, txHash: response.hash, attemptingTxn: false }))
 
         addTransaction(response, {
-          summary: `Cancelling Verification Request for ${token.name} (${token.symbol})`,
+          summary: `Cancelled verification request for ${token.name} (${token.symbol})`,
         })
       })
       .catch((e) => {
