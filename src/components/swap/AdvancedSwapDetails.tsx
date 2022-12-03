@@ -24,7 +24,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontSize="14px">
-              {isExactIn ? TranslateString(1210, 'Minimum received') : TranslateString(220, 'Maximum sold')}
+              {isExactIn ? TranslateString(1210, 'Minimum received:') : TranslateString(220, 'Maximum sold:')}
             </Text>
             <QuestionHelper
               text={TranslateString(
@@ -45,7 +45,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize='14px'>{TranslateString(226, 'Price Impact')}</Text>
+            <Text fontSize='14px'>{TranslateString(226, 'Price impact:')}</Text>
             <QuestionHelper
               text={TranslateString(
                 224,
@@ -58,7 +58,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
 
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">{TranslateString(228, 'Liquidity Provider Fee')}</Text>
+            <Text fontSize="14px">{TranslateString(228, 'Liquidity provider fee:')}</Text>
             <QuestionHelper
               text={TranslateString(
                 230,
