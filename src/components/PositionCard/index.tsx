@@ -215,7 +215,7 @@ export default function FullPositionCard({ pair, onlyShowUnlocked }: PositionCar
             {liquidityLocked ? (
               <FixedHeightRow>
                 <Text>Liquidity unlock time:</Text>
-                <Text color="yellow">{liquidityUnlockTime.toLocaleString()}</Text>
+                <Text color="#FEE12B">{liquidityUnlockTime.toLocaleString()}</Text>
               </FixedHeightRow>
             ) : (
               ''
