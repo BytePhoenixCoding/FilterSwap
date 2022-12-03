@@ -3178,18 +3178,6 @@ var socials = [
                 href: "https://t.me/filterswap",
             },
             {
-                label: "Announcements",
-                href: "https://t.me/filterswapnews",
-            },
-            {
-                label: "Whale Alerts",
-                href: "https://t.me/filterswapwhales",
-            },
-            {
-                label: "New Token Alerts",
-                href: "https://t.me/filterswapnewtokens",
-            },
-            {
                 label: "Contact Us",
                 href: "https://t.me/filterswapteam",
             },
