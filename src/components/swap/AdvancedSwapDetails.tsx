@@ -12,6 +12,10 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { SectionBreak } from './styleds'
 import SwapRoute from './SwapRoute'
 
+export const SWAP_TREASURY_FEE = Number(process.env.REACT_APP_SWAP_TREASURY_FEE)
+export const SWAP_LIQUIDITY_PROVIDER_FEE = Number(process.env.REACT_APP_SWAP_LIQUIDITY_PROVIDER_FEE)
+
+
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
@@ -24,7 +28,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontSize="14px">
-              {isExactIn ? TranslateString(1210, 'Minimum received:') : TranslateString(220, 'Maximum sold:')}
+              {isExactIn ? TranslateString(1210, 'Minimum received') : TranslateString(220, 'Maximum sold')}
             </Text>
             <QuestionHelper
               text={TranslateString(
@@ -45,7 +49,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize='14px'>{TranslateString(226, 'Price impact:')}</Text>
+            <Text fontSize='14px'>{TranslateString(226, 'Price Impact')}</Text>
             <QuestionHelper
               text={TranslateString(
                 224,
@@ -58,11 +62,11 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
 
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">{TranslateString(228, 'Liquidity provider fee:')}</Text>
+            <Text fontSize="14px">{TranslateString(228, 'Liquidity Provider Fee')}</Text>
             <QuestionHelper
               text={TranslateString(
                 230,
-                'For each trade a 0.2% fee is paid. 0.17% goes to liquidity providers and 0.03% goes to the FilterSwap treasury.'
+                `For each trade a ${(SWAP_TREASURY_FEE + SWAP_LIQUIDITY_PROVIDER_FEE) / 100}% fee is paid. ${SWAP_LIQUIDITY_PROVIDER_FEE / 100}% goes to liquidity providers and ${SWAP_TREASURY_FEE / 100}% goes to the FilterSwap treasury.`
               )}
             />
           </RowFixed>
