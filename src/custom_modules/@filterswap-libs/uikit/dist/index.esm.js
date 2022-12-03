@@ -2896,7 +2896,7 @@ var Icon$i = function (props) {
 
 var Logo$2 = function (_a) {
     var isDark = _a.isDark, props = __rest(_a, ["isDark"]);
-    var textColor = isDark ? "#84B4FD" : "#000000";
+    var textColor = isDark ? "#00D0DD" : "#000000";
     return (
         React.createElement(Svg, __assign({ viewBox: "0 0 147 27" }, props),
             React.createElement("path", { d: "M2.09 2.99048V10.7502H12.2954V12.5511H2.09V20.9223H0V1.18952H13.5294V2.99048H2.09Z", fill: textColor }),
