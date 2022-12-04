@@ -2896,7 +2896,7 @@ var Icon$i = function (props) {
 
 var Logo$2 = function (_a) {
     var isDark = _a.isDark, props = __rest(_a, ["isDark"]);
-    var textColor = isDark ? "#FFFFFF" : "#000000";
+    var textColor = isDark ? "#84B4FD" : "#000000";
     return (
         React.createElement(Svg, __assign({ viewBox: "0 0 147 27" }, props),
             React.createElement("path", { d: "M2.09 2.99048V10.7502H12.2954V12.5511H2.09V20.9223H0V1.18952H13.5294V2.99048H2.09Z", fill: textColor }),
@@ -3664,7 +3664,7 @@ var Pip = styled.div(templateObject_2$1 || (templateObject_2$1 = __makeTemplateO
 });
 var templateObject_1$4, templateObject_2$1;
 
-var Wrapper = styled.div(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  position: relative;\n  width: 100%;\n"], ["\n  position: relative;\n  width: 100%;\n"])));
+var Wrapper = styled.div(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  position: relative;\n  width: 100%;\n  height: 100%;\n"], ["\n  position: relative;\n  width: 100%;\n  height: 100%;\n"])));
 var StyledNav = styled.nav(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  position: fixed;\n  top: ", ";\n  left: 0;\n  transition: top 0.2s;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding-left: 8px;\n  padding-right: 16px;\n  width: 100%;\n  height: ", "px;\n  background-color: ", ";\n  border-bottom: solid 2px rgba(133, 133, 133, 0.1);\n  z-index: 20;\n  transform: translate3d(0, 0, 0);\n"], ["\n  position: fixed;\n  top: ", ";\n  left: 0;\n  transition: top 0.2s;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding-left: 8px;\n  padding-right: 16px;\n  width: 100%;\n  height: ", "px;\n  background-color: ", ";\n  border-bottom: solid 2px rgba(133, 133, 133, 0.1);\n  z-index: 20;\n  transform: translate3d(0, 0, 0);\n"])), function (_a) {
     var showMenu = _a.showMenu;
     return (showMenu ? 0 : "-" + MENU_HEIGHT + "px");
@@ -3672,7 +3672,7 @@ var StyledNav = styled.nav(templateObject_2 || (templateObject_2 = __makeTemplat
     var theme = _a.theme;
     return theme.nav.background;
 });
-var BodyWrapper = styled.div(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  position: relative;\n  display: flex;\n"], ["\n  position: relative;\n  display: flex;\n"])));
+var BodyWrapper = styled.div(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  position: relative;\n  display: flex;\n  height: 100%;\n"], ["\n  position: relative;\n  display: flex;\n  height: 100%;\n"])));
 var Inner = styled.div(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n  flex-grow: 1;\n  margin-top: ", ";\n  transition: margin-top 0.2s;\n  transform: translate3d(0, 0, 0);\n  max-width: 100%;\n\n  ", " {\n    margin-left: ", ";\n    max-width: ", ";\n  }\n"], ["\n  flex-grow: 1;\n  margin-top: ", ";\n  transition: margin-top 0.2s;\n  transform: translate3d(0, 0, 0);\n  max-width: 100%;\n\n  ", " {\n    margin-left: ", ";\n    max-width: ", ";\n  }\n"])), function (_a) {
     var showMenu = _a.showMenu;
     return (showMenu ? MENU_HEIGHT + "px" : 0);
@@ -3829,24 +3829,54 @@ var templateObject_1;
 
 var baseColors = {
     failure: "#ED4B9E",
-    primary: "#1FC7D4",
-    primaryBright: "#53DEE9",
-    primaryDark: "#0098A1",
+    primary: "#5D3FD3",
+    primaryBright: "#5D3FD3",
+    primaryDark: "#5D3FD3",
     secondary: "#7645D9",
-    success: "#31D0AA",
-    warning: "#FFB237",
+    success: "#1BFF00",
+    warning: "#FF9D00",
 };
 var brandColors = {
     binance: "#F0B90B",
 };
 var lightColors = __assign(__assign(__assign({}, baseColors), brandColors), {
-    background: "#FAF9FA", backgroundDisabled: "#E9EAEB", contrast: "#191326", dropdown: "#F6F6F6", invertedContrast: "#FFFFFF", input: "#eeeaf4", inputSecondary: "#d7caec", tertiary: "#EFF4F5", text: "#452A7A", textDisabled: "#BDC2C4", textSubtle: "#8f80ba", borderColor: "#E9EAEB", card: "#FFFFFF", gradients: {
+    background: "#FAF9FA",
+    backgroundDisabled: "#E9EAEB",
+    contrast: "#191326",
+    dropdown: "#F6F6F6",
+    invertedContrast: "#FFFFFF",
+    input: "#eeeaf4",
+    inputSecondary: "#d7caec",
+    tertiary: "#EFF4F5",
+    text: "#452A7A",
+    textDisabled: "#BDC2C4",
+    textSubtle: "#8f80ba",
+    borderColor: "#E9EAEB",
+    card: "#FFFFFF",
+    gradients: {
         bubblegum: "linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)",
+        background: "linear-gradient(298.55deg,#bcbfd3 0%,#e6e6e7 100%)"
     }
 });
 var darkColors = __assign(__assign(__assign({}, baseColors), brandColors), {
-    secondary: "#9A6AFF", background: "#100C18", backgroundDisabled: "#3c3742", contrast: "#FFFFFF", dropdown: "#1E1D20", invertedContrast: "#191326", input: "#483f5a", inputSecondary: "#66578D", primaryDark: "#0098A1", tertiary: "#353547", text: "#EAE2FC", textDisabled: "#666171", textSubtle: "#A28BD4", borderColor: "#524B63", card: "#27262c", gradients: {
+    secondary: "#666171",
+    background: "#0C0C18",
+    backgroundDisabled: "#383742",
+    contrast: "#FFFFFF",
+    dropdown: "#1E1D20",
+    invertedContrast: "#131826",
+    input: "#3f3f5a",
+    inputSecondary: "#616371",
+    primaryDark: "#8FD7FF",
+    tertiary: "#353547",
+    text: "#e2e4fc",
+    textDisabled: "#636171",
+    textSubtle: "#6a9ff0",
+    borderColor: "#4b4d63",
+    card: "#27262C",
+    gradients: {
         bubblegum: "linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)",
+        background: "linear-gradient(298.55deg,#100C18 0%,#1D1C23 100%)"
     }
 });
 

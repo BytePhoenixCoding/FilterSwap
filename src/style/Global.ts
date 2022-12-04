@@ -1,7 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
 
-// background-color: ${({ theme }) => theme.colors.background};
 const GlobalStyle = createGlobalStyle`
+  html {
+    background: ${({ theme }: any) => theme.colors.gradients.background};
+  }
+
   body {
 
     img {

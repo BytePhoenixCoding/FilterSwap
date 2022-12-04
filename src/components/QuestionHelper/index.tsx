@@ -22,7 +22,7 @@ const QuestionWrapper = styled.div`
   }
 `
 
-export default function QuestionHelper({ text }: { text: string }) {
+export default function QuestionHelper({ text }: { text: string | React.ReactElement }) {
   const [show, setShow] = useState<boolean>(false)
 
   const open = useCallback(() => setShow(true), [setShow])
@@ -30,7 +30,7 @@ export default function QuestionHelper({ text }: { text: string }) {
 
   return (
     <span style={{ marginLeft: 4 }}>
-      <Tooltip text={text} show={show}>
+      <Tooltip text={text} show={show} openFn={open} closeFn={close}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
           <Question size={16} />
         </QuestionWrapper>
