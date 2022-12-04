@@ -3058,11 +3058,11 @@ var links = [
         items: [
             {
                 label: "Exchange",
-                href: "https://exchange.Filterswap.finance",
+                href: "https://filterswap.exchange",
             },
             {
                 label: "Liquidity",
-                href: "https://exchange.Filterswap.finance/#/pool",
+                href: "https://filterswap.exchange/#/pool",
             },
         ],
     },
