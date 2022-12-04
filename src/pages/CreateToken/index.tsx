@@ -280,7 +280,14 @@ export default function CreateToken() {
                   )
                 } else {
                   inside = (
-                    <Input id={e.id} value={e.value} key={i} onChange={handleParamsChange} placeholder={e.fieldName} />
+                    <Input
+                      id={e.id}
+                      value={e.value}
+                      maxLength={32}
+                      key={i}
+                      onChange={handleParamsChange}
+                      placeholder={e.fieldName}
+                    />
                   )
                 }
                 return (
