@@ -3178,7 +3178,7 @@ var socials = [
                 href: "https://t.me/filterswap",
             },
             {
-                label: "Contact Us",
+                label: "Contact us",
                 href: "https://t.me/filterswapteam",
             },
         ],
@@ -3186,7 +3186,7 @@ var socials = [
     {
         label: "Twitter",
         icon: "TwitterIcon",
-        href: "https://twitter.com/Filterswap",
+        href: "https://twitter.com/filterswap",
     },
 ];
 var MENU_HEIGHT = 64;
