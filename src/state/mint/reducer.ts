@@ -15,7 +15,7 @@ const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
-  daysToLock: process.env.REACT_APP_LIQUIDITY_RECOMMENDED_LOCK_TIME,
+  daysToLock: 14,
   lockForever: false,
 }
 
