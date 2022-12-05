@@ -95,7 +95,7 @@ export function CurrencySearch({
       if (audioPlay) {
         const audio = document.getElementById('bgMusic') as HTMLAudioElement
         if (audio) {
-          audio.play()
+          //audio.play()
         }
       }
     },
