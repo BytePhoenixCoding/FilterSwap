@@ -56,7 +56,8 @@ export const Select = styled('select')`
   // appearance: none;
   background-image: ;
   color: #eae2fc;
-  background-color: #483f5a;
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.input};
   border: 0;
   border-radius: 16px;
   box-shadow: inset 0px 2px 2px -1px rgb(74 74 104 / 10%);
@@ -279,7 +280,14 @@ export default function CreateToken() {
                   )
                 } else {
                   inside = (
-                    <Input id={e.id} value={e.value} key={i} onChange={handleParamsChange} placeholder={e.fieldName} />
+                    <Input
+                      id={e.id}
+                      value={e.value}
+                      maxLength={32}
+                      key={i}
+                      onChange={handleParamsChange}
+                      placeholder={e.fieldName}
+                    />
                   )
                 }
                 return (
