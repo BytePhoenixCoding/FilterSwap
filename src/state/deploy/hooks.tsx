@@ -310,8 +310,8 @@ export function useDerivedDeployInfo(): {
   }
 
   Object.entries(params).forEach((param: any, i) => {
-    if (createOptions && (!param[1] || param[1] == '0') && createOptions.options.map((e) => e.id).includes(param[0])) {
-      inputError = inputError ?? 'Enter ' + createOptions.options[i].fieldName
+    if (createOptions && (!param[1] || param[1] == '0') && typeof param[1] != "number" && createOptions.options.map((e) => e.id).includes(param[0])) {
+      inputError = inputError ?? 'Enter ' + createOptions.options[i]?.fieldName
     }
   })
 
