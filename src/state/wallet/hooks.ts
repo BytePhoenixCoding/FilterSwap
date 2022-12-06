@@ -128,7 +128,6 @@ export function useMintFee(
   // const managerContract = useManagerContract()
   // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
 
-  console.log(parsedAmount.currency)
   const feePercent: Percent = new Percent(DEPLOYER_MINT_FEE.toString(), "10000")
   const feeAmount = new TokenAmount(parsedAmount.currency, feePercent.multiply(parsedAmount.raw).quotient )
   return tryParseAmount(feeAmount.toFixed(18), parsedAmount.currency)
