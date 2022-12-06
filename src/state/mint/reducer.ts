@@ -15,7 +15,7 @@ const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
-  daysToLock: 365,
+  daysToLock: 14,
   lockForever: false,
 }
 

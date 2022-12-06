@@ -42,31 +42,31 @@ export default function DeployModalFooter({
     <>
       <AutoColumn gap="0px">
         <RowBetween>
-          <Text fontSize="14px">Initial Liquidity Amount</Text>
+          <Text fontSize="14px">Initial liquidity amount:</Text>
           {/* <QuestionHelper text={'To Change'} /> */}
           <Text fontSize="14px">
             {initLqAmount} {parsedAmount?.currency.symbol}
           </Text>
         </RowBetween>
         <RowBetween>
-          <Text fontSize="14px">Token Mint Fee</Text>
+          <Text fontSize="14px">Token mint fee:</Text>
           {/* <QuestionHelper text={'To Change'} /> */}
           <Text fontSize="14px">
             {calculatedMintFee?.toSignificant(5)} {parsedAmount?.currency.symbol}
           </Text>
         </RowBetween>
         <RowBetween>
-          <Text fontSize="14px">Liquidity Lock Time</Text>
+          <Text fontSize="14px">Liquidity lock time:</Text>
           {/* <QuestionHelper text={'To Change'} /> */}
           <Text fontSize="14px">{lockForever ? 'Forever' : `${daysToLock} Days`}</Text>
         </RowBetween>
         <RowBetween>
-          <Text fontSize="14px">You will receive </Text>
+          <Text fontSize="14px">You will receive:</Text>
           {/* <QuestionHelper text={'To Change'} /> */}
           <Text fontSize="14px">{`${ownerShareAmt} ${params.tokenSymbol} (${ownerShare}%)`}</Text>
         </RowBetween>
         <RowBetween align="center">
-          <Text fontSize="14px">Price</Text>
+          <Text fontSize="14px">Pric:e</Text>
           <Text
             fontSize="14px"
             style={{

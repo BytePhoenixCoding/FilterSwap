@@ -19,7 +19,15 @@
       "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://bsc.pancake.kiemtienonline360.com/images/coins/bnb.png"
+      "logoURI": "https://filterswap.exchange/token_icons/bnb.png"
+    },
+    {
+      "name": "Sieve Token",
+      "symbol": "SIEVE",
+      "address": "0x80Afcd62f4a29271fF19ec99D516D2953181e1bA",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "https://filterswap.exchange/token_icons/sieve.png"
     },
     {
       "name": "BUSD Token",
@@ -27,7 +35,7 @@
       "address": "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancake.kiemtienonline360.com/images/coins/0x78867bbeef44f2326bf8ddd1941a4439382ef2a7.png"
+      "logoURI": "https://filterswap.exchange/token_icons/busd.png"
     },
     {
       "name": "Dai Token",
@@ -35,7 +43,7 @@
       "address": "0x8a9424745056Eb399FD19a0EC26A14316684e274",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancake.kiemtienonline360.com/images/coins/0x8a9424745056eb399fd19a0ec26a14316684e274.png"
+      "logoURI": "https://filterswap.exchange/token_icons/dai.png"
     },
     {
       "name": "Tether USD",
@@ -43,7 +51,7 @@
       "address": "0x7ef95a0FEE0Dd31b22626fA2e10Ee6A223F8a684",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancake.kiemtienonline360.com/images/coins/0x7ef95a0fee0dd31b22626fa2e10ee6a223f8a684.png"
+      "logoURI": "https://filterswap.exchange/token_icons/usdt.png"
     },
     {
       "name": "Ethereum Token",
@@ -51,7 +59,7 @@
       "address": "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancake.kiemtienonline360.com/images/coins/0x8babbb98678facc7342735486c851abd7a0d17ca.png"
+      "logoURI": "https://filterswap.exchange/token_icons/eth.png"
     }
   ]
 }

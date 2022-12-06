@@ -2896,7 +2896,7 @@ var Icon$i = function (props) {
 
 var Logo$2 = function (_a) {
     var isDark = _a.isDark, props = __rest(_a, ["isDark"]);
-    var textColor = isDark ? "#84B4FD" : "#000000";
+    var textColor = isDark ? "#00D0DD" : "#000000";
     return (
         React.createElement(Svg, __assign({ viewBox: "0 0 147 27" }, props),
             React.createElement("path", { d: "M2.09 2.99048V10.7502H12.2954V12.5511H2.09V20.9223H0V1.18952H13.5294V2.99048H2.09Z", fill: textColor }),
@@ -3058,11 +3058,11 @@ var links = [
         items: [
             {
                 label: "Exchange",
-                href: "https://exchange.Filterswap.finance",
+                href: "https://filterswap.exchange",
             },
             {
                 label: "Liquidity",
-                href: "https://exchange.Filterswap.finance/#/pool",
+                href: "https://filterswap.exchange/#/pool",
             },
         ],
     },
@@ -3178,19 +3178,7 @@ var socials = [
                 href: "https://t.me/filterswap",
             },
             {
-                label: "Announcements",
-                href: "https://t.me/filterswapnews",
-            },
-            {
-                label: "Whale Alerts",
-                href: "https://t.me/filterswapwhales",
-            },
-            {
-                label: "New Token Alerts",
-                href: "https://t.me/filterswapnewtokens",
-            },
-            {
-                label: "Contact Us",
+                label: "Contact us",
                 href: "https://t.me/filterswapteam",
             },
         ],
@@ -3198,7 +3186,7 @@ var socials = [
     {
         label: "Twitter",
         icon: "TwitterIcon",
-        href: "https://twitter.com/Filterswap",
+        href: "https://twitter.com/filterswap",
     },
 ];
 var MENU_HEIGHT = 64;
@@ -3829,9 +3817,9 @@ var templateObject_1;
 
 var baseColors = {
     failure: "#ED4B9E",
-    primary: "#5D3FD3",
-    primaryBright: "#5D3FD3",
-    primaryDark: "#5D3FD3",
+    primary: "#00D0DD",
+    primaryBright: "#00D0DD",
+    primaryDark: "#00D0DD",
     secondary: "#7645D9",
     success: "#1BFF00",
     warning: "#FF9D00",
@@ -3850,7 +3838,7 @@ var lightColors = __assign(__assign(__assign({}, baseColors), brandColors), {
     tertiary: "#EFF4F5",
     text: "#452A7A",
     textDisabled: "#BDC2C4",
-    textSubtle: "#8f80ba",
+    textSubtle: "#00D0DD",
     borderColor: "#E9EAEB",
     card: "#FFFFFF",
     gradients: {
@@ -3867,11 +3855,11 @@ var darkColors = __assign(__assign(__assign({}, baseColors), brandColors), {
     invertedContrast: "#131826",
     input: "#3f3f5a",
     inputSecondary: "#616371",
-    primaryDark: "#8FD7FF",
+    primaryDark: "#00D0DD",
     tertiary: "#353547",
     text: "#e2e4fc",
     textDisabled: "#636171",
-    textSubtle: "#6a9ff0",
+    textSubtle: "#00D0DD",
     borderColor: "#4b4d63",
     card: "#27262C",
     gradients: {

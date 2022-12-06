@@ -189,8 +189,7 @@ export function useDeployCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response) => {
-
-						const base = `Created and Deployed ${newTokenParams.tokenName}`
+		const base = `Created ${newTokenParams.tokenName}`
 
             addTransaction(response, {
               summary: base,

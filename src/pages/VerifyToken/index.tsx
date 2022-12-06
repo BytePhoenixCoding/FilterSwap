@@ -254,7 +254,7 @@ export default function VerifyToken() {
               </Text>
               <Box mt={2}>
                 <Text fontSize="16px" mb={2}>
-                  Token to Verify
+                  Token to verify
                 </Text>
                 <Input
                   value={addressToVerify}

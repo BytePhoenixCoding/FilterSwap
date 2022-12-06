@@ -149,7 +149,7 @@ export function useDerivedMintInfo(
   }
 
   if (currencies[Field.CURRENCY_A]?.verified == undefined) {
-    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_A]?.verified) {
@@ -165,7 +165,7 @@ export function useDerivedMintInfo(
   }
 
   if (currencies[Field.CURRENCY_B]?.verified == undefined) {
-    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} Verification loading...`
+    error = error ?? `${currencies[Field.CURRENCY_B]?.symbol} verification loading...`
   }
 
   if (!currencies[Field.CURRENCY_B]?.verified) {
