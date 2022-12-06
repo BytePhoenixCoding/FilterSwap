@@ -41,7 +41,7 @@ const BodyWrapper = styled.div`
   overflow-x: hidden;
   z-index: 1;
   justify-content: center;
-  height: 100%;
+  min-height: 100%;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     background-size: auto;
@@ -154,7 +154,6 @@ export default function App() {
                       <Route component={RedirectPathToSwapOnly} />
                     </Switch>
                   </Web3ReactManager>
-                  <Marginer />
                 </BodyWrapper>
               </Menu>
             </TranslationsContext.Provider>
