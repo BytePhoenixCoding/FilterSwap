@@ -19,7 +19,7 @@ export const deployTokenTemplates: {
     ],
   },
   {
-    name: 'Deflationary (simple transfer fee)',
+    name: '(Unavailable)',
     description:
       'Like the basic token template, but a fee of up to 25% is taken for each transfer. All collected fees are burnt.',
     options: [
