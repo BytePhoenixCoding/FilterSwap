@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from '../../custom_modules/@filterswap-libs/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Percent } from '../../custom_modules/@filterswap-libs/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -123,11 +123,14 @@ export function useMintFee(
   parsedAmount
 ): CurrencyAmount | undefined {
   
+  if(!parsedAmount) return undefined
+  
   // const managerContract = useManagerContract()
   // const tokenMintFee = useSingleCallResult(managerContract, 'tokenMintFee')?.result?.[0]
-  
-  const fee = parsedAmount.divide(DEPLOYER_MINT_FEE)
-  return tryParseAmount(fee.toFixed(18), parsedAmount.currency)
+
+  const feePercent: Percent = new Percent(DEPLOYER_MINT_FEE.toString(), "10000")
+  const feeAmount = new TokenAmount(parsedAmount.currency, feePercent.multiply(parsedAmount.raw).quotient )
+  return tryParseAmount(feeAmount.toFixed(18), parsedAmount.currency)
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
