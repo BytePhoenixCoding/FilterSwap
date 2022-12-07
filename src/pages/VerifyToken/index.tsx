@@ -187,7 +187,7 @@ export default function VerifyToken() {
         {style: {display: "grid", gridGap: "12px"}},
         React.createElement("span", null, "Your verification request has been rejected. Our team has reviewed this token and have decided it does not fit the criteria to be verified on our platform."),
         React.createElement("span", null, "You have been refunded 50% of the initial verification fee."),
-        React.createElement("span", null, "You can view our criteria ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here"),". If you have any other questions, please contact us ",React.createElement(Link, {style:{display:"inline"},href:"/"}, "here")," on Telegram.")
+        React.createElement("span", null, "You can view our criteria ",React.createElement(Link, {style:{display:"inline"},href:"https://filterswap.gitbook.io/filterswap/add-liquidity-to-existing-token"}, "here"),". If you have any other questions, please contact us ",React.createElement(Link, {style:{display:"inline"},href:"https://t.me/filterswapteam"}, "here")," on Telegram.")
       )
       verificationStatusText = <>
         Request rejected
