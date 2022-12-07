@@ -249,8 +249,8 @@ export default function CreateToken() {
             <br />
             <div style={{ display: 'flex', gap: '5%', justifyContent: 'center' }}>
               <Select onChange={handleTemplateChange}>
-                {deployTokenTemplates.map((e, i) => (
-                  <option key={i} value={i}>
+                {deployTokenTemplates.map(e => (
+                  <option key={e.index} value={e.index}>
                     {e.name}
                   </option>
                 ))}

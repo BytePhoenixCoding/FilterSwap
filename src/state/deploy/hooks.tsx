@@ -42,7 +42,7 @@ export function useDeployActionHandlers(): {
   onDaysToLockChange: (daysToLock: number) => void
   onToggleLockForever: () => void
   onParamsChange: (params) => void
-  onTemplateChange: (templateId: number) => void
+  onTemplateChange: (templateId: number, templateIndex: number) => void
   onNewTokenAddress: (newTokenAddress: string) => void
 } {
   const dispatch = useDispatch<AppDispatch>()
@@ -94,8 +94,8 @@ export function useDeployActionHandlers(): {
   )
 
   const onTemplateChange = useCallback(
-    (templateId: number) => {
-      dispatch(templateChange({ templateId }))
+    (templateId: number, templateIndex: number) => {
+      dispatch(templateChange({ templateId, templateIndex }))
     },
     [dispatch]
   )
@@ -243,8 +243,9 @@ export function useTemplates(): {
   const handleTemplateChange = useCallback(
     (evt: any) => {
       const templateId = parseInt(evt.target.selectedIndex)
+      const templateIndex = parseInt(evt.target.value)
 
-      onTemplateChange(templateId)
+      onTemplateChange(templateId, templateIndex)
     },
     [onTemplateChange]
   )
