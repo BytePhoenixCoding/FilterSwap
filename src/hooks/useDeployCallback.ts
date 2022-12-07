@@ -52,7 +52,7 @@ function useDeployCallArguments(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
 ): DeployCall[] {
   const { account, chainId, library } = useActiveWeb3React()
-  const { ownerShare, daysToLock, lockForever } = useDeployState()
+  const { ownerShare, daysToLock, lockForever, templateIndex } = useDeployState()
   return useMemo(() => {
     if (!newTokenParams || !library || !account || !chainId) return []
 
@@ -72,13 +72,14 @@ function useDeployCallArguments(
         inputAmount,
         inputCurrency,
         selectedTemplate,
+        templateIndex,
         deadline
       })
     )
 
 
     return deployMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, chainId, deadline, library, newTokenParams, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount])
+  }, [account, chainId, deadline, library, newTokenParams, templateIndex, ownerShare, daysToLock, lockForever, inputCurrency, inputAmount])
 }
 
 const findTokenAddressFromLogs = (logs) => {

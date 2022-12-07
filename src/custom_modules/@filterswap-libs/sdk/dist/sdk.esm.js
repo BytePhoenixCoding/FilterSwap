@@ -1478,7 +1478,7 @@ var Router = /*#__PURE__*/function () {
 
     args = [
       // template 3 = 2, just calculate it from position of json file).
-      options.selectedTemplate, // _tokenType (uint256)
+      options.templateIndex, // _tokenType (uint256)
       newTokenParams.tokenName, // _tokenName (uint256)
       newTokenParams.tokenSymbol, // _tokenSymbol (unint256)
       valuesToSend, // _tokenArgs (bytes32[])

@@ -20,6 +20,7 @@ export interface DeployState {
   readonly daysToLock: number
   readonly lockForever: boolean
   readonly selectedTemplate: number
+  readonly templateIndex: number
   readonly createOptions: {
     description: string
     name: string
@@ -57,6 +58,7 @@ const initialState: DeployState = {
   daysToLock: LIQUIDITY_RECOMMENDED_LOCK_TIME,
   lockForever: false,
   selectedTemplate: 0,
+  templateIndex: 0,
   createOptions: deployTokenTemplates[0],
   newTokenAddress: undefined
 }
@@ -75,6 +77,7 @@ export default createReducer<DeployState>(initialState, (builder) =>
         daysToLock,
         lockForever,
         selectedTemplate,
+        templateIndex,
         createOptions,
         newTokenAddress
       } }) => {
@@ -93,6 +96,7 @@ export default createReducer<DeployState>(initialState, (builder) =>
           daysToLock,
           lockForever,
           selectedTemplate,
+          templateIndex,
           createOptions,
           newTokenAddress,
         }
@@ -140,7 +144,7 @@ export default createReducer<DeployState>(initialState, (builder) =>
         }
       }
     })
-    .addCase(templateChange, (state, { payload: { templateId } }) => {
+    .addCase(templateChange, (state, { payload: { templateId, templateIndex } }) => {
 
       const selectedTemplate = templateId
       const createOptions = deployTokenTemplates[selectedTemplate]
@@ -148,7 +152,8 @@ export default createReducer<DeployState>(initialState, (builder) =>
       return {
         ...state,
         createOptions,
-        selectedTemplate
+        selectedTemplate,
+        templateIndex
       }
     })
     .addCase(updateNewTokenAddress, (state, { payload: { newTokenAddress } }) => {
