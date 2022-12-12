@@ -15,9 +15,10 @@ const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
-  daysToLock: 14,
+  daysToLock: process.env.DAYS_TO_LOCK || 14, // use the DAYS_TO_LOCK value from the environment, or use 14 as a default
   lockForever: false,
 }
+
 
 export default createReducer<MintState>(initialState, builder =>
   builder
