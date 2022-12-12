@@ -17,6 +17,9 @@ import { AutoRow, RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 
+export const SWAP_TREASURY_FEE = Number(process.env.REACT_APP_SWAP_TREASURY_FEE)
+export const SWAP_LIQUIDITY_PROVIDER_FEE = Number(process.env.REACT_APP_SWAP_LIQUIDITY_PROVIDER_FEE)
+
 export default function SwapModalFooter({
   trade,
   onConfirm,
@@ -104,7 +107,7 @@ export default function SwapModalFooter({
             <QuestionHelper
               text={TranslateString(
                 999,
-                'For each trade a 0.2% fee is paid. 0.17% goes to liquidity providers and 0.03% goes to the FilterSwap treasury.'
+                `For each trade a ${(SWAP_TREASURY_FEE + SWAP_LIQUIDITY_PROVIDER_FEE) / 100}% fee is paid. ${SWAP_LIQUIDITY_PROVIDER_FEE / 100}% goes to liquidity providers and ${SWAP_TREASURY_FEE / 100}% goes to the FilterSwap treasury.`
               )}
             />
           </RowFixed>
