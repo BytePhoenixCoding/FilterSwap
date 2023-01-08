@@ -16,48 +16,48 @@
     {
       "name": "WBNB Token",
       "symbol": "WBNB",
-      "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
-      "chainId": 97,
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/bnb.png"
     },
     {
       "name": "Sieve Token",
       "symbol": "SIEVE",
-      "address": "0x80Afcd62f4a29271fF19ec99D516D2953181e1bA",
-      "chainId": 97,
+      "address": "0xbA7bd6307a2d6D485cf0B5E639640130232Af2f7",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/sieve.png"
     },
     {
       "name": "BUSD Token",
       "symbol": "BUSD",
-      "address": "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7",
-      "chainId": 97,
+      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/busd.png"
     },
     {
       "name": "Dai Token",
       "symbol": "DAI",
-      "address": "0x8a9424745056Eb399FD19a0EC26A14316684e274",
-      "chainId": 97,
+      "address": "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/dai.png"
     },
     {
       "name": "Tether USD",
       "symbol": "USDT",
-      "address": "0x7ef95a0FEE0Dd31b22626fA2e10Ee6A223F8a684",
-      "chainId": 97,
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/usdt.png"
     },
     {
       "name": "Ethereum Token",
       "symbol": "ETH",
-      "address": "0x8BaBbB98678facC7342735486C851ABD7A0d17Ca",
-      "chainId": 97,
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+      "chainId": 56,
       "decimals": 18,
       "logoURI": "https://filterswap.exchange/token_icons/eth.png"
     }
