@@ -13,7 +13,7 @@ export const deployTokenTemplates: {
   {
     index: 0,
     name: 'Basic',
-    description: 'The most basic token template. No fees, nothing.',
+    description: 'The most basic token template with no fees.',
     options: [
       { fieldName: 'Token Name', id: 'tokenName' },
       { fieldName: 'Token Symbol', id: 'tokenSymbol' },
@@ -22,9 +22,9 @@ export const deployTokenTemplates: {
   },
   {
     index: 1,
-    name: '(Unavailable)',
+    name: 'Deflationary (basic transfer fee)',
     description:
-      'Like the basic token template, but a fee of up to 25% is taken for each transfer. All collected fees are burnt.',
+      'Like the basic token template, but a fee of up to 25% is taken for every transfer. Owner can change fees and all collected fees are burnt.',
     options: [
       { fieldName: 'Token Name', id: 'tokenName' },
       { fieldName: 'Token Symbol', id: 'tokenSymbol' },
@@ -36,7 +36,7 @@ export const deployTokenTemplates: {
     index: 2,
     name: 'Deflationary (buy/sell fee)',
     description:
-      'Like the basic token template, but a buy and sell fee of up to 25% each can be implemented and changed at any time by the owner. All collected fees are burnt.',
+      'Like the basic token template, but a buy and sell fee of up to 25% each is taken for every swap. Fees are only active when token is bought / sold via FilterSwap. Owner can change fees and all collected fees are burnt.',
     options: [
       { fieldName: 'Token Name', id: 'tokenName' },
       { fieldName: 'Token Symbol', id: 'tokenSymbol' },
